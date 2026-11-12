@@ -1,0 +1,61 @@
+:root {
+  --primary: #2f6bff;
+  --cyan: #22d3ee;
+  --dark: #0b1020;
+  --bg: #ffffff;
+  --surface: #f4f6fb;
+  --text: #0b1020;
+  --muted: #5b6478;
+  --border: #dde2ee;
+  --ok: #16a34a;
+  --warn: #d97706;
+  --err: #dc2626;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1020;
+    --surface: #141b31;
+    --text: #e8ecf6;
+    --muted: #98a2b8;
+    --border: #26304d;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.45 system-ui, "Segoe UI", "Noto Sans Arabic", Tahoma, sans-serif;
+}
+button {
+  font: inherit;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+button.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+button:disabled { opacity: 0.55; cursor: default; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 1px;
+}
+a { color: var(--primary); }
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand img { width: 28px; height: 28px; }
+.brand h1 { font-size: 15px; margin: 0; font-weight: 600; }
+.muted { color: var(--muted); }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-inline-end: 6px; }
+.dot.ok { background: var(--ok); }
+.dot.warn { background: var(--warn); }
+.dot.err { background: var(--err); }
+
+/* switch */
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
+.switch input { appearance: none; width: 34px; height: 20px; border-radius: 10px; background: var(--border); position: relative; flex: none; cursor: pointer; margin: 0; transition: background .15s; }
+.switch input::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: inset-inline-start .15s; }
+.switch input:checked { background: var(--primary); }
+.switch input:checked::after { inset-inline-start: 16px; }

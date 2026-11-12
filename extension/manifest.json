@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "short_name": "Peregrine",
+  "description": "__MSG_extDescription__",
+  "version": "0.1.0",
+  "default_locale": "en",
+  "minimum_chrome_version": "116",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpOOs4OYFx5u7AI/rc3xRXA+fM2Ecx9tdQkunDoMQLfhh9M8mj3RISugztpCxYZp1IZCwOeByLx76eWpr6slofGFAdzDikPISkxtUi2VET7lfoGLBauZTDO5hJqQo6MGE1VDqwaX+41CHruQF3Gokm579kfBmV7w9cop6EsDyABBEYjDGYFirkKB8VDH6i9iUvrfF63umQEFZLpKyAyQlFb6LvWinul/l3ExOUn11VXK/iiuUOfRSeF/IqHbXNg/auUI+z732ypWjinNQ67qwpRh6iCqtLUoUvYguj2EpRTlMOb/J8B7H95gkMBcB2Wtq1s6opKNafvu2Fu1+BLinQIDAQAB",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "__MSG_extName__",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "downloads",
+    "nativeMessaging",
+    "contextMenus",
+    "cookies",
+    "storage",
+    "webRequest",
+    "scripting"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+  }
+}

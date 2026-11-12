@@ -1,0 +1,18 @@
+main { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+.brand h1 { font-size: 18px; }
+form { margin-top: 16px; display: grid; gap: 18px; }
+.row { display: grid; gap: 6px; }
+.row > label:not(.switch) { font-weight: 600; }
+input[type="number"], textarea {
+  font: inherit;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+}
+input[type="number"] { max-width: 160px; }
+.hint { margin: 0; font-size: 12px; }
+.actions { display: flex; gap: 8px; align-items: center; }
+.note { margin-top: 20px; padding: 10px; border-inline-start: 3px solid var(--cyan); background: var(--surface); border-radius: 4px; }

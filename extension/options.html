@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peregrine</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main>
+    <header class="brand">
+      <img src="icons/icon-48.png" alt="">
+      <h1 data-i18n="optionsTitle"></h1>
+    </header>
+
+    <form id="form" novalidate>
+      <label class="switch row">
+        <span data-i18n="optEnabled"></span>
+        <input type="checkbox" id="enabled">
+      </label>
+
+      <div class="row">
+        <label for="minSize" data-i18n="optMinSize"></label>
+        <input type="number" id="minSize" min="0" step="0.1" inputmode="decimal">
+        <p class="hint muted" id="minSizeHint"></p>
+      </div>
+
+      <div class="row">
+        <label for="extensions" data-i18n="optExtensions"></label>
+        <textarea id="extensions" rows="4" spellcheck="false" dir="ltr"></textarea>
+        <p class="hint muted" data-i18n="optExtensionsHint"></p>
+      </div>
+
+      <div class="row">
+        <label for="excluded" data-i18n="optExcluded"></label>
+        <textarea id="excluded" rows="5" spellcheck="false" dir="ltr" placeholder="example.com"></textarea>
+        <p class="hint muted" data-i18n="optExcludedHint"></p>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="primary" data-i18n="save"></button>
+        <button type="button" id="reset" data-i18n="resetDefaults"></button>
+        <span id="saved" class="muted" role="status"></span>
+      </div>
+    </form>
+
+    <p class="note" data-i18n="bypassNote"></p>
+    <p class="note muted" data-i18n="privacyNote"></p>
+  </main>
+  <script type="module" src="src/options.js"></script>
+</body>
+</html>

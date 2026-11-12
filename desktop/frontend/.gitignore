@@ -1,0 +1,6 @@
+node_modules/
+dist/
+wailsjs/
+test-results/
+playwright-report/
+package.json.md5

@@ -1,0 +1,15 @@
+body { width: 340px; padding: 12px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px; margin-top: 10px; }
+#status { display: flex; align-items: center; gap: 4px; }
+#status #statusText { flex: 1; }
+.toggles { display: grid; gap: 8px; }
+h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 0 0 6px; font-weight: 600; }
+#mediaEmpty { margin: 0; }
+#mediaList { list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto; }
+#mediaList li { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--border); }
+#mediaList li:first-child { border-top: 0; }
+.media-info { flex: 1; min-width: 0; }
+.media-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: start; unicode-bidi: plaintext; }
+.media-meta { font-size: 11px; color: var(--muted); }
+.tag { font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 4px; background: var(--cyan); color: var(--dark); margin-inline-end: 4px; }
+footer { margin-top: 10px; text-align: end; }

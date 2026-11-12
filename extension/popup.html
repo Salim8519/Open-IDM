@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Peregrine</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="brand">
+    <img src="icons/icon-48.png" alt="">
+    <h1>Peregrine</h1>
+  </header>
+
+  <section id="status" class="card" aria-live="polite">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusText" data-i18n="statusChecking"></span>
+    <button id="startBtn" class="primary" hidden data-i18n="startApp"></button>
+  </section>
+
+  <section class="card toggles">
+    <label class="switch">
+      <span data-i18n="interception"></span>
+      <input type="checkbox" id="enabled">
+    </label>
+    <label class="switch" data-i18n-title="skipNextHint">
+      <span data-i18n="skipNext"></span>
+      <input type="checkbox" id="skipNext">
+    </label>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="mediaTitle"></h2>
+    <p id="mediaEmpty" class="muted" data-i18n="mediaEmpty"></p>
+    <ul id="mediaList"></ul>
+  </section>
+
+  <footer>
+    <a href="options.html" target="_blank" id="optionsLink" data-i18n="options"></a>
+  </footer>
+  <script type="module" src="src/popup.js"></script>
+</body>
+</html>

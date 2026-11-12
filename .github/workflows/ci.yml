@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  engine:
+    name: Engine & CLI (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Vet
+        run: go vet ./...
+      - name: Staticcheck
+        if: runner.os == 'Linux'
+        run: go run honnef.co/go/tools/cmd/staticcheck@latest ./...
+      - name: Test (race detector)
+        if: runner.os != 'Windows'
+        run: go test -race -count=1 ./...
+      - name: Test
+        if: runner.os == 'Windows'
+        run: go test -count=1 ./...
+      - name: Fuzz filename sanitizer (30s)
+        if: runner.os == 'Linux'
+        run: go test -run=^$ -fuzz=FuzzSanitizeFilename -fuzztime=30s ./engine/
+
+  extension:
+    name: Browser extension
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        working-directory: extension
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Unit tests
+        working-directory: extension
+        run: npm test
+      - name: End-to-end (browser -> extension -> native host -> app)
+        working-directory: extension
+        run: xvfb-run -a npm run test:e2e
+
+  desktop-ui:
+    name: Desktop UI (unit + e2e against the real engine)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install
+        working-directory: desktop/frontend
+        run: npm ci && npx playwright install --with-deps chromium
+      - name: Typecheck + unit tests
+        working-directory: desktop/frontend
+        run: npm run typecheck && npm test
+      - name: Build UI
+        working-directory: desktop/frontend
+        run: npm run build
+      - name: Vet desktop module
+        working-directory: desktop
+        run: go vet ./cmd/...
+      - name: End-to-end
+        working-directory: desktop/frontend
+        env:
+          E2E_SKIP_BUILD: "1"
+        run: npm run test:e2e
+
+  desktop-build:
+    name: Desktop app build (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install Wails (same version as desktop/go.mod)
+        shell: bash
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@$(cd desktop && go list -m -f '{{.Version}}' github.com/wailsapp/wails/v2)
+      - name: Build
+        working-directory: desktop
+        run: wails build

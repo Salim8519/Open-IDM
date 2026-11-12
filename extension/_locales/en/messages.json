@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine Download Manager" },
+  "extDescription": { "message": "Send browser downloads and media to the Peregrine download manager on your computer." },
+  "titleOff": { "message": "Peregrine (interception off)" },
+
+  "menuDownload": { "message": "Download with Peregrine" },
+  "menuDownloadAll": { "message": "Download all links with Peregrine" },
+  "noLinks": { "message": "Peregrine: no downloadable links were found on this page." },
+  "confirmDownloadAll": {
+    "message": "Send $COUNT$ links to Peregrine?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine is not running and could not be started." },
+
+  "statusChecking": { "message": "Checking connection…" },
+  "statusConnected": {
+    "message": "Connected to Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "App not running" },
+  "statusNotInstalled": { "message": "Peregrine app not found. Install it to capture downloads." },
+  "startApp": { "message": "Start" },
+  "starting": { "message": "Starting…" },
+  "interception": { "message": "Capture downloads" },
+  "skipNext": { "message": "Skip next download" },
+  "skipNextHint": { "message": "Let the browser handle the next download once." },
+  "mediaTitle": { "message": "Media on this page" },
+  "mediaEmpty": { "message": "No media detected yet. Play the video or audio, then reopen this menu." },
+  "download": { "message": "Download" },
+  "streamSoon": { "message": "Stream support coming soon" },
+  "sent": { "message": "Sent" },
+  "failed": { "message": "Failed" },
+  "options": { "message": "Settings" },
+
+  "optionsTitle": { "message": "Peregrine settings" },
+  "optEnabled": { "message": "Capture browser downloads" },
+  "optMinSize": { "message": "Minimum size (MB)" },
+  "optMinSizeHint": {
+    "message": "Files at least this big are captured even if their type is not listed. Leave empty to use the app setting ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "File types to capture" },
+  "optExtensionsHint": { "message": "Separated by spaces or commas, for example: zip exe mp4" },
+  "optExcluded": { "message": "Never capture on these sites" },
+  "optExcludedHint": { "message": "One site per line, for example: example.com (also covers its subdomains)." },
+  "save": { "message": "Save" },
+  "saved": { "message": "Saved" },
+  "resetDefaults": { "message": "Restore defaults" },
+  "bypassNote": { "message": "Tip: to let the browser handle one download, open the Peregrine menu and turn on “Skip next download”. (Holding a key while clicking cannot be detected by extensions.)" },
+  "privacyNote": { "message": "Download details are sent only to the Peregrine app on this computer. Nothing is sent to the internet." }
+}

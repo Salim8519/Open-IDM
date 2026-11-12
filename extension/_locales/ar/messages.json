@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "مدير التنزيلات Peregrine" },
+  "extDescription": { "message": "أرسل تنزيلات المتصفح والوسائط إلى مدير التنزيلات Peregrine على جهازك." },
+  "titleOff": { "message": "Peregrine (الالتقاط متوقف)" },
+
+  "menuDownload": { "message": "التنزيل باستخدام Peregrine" },
+  "menuDownloadAll": { "message": "تنزيل كل الروابط باستخدام Peregrine" },
+  "noLinks": { "message": "Peregrine: لم يتم العثور على روابط قابلة للتنزيل في هذه الصفحة." },
+  "confirmDownloadAll": {
+    "message": "هل تريد إرسال $COUNT$ رابطًا إلى Peregrine؟",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "تطبيق Peregrine لا يعمل وتعذّر تشغيله." },
+
+  "statusChecking": { "message": "جارٍ التحقق من الاتصال…" },
+  "statusConnected": {
+    "message": "متصل بـ Peregrine الإصدار $VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "التطبيق لا يعمل" },
+  "statusNotInstalled": { "message": "لم يتم العثور على تطبيق Peregrine. ثبّته لالتقاط التنزيلات." },
+  "startApp": { "message": "تشغيل" },
+  "starting": { "message": "جارٍ التشغيل…" },
+  "interception": { "message": "التقاط التنزيلات" },
+  "skipNext": { "message": "تخطي التنزيل التالي" },
+  "skipNextHint": { "message": "اترك المتصفح يتولى التنزيل التالي لمرة واحدة." },
+  "mediaTitle": { "message": "الوسائط في هذه الصفحة" },
+  "mediaEmpty": { "message": "لم يتم اكتشاف وسائط بعد. شغّل الفيديو أو الصوت ثم أعد فتح هذه القائمة." },
+  "download": { "message": "تنزيل" },
+  "streamSoon": { "message": "دعم البث قادم قريبًا" },
+  "sent": { "message": "تم الإرسال" },
+  "failed": { "message": "فشل" },
+  "options": { "message": "الإعدادات" },
+
+  "optionsTitle": { "message": "إعدادات Peregrine" },
+  "optEnabled": { "message": "التقاط تنزيلات المتصفح" },
+  "optMinSize": { "message": "الحد الأدنى للحجم (ميغابايت)" },
+  "optMinSizeHint": {
+    "message": "الملفات التي تبلغ هذا الحجم أو أكثر تُلتقط حتى لو لم يكن نوعها مدرجًا. اتركه فارغًا لاستخدام إعداد التطبيق ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "أنواع الملفات المراد التقاطها" },
+  "optExtensionsHint": { "message": "افصل بينها بمسافات أو فواصل، مثل: zip exe mp4" },
+  "optExcluded": { "message": "لا تلتقط أبدًا في هذه المواقع" },
+  "optExcludedHint": { "message": "موقع واحد في كل سطر، مثل: example.com (يشمل نطاقاته الفرعية أيضًا)." },
+  "save": { "message": "حفظ" },
+  "saved": { "message": "تم الحفظ" },
+  "resetDefaults": { "message": "استعادة الافتراضيات" },
+  "bypassNote": { "message": "تلميح: لترك المتصفح يتولى تنزيلًا واحدًا، افتح قائمة Peregrine وفعّل «تخطي التنزيل التالي». (لا يمكن للإضافات اكتشاف الضغط على مفتاح أثناء النقر.)" },
+  "privacyNote": { "message": "تُرسل تفاصيل التنزيل فقط إلى تطبيق Peregrine على هذا الجهاز. لا يُرسل أي شيء إلى الإنترنت." }
+}
