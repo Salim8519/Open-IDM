@@ -805,16 +805,6 @@ func (m *Manager) ticker() {
 	}
 }
 
-// stripCreds removes user:password from a URL.
-func stripCreds(raw string) string {
-	u, err := url.Parse(raw)
-	if err != nil {
-		return ""
-	}
-	u.User = nil
-	return u.String()
-}
-
 // redact removes query strings from URLs inside error messages (they often hold tokens).
 func redact(s string) string {
 	fields := strings.Fields(s)

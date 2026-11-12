@@ -2,6 +2,7 @@ package engine
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 )
@@ -18,4 +19,14 @@ func markFromInternet(path, sourceURL, referrer string) {
 		fmt.Fprintf(&b, "HostUrl=%s\r\n", stripCreds(sourceURL))
 	}
 	_ = os.WriteFile(path+":Zone.Identifier", []byte(b.String()), 0o644)
+}
+
+// stripCreds removes user:password from a URL.
+func stripCreds(raw string) string {
+	u, err := url.Parse(raw)
+	if err != nil {
+		return ""
+	}
+	u.User = nil
+	return u.String()
 }
