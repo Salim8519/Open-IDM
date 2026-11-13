@@ -923,12 +923,14 @@ func (m *Manager) ticker() {
 	}
 }
 
-// redact removes query strings from URLs inside error messages (they often hold tokens).
+// redact removes query strings and user:password from URLs inside error messages (they
+// often hold tokens; ftp:// URLs carry passwords).
 func redact(s string) string {
 	fields := strings.Fields(s)
 	for i, f := range fields {
 		trimmed := strings.Trim(f, `"':,`)
-		if strings.HasPrefix(trimmed, "http://") || strings.HasPrefix(trimmed, "https://") {
+		if strings.HasPrefix(trimmed, "http://") || strings.HasPrefix(trimmed, "https://") ||
+			strings.HasPrefix(trimmed, "ftp://") || strings.HasPrefix(trimmed, "ftps://") {
 			if u, err := url.Parse(trimmed); err == nil {
 				u.RawQuery, u.User, u.Fragment = "", nil, ""
 				fields[i] = strings.Replace(f, trimmed, u.String(), 1)
