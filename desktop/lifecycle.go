@@ -40,6 +40,14 @@ type life struct {
 	powerAction  string
 	autostartSet bool
 	autostartOn  bool
+
+	// Engine events are queued and handled on one goroutine, in order. The engine calls
+	// subscribers while holding its lock, so handling them inline must never call back into
+	// the engine (that froze the whole app in v0.2.0).
+	qmu     sync.Mutex
+	queue   []api.Event
+	wake    chan struct{}
+	stopped chan struct{}
 }
 
 // PowerEvent is sent to the UI as "peregrine:power": a when-done action is pending
@@ -50,7 +58,54 @@ type PowerEvent struct {
 }
 
 func newLife(a *App) *life {
-	return &life{app: a, tray: newTray(a), status: map[string]engine.Status{}, focused: true}
+	l := &life{
+		app: a, tray: newTray(a), status: map[string]engine.Status{}, focused: true,
+		wake: make(chan struct{}, 1), stopped: make(chan struct{}),
+	}
+	go l.handleEvents()
+	return l
+}
+
+// event receives every API event, from engine goroutines that may hold the engine lock.
+// It only queues the event; it must not block or call into the engine.
+func (l *life) event(e api.Event) {
+	l.qmu.Lock()
+	l.queue = append(l.queue, e)
+	l.qmu.Unlock()
+	select {
+	case l.wake <- struct{}{}:
+	default:
+	}
+}
+
+func (l *life) handleEvents() {
+	for {
+		select {
+		case <-l.stopped:
+			return
+		case <-l.wake:
+		}
+		for {
+			l.qmu.Lock()
+			batch := l.queue
+			l.queue = nil
+			l.qmu.Unlock()
+			if len(batch) == 0 {
+				break
+			}
+			for _, e := range batch {
+				l.handle(e)
+			}
+		}
+	}
+}
+
+func (l *life) stopEvents() {
+	select {
+	case <-l.stopped:
+	default:
+		close(l.stopped)
+	}
 }
 
 // start runs after the engine is up.
@@ -97,6 +152,7 @@ func (l *life) start(ctx context.Context) {
 func (l *life) setNotifyOK(ok bool) { l.mu.Lock(); l.notifyOK = ok; l.mu.Unlock() }
 
 func (l *life) stop() {
+	l.stopEvents()
 	l.cancelPower()
 	l.tray.stop()
 	if l.app.ctx != nil {
@@ -104,8 +160,8 @@ func (l *life) stop() {
 	}
 }
 
-// event receives every API event (from engine goroutines; must not block).
-func (l *life) event(e api.Event) {
+// handle runs on the event goroutine, outside the engine lock.
+func (l *life) handle(e api.Event) {
 	switch e.Type {
 	case engine.EventProgress:
 		l.tray.progress(e.Downloads)
