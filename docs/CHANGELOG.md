@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.2.1] - 2026-11-14
+
 ### Fixed
 - **The desktop app no longer freezes** after the first download changes state (v0.2.0):
   buttons like Clear completed did nothing and the list stopped updating. The new tray and
