@@ -100,6 +100,8 @@ Section
     # it on every start, so this is just so the extension works before the first launch.
     File "..\..\bin\peregrine-host.exe"
     nsExec::Exec '"$INSTDIR\peregrine-host.exe" install'
+    # Unpacked browser extension, offered by the app's "Connect your browser" prompt.
+    File /r "..\..\bin\extension"
 
     CreateShortcut "$SMPROGRAMS\${INFO_PRODUCTNAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTABLE}"
     CreateShortCut "$DESKTOP\${INFO_PRODUCTNAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTABLE}"

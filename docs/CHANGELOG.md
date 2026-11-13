@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- **"Connect your browser" guide** on first launch: opens the extensions page of Chrome, Edge
+  or Brave, shows the bundled extension folder for *Load unpacked*, and turns green by itself
+  when the extension connects. Reopen it from Settings → Browser & clipboard.
+- The installer, portable zip and macOS app now include the unpacked extension.
+
 ## [0.1.0] - 2026-11-13
 First public preview. Windows and macOS builds are not code-signed yet.
 

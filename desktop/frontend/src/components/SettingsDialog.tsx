@@ -12,6 +12,7 @@ interface Props {
   settings: Settings;
   version: string;
   onClose: () => void;
+  onConnectBrowser?: () => void;
   onSaved: (s: Settings) => void;
 }
 
@@ -19,7 +20,7 @@ function sizeText(n: number): string {
   return n > 0 ? formatBytes(n).replace(" ", "").replace(/B$/, "") : "";
 }
 
-export function SettingsDialog({ client, settings, version, onClose, onSaved }: Props) {
+export function SettingsDialog({ client, settings, version, onClose, onSaved, onConnectBrowser }: Props) {
   const { t } = useI18n();
   const [s, setS] = useState<Settings>(settings);
   const [limit, setLimit] = useState(sizeText(settings.globalLimit));
@@ -150,6 +151,13 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved }: 
 
         <fieldset>
           <legend>{t("settings.integration")}</legend>
+          {onConnectBrowser && (
+            <div className="step-actions">
+              <button className="btn small" onClick={onConnectBrowser} data-testid="set-connect-browser">
+                {t("settings.connectBrowser")}
+              </button>
+            </div>
+          )}
           <label className="check">
             <input
               type="checkbox"

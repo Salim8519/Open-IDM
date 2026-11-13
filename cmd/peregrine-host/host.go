@@ -168,6 +168,7 @@ func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCErr
 					out["appVersion"] = v.Version
 				}
 			}
+			h.hello(c)
 		}
 		return out, nil
 	}
@@ -204,12 +205,17 @@ func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCErr
 	}
 	switch method {
 	case "getSettings":
+		h.hello(c) // sent on extension install and browser start
 		return filterSettings(raw), nil
 	case "list":
 		return filterList(raw), nil
 	}
 	return raw, nil
 }
+
+// hello tells the app that its extension is installed and working, which closes the
+// app's "Connect your browser" prompt. Best effort: an old app without the method is fine.
+func (h *host) hello(c caller) { _, _ = c.Call("extensionHello", nil) }
 
 // app returns a client for the running app, starting it first when allowed.
 func (h *host) app(launch bool) (caller, *api.RPCError) {

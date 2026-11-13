@@ -69,8 +69,11 @@ func (a *App) initEngine() error {
 				CanCreateDirectories: true,
 			})
 		},
-		Clipboard: func() (string, error) { return wruntime.ClipboardGetText(a.ctx) },
+		Clipboard:       func() (string, error) { return wruntime.ClipboardGetText(a.ctx) },
+		ExtensionDir:    bundledExtensionDir,
+		OpenBrowserPage: openBrowserPage,
 	})
+	a.svc.SetBrowserStateFile(filepath.Join(dir, "browser.json"))
 	a.unsub = a.svc.Subscribe(func(e api.Event) {
 		wruntime.EventsEmit(a.ctx, "peregrine:event", e)
 	})
@@ -108,6 +111,25 @@ func registerBrowserHost() {
 	if out, err := cmd.CombinedOutput(); err != nil {
 		log.Printf("peregrine: register browser host: %v: %s", err, out)
 	}
+}
+
+// bundledExtensionDir finds the unpacked extension shipped with the app: next to the
+// executable on Windows (installer and portable zip), in Contents/Resources on macOS.
+func bundledExtensionDir() string {
+	exe, err := os.Executable()
+	if err != nil {
+		return ""
+	}
+	base := filepath.Dir(exe)
+	for _, dir := range []string{
+		filepath.Join(base, "extension"),
+		filepath.Join(base, "..", "Resources", "extension"),
+	} {
+		if _, err := os.Stat(filepath.Join(dir, "manifest.json")); err == nil {
+			return filepath.Clean(dir)
+		}
+	}
+	return ""
 }
 
 func (a *App) domReady(ctx context.Context) {

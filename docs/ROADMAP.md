@@ -56,7 +56,8 @@ v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Open
 - [x] Download interception with cookies/referer handoff; fall back to browser if app absent
 - [x] Context menu: "Download with Peregrine", "Download all links"
 - [x] Media detection popup (direct video; HLS/DASH listed, download in Phase 4)
-- [ ] Publish: Chrome Web Store, Edge Add-ons
+- [x] First-run "Connect your browser" guide; extension bundled with the app (ADR 0009)
+- [ ] Publish: Chrome Web Store, Edge Add-ons (then installer adds store entries so the browser offers the extension itself, ADR 0009)
 - [ ] **v1.0 release**
 
 ## Phase 4 — Video and torrent

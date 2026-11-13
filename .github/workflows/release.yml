@@ -80,6 +80,7 @@ jobs:
           makensis -VERSION
           # The host must exist before the installer is built (project.nsi bundles it).
           mkdir -p build/bin
+          bash ../scripts/stage-extension.sh build/bin/extension
           CGO_ENABLED=0 go -C .. build -trimpath -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" -o desktop/build/bin/peregrine-host.exe ./cmd/peregrine-host
           wails build -platform windows/amd64 -nsis -webview2 download \
             -ldflags "-X github.com/Salim8519/Open-IDM/engine.Version=${V}"
@@ -93,6 +94,7 @@ jobs:
           if [ -z "$installer" ]; then echo "::error::NSIS installer was not built"; exit 1; fi
           cp "$installer" "out/Peregrine-${V}-windows-x64-setup.exe"
           cp desktop/build/bin/Peregrine.exe desktop/build/bin/peregrine-host.exe LICENSE portable/Peregrine/
+          cp -r desktop/build/bin/extension portable/Peregrine/extension
           (cd portable && 7z a -tzip "../out/Peregrine-${V}-windows-x64-portable.zip" Peregrine >/dev/null)
       - uses: actions/upload-artifact@v4
         with:
@@ -125,6 +127,7 @@ jobs:
             CGO_ENABLED=0 GOOS=darwin GOARCH=$arch go build -trimpath -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" -o /tmp/peregrine-host-$arch ./cmd/peregrine-host
           done
           lipo -create -output "$APP/Contents/MacOS/peregrine-host" /tmp/peregrine-host-amd64 /tmp/peregrine-host-arm64
+          bash scripts/stage-extension.sh "$APP/Contents/Resources/extension"
           codesign --force --deep --sign - "$APP"
       - name: Make DMG
         run: |
@@ -147,8 +150,8 @@ jobs:
         run: |
           V="${VERSION#v}"
           mkdir -p out
-          cd extension
-          zip -qr "../out/Peregrine-${V}-chromium-extension.zip" . -x 'node_modules/*' -x 'tests/*' -x 'package*.json' -x 'playwright*' -x 'test-results/*' -x '.gitignore'
+          bash scripts/stage-extension.sh stage
+          (cd stage && zip -qr "../out/Peregrine-${V}-chromium-extension.zip" .)
       - uses: actions/upload-artifact@v4
         with:
           name: extension

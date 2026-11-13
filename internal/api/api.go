@@ -24,6 +24,10 @@ type Hooks struct {
 	ShowWindow func()                  // bring the app window to front
 	PickFolder func(current string) (string, error)
 	Clipboard  func() (string, error)
+	// ExtensionDir returns the folder of the bundled unpacked extension ("" if not shipped).
+	ExtensionDir func() string
+	// OpenBrowserPage opens page (an extensions page) in the given browser key.
+	OpenBrowserPage func(browser, page string) error
 }
 
 // Capture is a download offered by the browser extension (or clipboard).
@@ -38,7 +42,8 @@ type Capture struct {
 // Event is what UI clients receive: engine events plus "capture".
 type Event struct {
 	engine.Event
-	Capture *Capture `json:"capture,omitempty"`
+	Capture *Capture       `json:"capture,omitempty"`
+	Browser *BrowserStatus `json:"browser,omitempty"`
 }
 
 // Service dispatches RPC calls to the manager.
@@ -50,7 +55,11 @@ type Service struct {
 	subs    map[int]func(Event)
 	nextSub int
 	unsub   func()
+	browser browserState
 }
+
+// SetBrowserStateFile makes the extension check-in time survive restarts. Call before use.
+func (s *Service) SetBrowserStateFile(path string) { s.browser.path = path }
 
 // NewService wires a service to a manager.
 func NewService(m *engine.Manager, hooks Hooks) *Service {
@@ -197,6 +206,20 @@ func (s *Service) Call(ctx context.Context, method string, params json.RawMessag
 		_ = decode(params, &q)
 		dir, err := s.Hooks.PickFolder(q.Current)
 		return map[string]string{"dir": dir}, err
+	case "browserStatus":
+		return s.browserStatus(), nil
+	case "extensionHello":
+		return s.extensionHello(), nil
+	case "openExtensionsPage":
+		var q struct {
+			Browser string `json:"browser"`
+		}
+		if err := decode(params, &q); err != nil {
+			return nil, err
+		}
+		return s.openExtensionsPage(q.Browser)
+	case "showExtensionFolder":
+		return s.showExtensionFolder()
 	case "readClipboard":
 		if s.Hooks.Clipboard == nil {
 			return nil, errUnsupported

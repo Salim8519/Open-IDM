@@ -297,3 +297,28 @@ test("status bar shows total speed as plain text", async ({ app }) => {
   // Guards against stray escape sequences leaking into the status bar text.
   await expect(app.getByTestId("sb-speed")).toHaveText(/^Total [⁦]?[\d.]+ (B|KB|MB|GB)\/s[⁩]?$/);
 });
+
+test("first run asks to connect the browser and turns green when the extension checks in", async ({ app, info }) => {
+  await app.goto(`${info.ui}&onboarding=1`);
+  const dlg = app.getByTestId("connect-browser");
+  await expect(dlg).toBeVisible();
+  await expect(dlg).toContainText("Connect your browser");
+  await expect(dlg.getByTestId("browser-status")).toHaveText("Waiting for the extension…");
+  await expect(dlg).toContainText(path.join("Peregrine", "extension"));
+  await dlg.getByTestId("open-edge").click();
+  await expect(dlg.locator("code").first()).toHaveText("edge://extensions");
+
+  // What the native messaging host sends when the extension starts.
+  await rpc(app, "extensionHello");
+  await expect(dlg.getByTestId("browser-status")).toContainText("Connected");
+  await dlg.getByTestId("browser-close").click();
+  await expect(dlg).toBeHidden();
+
+  // Asked once: a reload does not ask again, but Settings can reopen it.
+  await app.reload();
+  await expect(app.getByTestId("tb-settings")).toBeEnabled();
+  await expect(app.getByTestId("connect-browser")).toBeHidden();
+  await app.getByTestId("tb-settings").click();
+  await app.getByTestId("set-connect-browser").click();
+  await expect(app.getByTestId("connect-browser").getByTestId("browser-status")).toContainText("Connected");
+});

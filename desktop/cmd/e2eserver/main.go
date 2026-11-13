@@ -67,7 +67,12 @@ func main() {
 	svc := api.NewService(m, api.Hooks{
 		PickFolder: func(current string) (string, error) { return filepath.Join(dl, "picked"), nil },
 		Clipboard:  func() (string, error) { return os.Getenv("PEREGRINE_E2E_CLIPBOARD"), nil },
+		// The "Connect your browser" guide: a display-only folder and no real browser launch.
+		ExtensionDir:    func() string { return filepath.Join(home, "Peregrine", "extension") },
+		OpenBrowserPage: func(browser, page string) error { log.Printf("e2e: open %s %s", browser, page); return nil },
+		OpenPath:        func(string) error { return nil },
 	})
+	svc.SetBrowserStateFile(filepath.Join(home, "browser.json"))
 	token := api.NewToken()
 	srv, err := api.Listen(svc, 0, token, os.DirFS(*dist))
 	if err != nil {

@@ -137,7 +137,7 @@ func errCode(m map[string]any) string {
 func TestMethodAllowlist(t *testing.T) {
 	app := &fakeApp{}
 	h, _ := newTestHost(app, true)
-	for _, m := range []string{"remove", "updateSettings", "openFile", "showInFolder", "pickFolder", "readClipboard", "pauseAll", "", "PING", "__proto__"} {
+	for _, m := range []string{"remove", "updateSettings", "openFile", "showInFolder", "pickFolder", "readClipboard", "pauseAll", "extensionHello", "browserStatus", "openExtensionsPage", "showExtensionFolder", "", "PING", "__proto__"} {
 		out := call(t, h, `{"id":7,"method":"`+m+`"}`)
 		if errCode(out) != codeForbidden {
 			t.Errorf("%q: want %s, got %v", m, codeForbidden, out)
@@ -184,6 +184,10 @@ func TestPing(t *testing.T) {
 	res := out["result"].(map[string]any)
 	if res["app"] != true || res["host"] != hostVersion || res["appVersion"] != "1.2.3" || out["id"] != "abc" {
 		t.Fatalf("ping: %v", out)
+	}
+	// The app learns the extension is installed from the host, not from the extension.
+	if strings.Join(app.calls, ",") != "version,extensionHello" {
+		t.Fatalf("ping should tell the app the extension checked in, calls: %v", app.calls)
 	}
 	h2, _ := newTestHost(app, false)
 	res = call(t, h2, `{"id":1,"method":"ping"}`)["result"].(map[string]any)

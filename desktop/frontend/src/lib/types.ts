@@ -75,13 +75,24 @@ export interface Capture extends AddRequest {
 }
 
 export interface PeregrineEvent {
-  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture";
+  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture" | "browser";
   download?: Download;
   downloads?: Download[];
   id?: string;
   settings?: Settings;
   capture?: Capture;
+  browser?: BrowserStatus;
 }
+
+/** Whether the browser extension has reached the app (docs/API.md: browserStatus). */
+export interface BrowserStatus {
+  connected: boolean;
+  lastSeen?: number;
+  extensionDir?: string;
+  extensionId: string;
+}
+
+export type BrowserKey = "chrome" | "edge" | "brave";
 
 export class RPCError extends Error {
   code: string;

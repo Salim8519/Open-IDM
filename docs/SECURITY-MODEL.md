@@ -23,6 +23,7 @@ whenever a change adds a new input, network listener, file write or dependency.
 | T8 | Local API → clients | Secrets leaked to UI/extension | Headers never serialized to clients | `engine/manager.go` | `TestHeadersNeverReturned` |
 | T9 | Browser → native host | Another extension or page driving Peregrine | Extension-ID allowlist; method allowlist; scheme + header allowlist; `dir` dropped | `cmd/peregrine-host` | host unit tests, extension e2e |
 | T10 | Native host → browser | Settings disclosure (folders, proxy credentials) | Only `minExtSize`, `autoStartExt`, `language` returned | `cmd/peregrine-host` | host unit tests |
+| T15 | UI / local API → OS | Launching arbitrary programs through "open extensions page" | Browser key checked against a fixed table; program and URL come from code, never from the caller; `extensionHello` only stores a timestamp and is not on the host allowlist | `internal/api/browser.go`, `desktop/browser_*.go` | `TestOpenExtensionsPageAllowlist`, `TestMethodAllowlist` |
 | T11 | Server text → UI | XSS through file names or errors | React text rendering; strict CSP (no remote/inline scripts, no eval) | `desktop/frontend/index.html` | — |
 | T12 | Logs | Tokens in URLs written to disk | Query strings and credentials redacted | `engine/manager.go` (`redact`), host logging | `TestRedact`, extension e2e log test |
 | T13 | Supply chain | Vulnerable or malicious dependency | Lockfiles; govulncheck, npm audit, CodeQL on every push + weekly; Dependabot PRs gated by CI | `.github/workflows/security.yml` | CI |

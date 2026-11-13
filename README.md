@@ -62,9 +62,10 @@ Verify downloads with `SHA256SUMS.txt` from the same release.
 - Windows: SmartScreen → *More info* → *Run anyway*.
 - macOS: right-click `Peregrine.app` → *Open* → *Open* (or System Settings → Privacy & Security → *Open Anyway*).
 
-**Browser extension (until it is in the stores)**: unzip it, open `chrome://extensions`,
-enable *Developer mode*, click *Load unpacked*, pick the folder. Peregrine registers its
-browser connection automatically when the app starts.
+**Browser extension (until it is in the stores)**: on first launch Peregrine shows a
+*Connect your browser* guide — it opens your browser's extensions page and the bundled
+extension folder; turn on *Developer mode*, click *Load unpacked*, pick the folder. The guide
+turns green when the extension connects. (Reopen it from Settings → Browser & clipboard.)
 
 ## CLI
 

@@ -48,6 +48,7 @@ import { ContextMenu, MenuItem } from "./components/ContextMenu";
 import { AddDialog, AddInitial } from "./components/AddDialog";
 import { BatchDialog } from "./components/BatchDialog";
 import { SettingsDialog } from "./components/SettingsDialog";
+import { ConnectBrowserDialog } from "./components/ConnectBrowserDialog";
 import { RefreshLinkDialog, RemoveDialog, SpeedLimitDialog } from "./components/SmallDialogs";
 import { Toasts, useToasts } from "./components/Toasts";
 import logo from "./logo.svg";
@@ -56,6 +57,7 @@ type Modal =
   | { type: "add"; initial: AddInitial }
   | { type: "batch"; text?: string }
   | { type: "settings" }
+  | { type: "browser" }
   | { type: "remove"; ids: string[]; deleteFile: boolean }
   | { type: "refresh"; id: string }
   | { type: "limit"; id: string }
@@ -101,6 +103,28 @@ export default function App() {
     [push],
   );
   const { downloads, settings, setSettings, version, connected, refresh } = useEngine(api, { onCapture, onTransition });
+
+  // First run: ask once to add the browser extension, unless it has already checked in.
+  // Browser-mode (dev/e2e) only shows it with ?onboarding=1.
+  useEffect(() => {
+    const auto = api.transport.kind === "wails" || new URLSearchParams(location.search).has("onboarding");
+    let asked = false;
+    try {
+      asked = localStorage.getItem("peregrine.browserAsked") === "1";
+    } catch {
+      /* storage blocked: ask every launch until connected */
+    }
+    if (!auto || asked) return;
+    api.browserStatus().then((st) => {
+      if (st.connected) return;
+      setModal((m) => m ?? { type: "browser" });
+      try {
+        localStorage.setItem("peregrine.browserAsked", "1");
+      } catch {
+        /* ignore */
+      }
+    }, () => undefined);
+  }, []);
 
   const lang: Lang = settings?.language === "ar" ? "ar" : "en";
   langRef.current = lang;
@@ -522,8 +546,10 @@ export default function App() {
             onDone={(n) => push({ kind: "info", title: t("batch.added", { n }), timeout: 3000 })}
           />
         )}
+        {modal?.type === "browser" && <ConnectBrowserDialog client={api} onClose={() => setModal(null)} />}
         {modal?.type === "settings" && settings && (
           <SettingsDialog
+            onConnectBrowser={() => setModal({ type: "browser" })}
             client={api}
             settings={settings}
             version={version}

@@ -175,6 +175,19 @@ export const en = {
   "statusbar.speed": "Total {speed}",
   "statusbar.active": "{n} active",
   "statusbar.disconnected": "Not connected to the engine",
+  "browser.title": "Connect your browser",
+  "browser.intro": "Peregrine takes over downloads from Chrome, Edge and Brave through a small extension. Add it once; it takes about a minute.",
+  "browser.step1": "Open the extensions page of your browser.",
+  "browser.step2": "Turn on Developer mode (switch in the top corner of that page).",
+  "browser.step3": "Click Load unpacked and choose this folder:",
+  "browser.showFolder": "Show folder",
+  "browser.noBundled": "Choose the folder you unzipped from Peregrine-<version>-chromium-extension.zip (on the releases page).",
+  "browser.openFailed": "That browser did not open. Paste the address above into its address bar.",
+  "browser.waiting": "Waiting for the extension…",
+  "browser.connected": "Connected. Downloads from your browser now come to Peregrine.",
+  "browser.later": "Later",
+  "browser.done": "Done",
+  "settings.connectBrowser": "Connect browser…",
 } as const;
 
 export type StringKey = keyof typeof en;

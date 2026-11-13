@@ -37,6 +37,10 @@ One method-based API (`internal/api.Service.Call`) used by every client:
 | `openFile` / `showInFolder` | `{id}` | `true` (desktop only, else `unsupported`) |
 | `pickFolder` | `{current}` | `{dir}` (desktop only) |
 | `readClipboard` | – | `{text}` (desktop only) |
+| `browserStatus` | – | `{connected, lastSeen?, extensionDir?, extensionId}` |
+| `extensionHello` | – | same as `browserStatus`; called by the native host when the extension checks in (not callable by the extension) |
+| `openExtensionsPage` | `{browser: "chrome"\|"edge"\|"brave"}` | `true` (desktop only) |
+| `showExtensionFolder` | – | `true`; opens the bundled extension folder (desktop only) |
 
 `Request`: `{url, dir?, filename?, connections?, headers?, checksum?, speedLimit?, paused?}` —
 `headers` may carry `Cookie`, `Referer`, `User-Agent` from the browser. Headers are never
@@ -47,9 +51,10 @@ resumable, connections, active, speed, eta, sha256, category, segments, createdA
 Status: `queued | downloading | paused | error | completed`.
 
 ## Events
-JSON objects: `{type, download?, downloads?, id?, settings?, capture?}`
+JSON objects: `{type, download?, downloads?, id?, settings?, capture?, browser?}`
 - `added`, `updated` → `download`
 - `progress` → `downloads` (batch of active downloads, every 500 ms)
 - `removed` → `id`
 - `settings` → `settings`
 - `capture` → `capture` (extension offered a download; UI shows the add dialog)
+- `browser` → `browser` (the extension checked in; closes the "Connect your browser" guide)
