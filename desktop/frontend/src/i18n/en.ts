@@ -111,6 +111,7 @@ export const en = {
   "batch.hint": "Paste one link per line. Patterns like file[001-100].zip expand to many links.",
   "batch.links": "Links",
   "batch.count": "{n} links",
+  "batch.countOne": "1 link",
   "batch.more": "and {n} more…",
   "batch.add": "Add {n}",
   "batch.added": "Added {n} downloads",

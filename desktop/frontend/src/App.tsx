@@ -37,7 +37,11 @@ import {
 } from "./lib/download";
 import { looksDownloadable, parseBatch } from "./lib/batch";
 import { formatSpeed } from "./lib/format";
+
+/** Keeps a number+unit like "4.6 MB/s" in order inside Arabic sentences (Unicode LRI ... PDI). */
+const isolateLTR = (s: string) => String.fromCharCode(0x2066) + s + String.fromCharCode(0x2069);
 import { Sidebar } from "./components/Sidebar";
+import { Sparkline } from "./components/Sparkline";
 import { DownloadTable } from "./components/DownloadTable";
 import { DetailPanel } from "./components/DetailPanel";
 import { ContextMenu, MenuItem } from "./components/ContextMenu";
@@ -336,6 +340,14 @@ export default function App() {
   }, [settings?.clipboardWatch, push]);
 
   const totalSpeed = all.reduce((s, d) => s + (d.status === "downloading" ? d.speed : 0), 0);
+  // Last 60 s of total speed for the status-bar graph.
+  const speedRef = useRef(0);
+  speedRef.current = totalSpeed;
+  const [speedHistory, setSpeedHistory] = useState<number[]>([]);
+  useEffect(() => {
+    const id = window.setInterval(() => setSpeedHistory((h) => [...h.slice(-59), speedRef.current]), 1000);
+    return () => window.clearInterval(id);
+  }, []);
   const activeCount = statusCounts.downloading;
   const modalDownload = modal && (modal.type === "refresh" || modal.type === "limit") ? downloads.get(modal.id) : undefined;
   const t = tr;
@@ -483,7 +495,8 @@ export default function App() {
           <span className={`dot${connected ? " on" : ""}`} aria-hidden="true" />
           {connected ? (
             <>
-              <span data-testid="sb-speed">{t("statusbar.speed", { speed: formatSpeed(totalSpeed) || "0 B/s" })}</span>
+              <Sparkline values={speedHistory} />
+              <span data-testid="sb-speed">{t("statusbar.speed", { speed: isolateLTR(formatSpeed(totalSpeed) || "0 B/s") })}</span>
               <span>{t("statusbar.active", { n: activeCount })}</span>
             </>
           ) : (

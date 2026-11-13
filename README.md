@@ -15,6 +15,8 @@
   <a href="LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-22D3EE"></a>
 </p>
 
+<p align="center"><img src="docs/screenshots/main-dark.png" alt="Peregrine: download list with live per-connection progress and the segment map" width="900"></p>
+
 ---
 
 Peregrine is named after the peregrine falcon, the fastest animal on Earth. It splits each
@@ -75,7 +77,7 @@ peregrine list
 
 ## Build from source
 
-Requirements: Go 1.26+, Node 22+, [Wails v2](https://wails.io) (`go install github.com/wailsapp/wails/v2/cmd/wails@latest`).
+Requirements: Go 1.27.4+, Node 22+, [Wails v2](https://wails.io) (`go install github.com/wailsapp/wails/v2/cmd/wails@latest`).
 
 ```bash
 go test -race ./...                 # engine, API, CLI end-to-end tests
@@ -97,6 +99,12 @@ See [docs/](docs/) for the [spec](docs/SPEC.md), [roadmap](docs/ROADMAP.md),
 
 This project is built with AI assistance ("vibe-coded") with strict rules — see
 [CLAUDE.md](CLAUDE.md). Every decision is recorded in [docs/decisions](docs/decisions/).
+
+## Security
+
+Verify downloads with `SHA256SUMS.txt` and the signed build provenance
+(`gh attestation verify <file> -R Salim8519/Open-IDM`). How Peregrine is protected and how to
+report a vulnerability: [SECURITY.md](SECURITY.md) · threat model: [docs/SECURITY-MODEL.md](docs/SECURITY-MODEL.md).
 
 ## Privacy
 

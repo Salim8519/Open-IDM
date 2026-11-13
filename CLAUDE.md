@@ -61,6 +61,12 @@ docs/             spec, roadmap, decisions, changelog
 - Never log full URLs with credentials or tokens; redact query strings in logs.
 - Updates must be signature-verified before install.
 
+## Security (see docs/SECURITY-MODEL.md, ADR 0008)
+- Any new input, network listener, file write, API method or dependency: check it against
+  the threat model and update `docs/SECURITY-MODEL.md` in the same change.
+- New API methods are NOT exposed to the browser extension unless added to the host allowlist.
+- Run `govulncheck ./...` (root and `desktop/`) before a release.
+
 ## Never
 - Never commit secrets, keystores, or signing keys.
 - Never add ads, bundled offers, or tracking.

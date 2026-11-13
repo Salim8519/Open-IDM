@@ -27,7 +27,7 @@ bottom; a phase is done when every box is ticked and CI is green on Windows and 
 - [x] Proxy support (E9): system, HTTP, SOCKS5
 - [x] Checksum verify (I1, I2)
 - [x] CLI `peregrine get/add/list/serve`
-- [ ] Benchmark: saturate 1 Gbps locally; compare with aria2
+- [ ] Benchmark: saturate 1 Gbps locally; compare with aria2, IDM and FDM on real servers (next)
 
 ## Phase 2 — Desktop app (Windows + macOS)
 v0.1.0 preview released 2026-11-13 (unsigned).
@@ -44,6 +44,12 @@ v0.1.0 preview released 2026-11-13 (unsigned).
 - [ ] Signed auto-update
 - [ ] Code signing: SignPath (Windows), Apple notarization (macOS)
 - [ ] **v1.0 beta release**
+
+## Security baseline
+- [x] Threat model (docs/SECURITY-MODEL.md), SECURITY.md, ADR 0008
+- [x] govulncheck + npm audit + CodeQL in CI, Dependabot
+- [x] Signed build provenance + SHA-256 sums on releases
+- [x] Strict CSP in the desktop UI
 
 ## Phase 3 — Chromium extension (Chrome, Edge, Brave, Opera, Vivaldi)
 - [x] Native Messaging host + installer registration per browser (Windows registry, macOS folders)

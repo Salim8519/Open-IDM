@@ -88,7 +88,7 @@ export function BatchDialog({ client, settings, initialText = "", onClose, onDon
           />
         </label>
         <div className="batch-preview" aria-live="polite">
-          <strong data-testid="batch-count">{t("batch.count", { n: links.length })}</strong>
+          <strong data-testid="batch-count">{links.length === 1 ? t("batch.countOne") : t("batch.count", { n: links.length })}</strong>
           <ul>
             {preview.map((l) => (
               <li key={l} className="mono ellipsis">

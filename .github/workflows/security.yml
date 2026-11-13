@@ -1,0 +1,75 @@
+name: Security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1" # weekly, so new advisories against old code are caught too
+
+permissions:
+  contents: read
+
+jobs:
+  govulncheck:
+    name: Go vulnerabilities (govulncheck)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - run: go install golang.org/x/vuln/cmd/govulncheck@latest
+      - name: Engine, CLI, host
+        run: govulncheck ./...
+      - name: Desktop app
+        working-directory: desktop
+        run: |
+          mkdir -p frontend/dist && echo '<!doctype html>' > frontend/dist/index.html
+          govulncheck ./...
+
+  npm-audit:
+    name: npm advisories
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Desktop UI (shipped dependencies)
+        working-directory: desktop/frontend
+        run: npm audit --omit=dev --audit-level=moderate
+      - name: Extension (dev tooling only; the extension ships no npm code)
+        working-directory: extension
+        run: npm audit --audit-level=high
+
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [go, javascript-typescript]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        if: matrix.language == 'go'
+        with:
+          go-version-file: go.mod
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.language == 'go' && 'manual' || 'none' }}
+          queries: security-extended
+      - name: Build Go code
+        if: matrix.language == 'go'
+        run: |
+          go build ./...
+          mkdir -p desktop/frontend/dist && echo '<!doctype html>' > desktop/frontend/dist/index.html
+          cd desktop && go build ./...
+      - uses: github/codeql-action/analyze@v3
+        with:
+          category: /language:${{ matrix.language }}

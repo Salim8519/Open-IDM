@@ -152,7 +152,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
                   {probe.filename}
                 </strong>
                 <span className="muted">
-                  <span data-testid="probe-size">{probe.size >= 0 ? formatBytes(probe.size) : t("add.unknownSize")}</span>
+                  <span data-testid="probe-size"><bdi>{probe.size >= 0 ? formatBytes(probe.size) : t("add.unknownSize")}</bdi></span>
                   {" · "}
                   <span className={probe.resumable ? "ok" : "warn"}>
                     {probe.resumable ? t("add.resumable") : t("add.notResumable")}
@@ -163,7 +163,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
           )}
           {probeError && <span className="warn">{t("add.probeFailed", { error: probeError })}</span>}
           {!probing && !probe && !probeError && initial.size ? (
-            <span className="muted">{formatBytes(initial.size)}</span>
+            <span className="muted"><bdi>{formatBytes(initial.size)}</bdi></span>
           ) : null}
         </div>
 

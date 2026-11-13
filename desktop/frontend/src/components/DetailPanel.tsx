@@ -45,10 +45,10 @@ export function DetailPanel({ d, onRefreshLink, onClose }: Props) {
           <SegmentMap d={d} />
           <div className="detail-progress">
             <ProgressBar d={d} />
-            <span className="muted">
-              {formatBytes(d.downloaded)} / {d.size >= 0 ? formatBytes(d.size) : t("detail.unknown")}
-              {d.speed > 0 ? ` · ${formatSpeed(d.speed)}` : ""}
-              {d.eta >= 0 && d.status === "downloading" ? ` · ${formatETA(d.eta)}` : ""}
+            <span className="muted detail-numbers" dir="ltr">
+              <bdi>{formatBytes(d.downloaded)}</bdi> / <bdi>{d.size >= 0 ? formatBytes(d.size) : t("detail.unknown")}</bdi>
+              {d.speed > 0 ? <> · <bdi>{formatSpeed(d.speed)}</bdi></> : ""}
+              {d.eta >= 0 && d.status === "downloading" ? <> · <bdi>{formatETA(d.eta)}</bdi></> : ""}
             </span>
           </div>
 
@@ -85,7 +85,7 @@ export function DetailPanel({ d, onRefreshLink, onClose }: Props) {
           <dt>{t("detail.connections")}</dt>
           <dd>{d.connections}</dd>
           <dt>{t("detail.speedLimit")}</dt>
-          <dd>{d.speedLimit ? formatSpeed(d.speedLimit) : t("detail.unlimited")}</dd>
+          <dd><bdi>{d.speedLimit ? formatSpeed(d.speedLimit) : t("detail.unlimited")}</bdi></dd>
           {d.checksum && (
             <>
               <dt>{t("detail.checksum")}</dt>

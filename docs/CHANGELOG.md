@@ -22,6 +22,14 @@ First public preview. Windows and macOS builds are not code-signed yet.
   the app is unavailable. Talks to the app only through a local native messaging host.
 - **CLI:** `peregrine get` (resumable), `add`, `list`, `serve`.
 - Logo and brand (ADR 0007), GPL-3.0 license, CI on Windows/macOS/Linux, release pipeline.
+- Calm, tool-like interface: neutral colours with one accent, live per-connection progress in
+  every row, speed graph in the status bar.
+
+### Security
+- Built with Go 1.27.4 (Go 1.26.0 had 30 known standard-library vulnerabilities).
+- govulncheck, npm audit and CodeQL on every push and weekly; Dependabot updates.
+- Release files carry SHA-256 sums and a signed build provenance attestation.
+- Strict Content Security Policy in the app; threat model in docs/SECURITY-MODEL.md (ADR 0008).
 
 - Scope narrowed to Windows + macOS + Chromium extension; Android deferred, Linux unofficial
   (ADR 0005, supersedes ADR 0003).

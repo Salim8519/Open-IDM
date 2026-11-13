@@ -40,7 +40,7 @@ export const ar: Strings = {
   "col.size": "الحجم",
   "col.progress": "التقدم",
   "col.speed": "السرعة",
-  "col.eta": "الوقت المتبقي",
+  "col.eta": "المتبقي",
   "col.status": "الحالة",
   "table.label": "التنزيلات",
 
@@ -49,7 +49,7 @@ export const ar: Strings = {
   "status.paused": "متوقف",
   "status.error": "خطأ",
   "status.completed": "مكتمل",
-  "status.expired": "انتهت صلاحية الرابط",
+  "status.expired": "رابط منتهٍ",
 
   "detail.url": "العنوان",
   "detail.copy": "نسخ",
@@ -113,6 +113,7 @@ export const ar: Strings = {
   "batch.hint": "الصق رابطًا في كل سطر. الأنماط مثل file[001-100].zip تتوسع إلى روابط كثيرة.",
   "batch.links": "الروابط",
   "batch.count": "{n} رابط",
+  "batch.countOne": "رابط واحد",
   "batch.more": "و{n} أخرى…",
   "batch.add": "إضافة {n}",
   "batch.added": "أُضيف {n} تنزيل",

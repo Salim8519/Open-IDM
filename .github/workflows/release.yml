@@ -149,6 +149,10 @@ jobs:
     needs: [cli, windows, macos, extension]
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write     # create the release
+      id-token: write     # sign provenance with GitHub's OIDC identity
+      attestations: write # publish the provenance attestation
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -160,6 +164,12 @@ jobs:
           cd artifacts
           sha256sum * > SHA256SUMS.txt
           cat SHA256SUMS.txt
+      - name: Attest build provenance
+        # Signed statement that every file was built by this workflow from this commit.
+        # Verify with: gh attestation verify <file> -R Salim8519/Open-IDM
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "artifacts/*"
       - name: Release notes
         run: |
           V="${VERSION#v}"

@@ -78,13 +78,13 @@ export function DownloadTable({ rows, selected, sortKey, sortDir, onSort, onRowC
                 </div>
               </td>
               <td className="c-size num" data-testid="row-size">
-                {d.size >= 0 ? formatBytes(d.size) : d.downloaded > 0 ? formatBytes(d.downloaded) : "—"}
+                <bdi>{d.size >= 0 ? formatBytes(d.size) : d.downloaded > 0 ? formatBytes(d.downloaded) : "—"}</bdi>
               </td>
               <td className="c-progress">
                 <ProgressBar d={d} />
               </td>
-              <td className="c-speed num">{d.status === "downloading" ? formatSpeed(d.speed) : ""}</td>
-              <td className="c-eta num">{d.status === "downloading" ? formatETA(d.eta) : ""}</td>
+              <td className="c-speed num"><bdi>{d.status === "downloading" ? formatSpeed(d.speed) : ""}</bdi></td>
+              <td className="c-eta num"><bdi>{d.status === "downloading" ? formatETA(d.eta) : ""}</bdi></td>
               <td className="c-status">
                 <span className={`badge status-${d.status}${expired ? " expired" : ""}`} data-testid="row-status">
                   {expired ? t("status.expired") : t(`status.${d.status}`)}

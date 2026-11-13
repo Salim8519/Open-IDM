@@ -292,3 +292,8 @@ test("capture event from the extension opens a prefilled Add dialog", async ({ a
   await row(app, "e2e-captured.bin").click();
   await app.screenshot({ path: "test-results/screenshot-detail.png" });
 });
+
+test("status bar shows total speed as plain text", async ({ app }) => {
+  // Guards against stray escape sequences leaking into the status bar text.
+  await expect(app.getByTestId("sb-speed")).toHaveText(/^Total [⁦]?[\d.]+ (B|KB|MB|GB)\/s[⁩]?$/);
+});
