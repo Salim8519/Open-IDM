@@ -30,14 +30,14 @@ bottom; a phase is done when every box is ticked and CI is green on Windows and 
 - [ ] Benchmark: saturate 1 Gbps locally; compare with aria2, IDM and FDM on real servers (next)
 
 ## Phase 2 — Desktop app (Windows + macOS)
-v0.1.0 preview released 2026-11-13 (unsigned).
+v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Open-IDM/releases/tag/v0.1.0
 - [x] Wails + React shell, engine wired in
 - [x] Main list, add dialog, batch add
 - [x] Categories and folders (Q4), duplicate handling (Q5)
 - [ ] Tray / menu-bar icon, native notifications (in-app toasts exist)
 - [x] Clipboard monitor (capture without extension)
 - [x] Settings screen
-- [ ] Scheduler (Q3)
+- [ ] Scheduler (Q3) — next (asked for by the maintainer)
 - [x] End-to-end tests: UI ↔ real engine (Playwright), browser ↔ extension ↔ host ↔ app (Playwright), CLI kill-and-resume
 - [x] i18n EN + AR with RTL
 - [x] Windows installer (NSIS) + portable zip + macOS DMG (universal) — built by the release workflow
