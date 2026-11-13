@@ -186,6 +186,8 @@ func (s *Service) Call(ctx context.Context, method string, params json.RawMessag
 		return true, nil
 	case "getSettings":
 		return s.M.Settings(), nil
+	case "scheduleStatus":
+		return s.M.ScheduleStatus(), nil
 	case "updateSettings":
 		st := s.M.Settings()
 		if err := decode(params, &st); err != nil {

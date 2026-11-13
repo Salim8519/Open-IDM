@@ -37,6 +37,8 @@
   --muted: #9a9aa2;
   --faint: #66666e;
   --hover: rgba(255, 255, 255, 0.035);
+  --tb-hover: rgba(255, 255, 255, 0.08);
+  --tb-press: rgba(255, 255, 255, 0.13);
   --sel: rgba(75, 131, 255, 0.16);
   --track: #2c2c31;
   --done-fill: #55555c;
@@ -62,6 +64,8 @@
   --muted: #66666c;
   --faint: #a3a3a8;
   --hover: rgba(0, 0, 0, 0.03);
+  --tb-hover: rgba(0, 0, 0, 0.06);
+  --tb-press: rgba(0, 0, 0, 0.1);
   --sel: rgba(47, 107, 255, 0.1);
   --track: #e6e6e2;
   --done-fill: #b9b9bd;
@@ -187,33 +191,52 @@ button {
   gap: 6px;
   height: 28px;
   padding-inline: 8px;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: var(--radius);
   background: transparent;
   color: var(--text);
   cursor: pointer;
   white-space: nowrap;
+  transition:
+    background-color 0.12s,
+    color 0.12s,
+    opacity 0.12s,
+    border-color 0.12s;
 }
+/* Clickable buttons show full-strength icons; disabled ones are clearly faded. */
 .tb-btn svg {
-  color: var(--muted);
+  color: var(--text);
   width: 15px;
   height: 15px;
 }
 .tb-btn:hover:not(:disabled) {
-  background: var(--hover);
-}
-.tb-btn:hover:not(:disabled) svg {
-  color: var(--text);
+  background: var(--tb-hover);
+  border-color: var(--line);
 }
 .tb-btn:active:not(:disabled) {
-  background: var(--line-soft);
+  background: var(--tb-press);
+}
+.tb-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 .tb-btn:disabled {
-  color: var(--faint);
+  opacity: 0.32;
   cursor: default;
 }
-.tb-btn:disabled svg {
-  color: var(--faint);
+/* Selection actions light up in their own colour as soon as they can be used. */
+.tb-btn[data-tone="go"]:not(:disabled) svg {
+  color: var(--ok);
+}
+.tb-btn[data-tone="hold"]:not(:disabled) svg {
+  color: var(--warn);
+}
+.tb-btn[data-tone="danger"]:not(:disabled) svg {
+  color: var(--err);
+}
+.tb-btn[data-tone="danger"]:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--err) 14%, transparent);
+  border-color: color-mix(in srgb, var(--err) 40%, transparent);
 }
 .tb-btn.primary {
   background: var(--accent-strong);
@@ -1313,4 +1336,60 @@ tr.selected .cat-icon {
 }
 @media (prefers-reduced-motion: reduce) {
   .browser-status .status-dot { animation: none; }
+}
+
+/* ---------- schedule ---------- */
+.schedule-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+}
+.schedule-badge.open {
+  color: var(--accent-text);
+}
+.schedule-badge .link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-text);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.day {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 28px;
+  padding-inline: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.day.on {
+  background: var(--sel);
+  border-color: var(--accent);
+  color: var(--text);
+}
+.day input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.day:focus-within {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.day:has(input:disabled) {
+  opacity: 0.5;
+  cursor: default;
 }

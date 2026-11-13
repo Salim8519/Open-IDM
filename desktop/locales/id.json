@@ -1,0 +1,17 @@
+{
+  "open": "Buka Peregrine",
+  "pauseAll": "Jeda semua",
+  "resumeAll": "Lanjutkan semua",
+  "scheduled": "Unduhan terjadwal",
+  "quit": "Keluar dari Peregrine",
+  "idle": "Tidak ada unduhan aktif",
+  "active": "{n} mengunduh · {speed}",
+  "completed": "Unduhan selesai",
+  "failed": "Unduhan gagal",
+  "stillRunning": "Peregrine masih berjalan di baki sistem. Gunakan Keluar di menu baki untuk menutupnya.",
+  "queueDone": "Semua unduhan terjadwal sudah selesai",
+  "powerIn": "{action} dalam {secs} detik. Buka Peregrine untuk membatalkan.",
+  "action.quit": "Menutup Peregrine",
+  "action.sleep": "Masuk mode tidur",
+  "action.shutdown": "Mematikan komputer"
+}

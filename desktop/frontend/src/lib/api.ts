@@ -1,5 +1,5 @@
 import { pickTransport, Transport } from "./transport";
-import { AddRequest, BrowserKey, BrowserStatus, Capture, Download, PeregrineEvent, ProbeInfo, Settings } from "./types";
+import { AddRequest, BrowserKey, BrowserStatus, Capture, Download, PeregrineEvent, ProbeInfo, ScheduleStatus, Settings } from "./types";
 
 /** Typed client for docs/API.md. All UI code goes through this. */
 export function createClient(t: Transport) {
@@ -23,6 +23,7 @@ export function createClient(t: Transport) {
     clearCompleted: () => t.call<boolean>("clearCompleted"),
     getSettings: () => t.call<Settings>("getSettings"),
     updateSettings: (s: Partial<Settings>) => t.call<Settings>("updateSettings", s),
+    scheduleStatus: () => t.call<ScheduleStatus>("scheduleStatus"),
     capture: (c: Capture) => t.call<{ queued: boolean; id?: string; prompted?: boolean }>("capture", c),
     openFile: (id: string) => t.call<boolean>("openFile", { id }),
     showInFolder: (id: string) => t.call<boolean>("showInFolder", { id }),

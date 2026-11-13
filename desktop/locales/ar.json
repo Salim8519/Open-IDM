@@ -1,0 +1,17 @@
+{
+  "open": "فتح Peregrine",
+  "pauseAll": "إيقاف الكل مؤقتًا",
+  "resumeAll": "استئناف الكل",
+  "scheduled": "التنزيلات المجدولة",
+  "quit": "إنهاء Peregrine",
+  "idle": "لا توجد تنزيلات نشطة",
+  "active": "{n} قيد التنزيل · {speed}",
+  "completed": "اكتمل التنزيل",
+  "failed": "فشل التنزيل",
+  "stillRunning": "ما زال Peregrine يعمل في شريط النظام. استخدم «إنهاء» من قائمته للخروج.",
+  "queueDone": "اكتملت كل التنزيلات المجدولة",
+  "powerIn": "{action} خلال {secs} ثانية. افتح Peregrine للإلغاء.",
+  "action.quit": "سيُغلق Peregrine",
+  "action.sleep": "سيدخل الجهاز في وضع السكون",
+  "action.shutdown": "سيُطفأ الجهاز"
+}

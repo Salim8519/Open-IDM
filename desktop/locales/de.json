@@ -1,0 +1,17 @@
+{
+  "open": "Peregrine öffnen",
+  "pauseAll": "Alle pausieren",
+  "resumeAll": "Alle fortsetzen",
+  "scheduled": "Geplante Downloads",
+  "quit": "Peregrine beenden",
+  "idle": "Keine aktiven Downloads",
+  "active": "{n} werden geladen · {speed}",
+  "completed": "Download abgeschlossen",
+  "failed": "Download fehlgeschlagen",
+  "stillRunning": "Peregrine läuft im Infobereich weiter. Wählen Sie „Beenden“ im Infobereich-Menü, um es zu schließen.",
+  "queueDone": "Alle geplanten Downloads sind fertig",
+  "powerIn": "{action} in {secs} Sekunden. Öffnen Sie Peregrine, um abzubrechen.",
+  "action.quit": "Peregrine wird beendet",
+  "action.sleep": "Ruhezustand wird aktiviert",
+  "action.shutdown": "Computer wird heruntergefahren"
+}

@@ -23,7 +23,7 @@ import {
 import { api } from "./lib/api";
 import { useEngine, Transition } from "./lib/store";
 import { Capture, Download, Settings } from "./lib/types";
-import { I18nProvider, isRTL, Lang, translate } from "./i18n";
+import { asLang, I18nProvider, isRTL, Lang, translate } from "./i18n";
 import { StringKey } from "./i18n/en";
 import {
   canPause,
@@ -37,6 +37,8 @@ import {
 } from "./lib/download";
 import { looksDownloadable, parseBatch } from "./lib/batch";
 import { formatSpeed } from "./lib/format";
+import { cancelPowerAction, onPower, PowerEvent, setFocused } from "./lib/desktop";
+import { PowerDialog, ScheduleBadge } from "./components/Schedule";
 
 /** Keeps a number+unit like "4.6 MB/s" in order inside Arabic sentences (Unicode LRI ... PDI). */
 const isolateLTR = (s: string) => String.fromCharCode(0x2066) + s + String.fromCharCode(0x2069);
@@ -102,7 +104,24 @@ export default function App() {
     },
     [push],
   );
-  const { downloads, settings, setSettings, version, connected, refresh } = useEngine(api, { onCapture, onTransition });
+  const { downloads, settings, setSettings, schedule, version, connected, refresh } = useEngine(api, { onCapture, onTransition });
+
+  // System notifications are only shown while the window is not focused (desktop).
+  useEffect(() => {
+    const on = () => setFocused(true);
+    const off = () => setFocused(false);
+    window.addEventListener("focus", on);
+    window.addEventListener("blur", off);
+    setFocused(document.hasFocus());
+    return () => {
+      window.removeEventListener("focus", on);
+      window.removeEventListener("blur", off);
+    };
+  }, []);
+
+  // Scheduler when-done countdown, driven by the desktop app.
+  const [power, setPower] = useState<PowerEvent | null>(null);
+  useEffect(() => onPower((e) => setPower(e.action ? e : null)), []);
 
   // First run: ask once to add the browser extension, unless it has already checked in.
   // Browser-mode (dev/e2e) only shows it with ?onboarding=1.
@@ -126,7 +145,7 @@ export default function App() {
     }, () => undefined);
   }, []);
 
-  const lang: Lang = settings?.language === "ar" ? "ar" : "en";
+  const lang: Lang = asLang(settings?.language);
   langRef.current = lang;
   const theme = useEffectiveTheme(settings?.theme);
 
@@ -395,7 +414,7 @@ export default function App() {
             </button>
             <span className="tb-sep" />
             <button
-              className="tb-btn"
+              className="tb-btn" data-tone="go"
               onClick={() => void resumeList(selectedList)}
               disabled={!selectedList.some(canResume)}
               title={t("toolbar.resume")}
@@ -405,7 +424,7 @@ export default function App() {
               <span>{t("toolbar.resume")}</span>
             </button>
             <button
-              className="tb-btn"
+              className="tb-btn" data-tone="hold"
               onClick={() => void pauseList(selectedList)}
               disabled={!selectedList.some(canPause)}
               title={t("toolbar.pause")}
@@ -415,7 +434,7 @@ export default function App() {
               <span>{t("toolbar.pause")}</span>
             </button>
             <button
-              className="tb-btn"
+              className="tb-btn" data-tone="danger"
               onClick={() => askRemove(selectedList)}
               disabled={!selectedList.length}
               title={t("toolbar.remove")}
@@ -527,6 +546,13 @@ export default function App() {
             <span className="warn">{t("statusbar.disconnected")}</span>
           )}
           <span className="grow" />
+          {schedule?.enabled && settings && (
+            <ScheduleBadge
+              status={schedule}
+              hasStop={settings.schedule.stop !== ""}
+              onTurnOff={() => void run(async () => setSettings(await api.updateSettings({ schedule: { ...settings.schedule, enabled: false } })))}
+            />
+          )}
           <span className="muted">
             {t("app.name")} {version}
           </span>
@@ -534,6 +560,16 @@ export default function App() {
 
         {menu && downloads.get(menu.id) && (
           <ContextMenu x={menu.x} y={menu.y} label={t("ctx.label")} items={menuItems(downloads.get(menu.id)!)} onClose={() => setMenu(null)} />
+        )}
+
+        {power && (
+          <PowerDialog
+            event={power}
+            onCancel={() => {
+              cancelPowerAction();
+              setPower(null);
+            }}
+          />
         )}
 
         {modal?.type === "add" && <AddDialog client={api} settings={settings} initial={modal.initial} onClose={() => setModal(null)} />}
@@ -556,7 +592,7 @@ export default function App() {
             onClose={() => setModal(null)}
             onSaved={(s: Settings) => {
               setSettings(s);
-              push({ kind: "success", title: translate(s.language === "ar" ? "ar" : "en", "settings.saved"), timeout: 2500 });
+              push({ kind: "success", title: translate(asLang(s.language), "settings.saved"), timeout: 2500 });
             }}
           />
         )}

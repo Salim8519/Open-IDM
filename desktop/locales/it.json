@@ -1,0 +1,17 @@
+{
+  "open": "Apri Peregrine",
+  "pauseAll": "Metti tutto in pausa",
+  "resumeAll": "Riprendi tutto",
+  "scheduled": "Download pianificati",
+  "quit": "Esci da Peregrine",
+  "idle": "Nessun download attivo",
+  "active": "{n} in download · {speed}",
+  "completed": "Download completato",
+  "failed": "Download non riuscito",
+  "stillRunning": "Peregrine è ancora in esecuzione nell'area di notifica. Usa Esci nel menu dell'area di notifica per chiuderlo.",
+  "queueDone": "Tutti i download pianificati sono terminati",
+  "powerIn": "{action} tra {secs} secondi. Apri Peregrine per annullare.",
+  "action.quit": "Chiusura di Peregrine",
+  "action.sleep": "Passaggio alla modalità stop",
+  "action.shutdown": "Spegnimento in corso"
+}

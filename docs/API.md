@@ -32,6 +32,7 @@ One method-based API (`internal/api.Service.Call`) used by every client:
 | `move` | `{id, delta}` | `true` (-1 up, +1 down) |
 | `pauseAll` / `resumeAll` / `clearCompleted` | – | `true` |
 | `getSettings` | – | `Settings` |
+| `scheduleStatus` | – | `{enabled, open, nextStart?, nextStop?}` (RFC 3339 times; `open` = downloads may run now) |
 | `updateSettings` | partial `Settings` | `Settings` |
 | `capture` | `Capture` (Request + `source`, `pageUrl`, `size`, `mimeType`) | `{queued, id?}` or `{prompted: true}` |
 | `openFile` / `showInFolder` | `{id}` | `true` (desktop only, else `unsupported`) |
@@ -51,10 +52,23 @@ resumable, connections, active, speed, eta, sha256, category, segments, createdA
 Status: `queued | downloading | paused | error | completed`.
 
 ## Events
-JSON objects: `{type, download?, downloads?, id?, settings?, capture?, browser?}`
+JSON objects: `{type, download?, downloads?, id?, settings?, schedule?, capture?, browser?}`
 - `added`, `updated` → `download`
 - `progress` → `downloads` (batch of active downloads, every 500 ms)
 - `removed` → `id`
 - `settings` → `settings`
+- `schedule` → `schedule` (the schedule window opened or closed, or the schedule changed)
+- `queueDone` (the queue ran empty after at least one download completed; the desktop app
+  runs the schedule's `whenDone` action after a 60 s cancellable countdown)
+
+`Settings.schedule`: `{enabled, start: "HH:MM", stop: "HH:MM" | "", days: [0-6] (0 = Sunday,
+empty = every day), whenDone: "none" | "quit" | "sleep" | "shutdown"}`. Outside the window
+queued downloads wait; at the stop time running downloads go back to the queue with their
+progress. Without a stop time the window lasts 24 hours. Desktop-only settings stored by the
+engine: `closeToTray`, `launchAtLogin`, `notify`.
+
+Desktop-only (Wails, not RPC): bindings `App.SetFocused(bool)` and `App.CancelPowerAction()`;
+event `peregrine:power` `{action, seconds}` (a when-done countdown started; `action: ""` =
+cancelled or done).
 - `capture` → `capture` (extension offered a download; UI shows the add dialog)
 - `browser` → `browser` (the extension checked in; closes the "Connect your browser" guide)

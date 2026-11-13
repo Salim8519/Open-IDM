@@ -1,0 +1,17 @@
+{
+  "open": "Open Peregrine",
+  "pauseAll": "Pause all",
+  "resumeAll": "Resume all",
+  "scheduled": "Scheduled downloads",
+  "quit": "Quit Peregrine",
+  "idle": "No active downloads",
+  "active": "{n} downloading · {speed}",
+  "completed": "Download complete",
+  "failed": "Download failed",
+  "stillRunning": "Peregrine is still running in the tray. Use Quit in the tray menu to exit.",
+  "queueDone": "All scheduled downloads are done",
+  "powerIn": "{action} in {secs} seconds. Open Peregrine to cancel.",
+  "action.quit": "Quitting Peregrine",
+  "action.sleep": "Going to sleep",
+  "action.shutdown": "Shutting down"
+}

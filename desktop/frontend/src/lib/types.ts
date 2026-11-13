@@ -63,8 +63,30 @@ export interface Settings {
   clipboardWatch: boolean;
   autoStartExt: boolean;
   theme: string; // "system" | "light" | "dark"
-  language: string; // "en" | "ar"
+  language: string; // a code from i18n LANGUAGES, e.g. "en", "ar", "zh"
   minExtSize: number;
+  schedule: Schedule;
+  closeToTray: boolean;
+  launchAtLogin: boolean;
+  notify: boolean;
+}
+
+export type WhenDone = "none" | "quit" | "sleep" | "shutdown";
+
+/** When the queue may run (docs/API.md: Settings.schedule). Times are local "HH:MM". */
+export interface Schedule {
+  enabled: boolean;
+  start: string;
+  stop: string; // "" = no stop time (24-hour window)
+  days: number[] | null; // 0 = Sunday … 6 = Saturday; empty/null = every day
+  whenDone: WhenDone;
+}
+
+export interface ScheduleStatus {
+  enabled: boolean;
+  open: boolean;
+  nextStart?: string; // RFC 3339
+  nextStop?: string;
 }
 
 export interface Capture extends AddRequest {
@@ -75,11 +97,12 @@ export interface Capture extends AddRequest {
 }
 
 export interface PeregrineEvent {
-  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture" | "browser";
+  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture" | "browser" | "schedule" | "queueDone";
   download?: Download;
   downloads?: Download[];
   id?: string;
   settings?: Settings;
+  schedule?: ScheduleStatus;
   capture?: Capture;
   browser?: BrowserStatus;
 }

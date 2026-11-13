@@ -43,7 +43,8 @@ loses progress — not on a dropped connection, not on a crash, not on a power c
   categories, pause/resume everything, SHA-256 shown for every file, checksum verification.
 - **Secure** — no telemetry, filenames sanitized against path tricks, Mark-of-the-Web /
   quarantine on downloaded files, local API locked to 127.0.0.1 with a secret token.
-- **English and Arabic** with full right-to-left layout. Light and dark themes.
+- **16 languages:** English, Arabic, Chinese (Simplified), French, German, Hindi, Indonesian, Italian, Japanese, Korean, Persian, Portuguese (Brazil), Russian, Spanish, Turkish and Urdu, with full right-to-left layout for Arabic, Persian and
+  Urdu. Light and dark themes.
 - **CLI** — `peregrine get <url>` for scripts and servers (Windows, macOS, Linux).
 
 ## Install

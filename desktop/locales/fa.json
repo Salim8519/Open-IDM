@@ -1,0 +1,17 @@
+{
+  "open": "باز کردن Peregrine",
+  "pauseAll": "توقف همه",
+  "resumeAll": "ادامهٔ همه",
+  "scheduled": "دانلودهای زمان‌بندی‌شده",
+  "quit": "خروج از Peregrine",
+  "idle": "دانلود فعالی وجود ندارد",
+  "active": "{n} در حال دانلود · {speed}",
+  "completed": "دانلود کامل شد",
+  "failed": "دانلود ناموفق بود",
+  "stillRunning": "Peregrine همچنان در سینی سیستم در حال اجراست. برای خروج، از گزینهٔ «خروج» در منوی سینی استفاده کنید.",
+  "queueDone": "همهٔ دانلودهای زمان‌بندی‌شده تمام شد",
+  "powerIn": "{action} تا {secs} ثانیهٔ دیگر. برای لغو، Peregrine را باز کنید.",
+  "action.quit": "بسته شدن Peregrine",
+  "action.sleep": "رفتن به حالت خواب",
+  "action.shutdown": "خاموش شدن رایانه"
+}

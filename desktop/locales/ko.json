@@ -1,0 +1,17 @@
+{
+  "open": "Peregrine 열기",
+  "pauseAll": "모두 일시 중지",
+  "resumeAll": "모두 다시 시작",
+  "scheduled": "예약된 다운로드",
+  "quit": "Peregrine 종료",
+  "idle": "진행 중인 다운로드 없음",
+  "active": "{n}개 다운로드 중 · {speed}",
+  "completed": "다운로드 완료",
+  "failed": "다운로드 실패",
+  "stillRunning": "Peregrine이 트레이에서 계속 실행 중입니다. 종료하려면 트레이 메뉴에서 종료를 선택하세요.",
+  "queueDone": "예약된 다운로드가 모두 완료되었습니다",
+  "powerIn": "{secs}초 후 {action}. 취소하려면 Peregrine을 여세요.",
+  "action.quit": "Peregrine 종료",
+  "action.sleep": "절전 모드로 전환",
+  "action.shutdown": "시스템 종료"
+}

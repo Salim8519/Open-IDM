@@ -65,7 +65,9 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
 ### 4.3 Queue and control
 - **Q1** Queues with max concurrent downloads (default 3); drag to reorder.
 - **Q2** Global and per-download speed limit.
-- **Q3** Scheduler: start/stop queue at times; actions after finish (nothing, sleep, shutdown).
+- **Q3** Scheduler: start/stop queue at times on chosen days (window may cross midnight);
+  at the stop time running downloads return to the queue with their progress; action after
+  the queue finishes (nothing, quit, sleep, shutdown) after a 60 s cancellable countdown.
 - **Q4** Categories by file type → target folders (Video, Music, Documents, Archives, Programs).
 - **Q5** Duplicate detection: same URL or same target filename → ask (rename / overwrite / skip).
 
@@ -84,8 +86,14 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
 - Batch add: paste many links; pattern links (`file[001-100].zip`).
 - Clipboard monitor (opt-in): a copied downloadable link opens the add dialog. This is the
   capture method for browsers without our extension (e.g. Safari, Firefox in v1).
-- Tray icon, notifications on finish/error.
-- Light/dark theme, follows the system; RTL support (Arabic) from day one; i18n (EN, AR first).
+- Tray (Windows, Linux) / menu-bar (macOS) icon with open, pause all, resume all, schedule
+  on/off and quit; closing the window keeps the app in the tray (setting; on macOS the close
+  button hides the app as usual). System notifications on finish/error while the window is
+  not focused (setting).
+- Start when the user signs in (opt-in), hidden in the tray: HKCU Run key (Windows),
+  LaunchAgent (macOS), XDG autostart (Linux).
+- Light/dark theme, follows the system; RTL support (Arabic, Persian, Urdu); 16 UI languages
+  (`desktop/frontend/src/i18n`, tray/notification text in `desktop/locales`).
 - Settings: connections, speed limits, folders, proxy, scheduler, updates, extension pairing.
 - Signed auto-update (user can disable).
 

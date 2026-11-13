@@ -1,0 +1,17 @@
+{
+  "open": "Peregrine'i aç",
+  "pauseAll": "Tümünü duraklat",
+  "resumeAll": "Tümünü sürdür",
+  "scheduled": "Zamanlanmış indirmeler",
+  "quit": "Peregrine'den çık",
+  "idle": "Etkin indirme yok",
+  "active": "{n} indiriliyor · {speed}",
+  "completed": "İndirme tamamlandı",
+  "failed": "İndirme başarısız oldu",
+  "stillRunning": "Peregrine sistem tepsisinde çalışmaya devam ediyor. Çıkmak için tepsi menüsündeki Çık komutunu kullanın.",
+  "queueDone": "Zamanlanmış tüm indirmeler tamamlandı",
+  "powerIn": "{action}: {secs} saniye kaldı. İptal etmek için Peregrine'i açın.",
+  "action.quit": "Peregrine kapatılıyor",
+  "action.sleep": "Uyku moduna geçiliyor",
+  "action.shutdown": "Bilgisayar kapatılıyor"
+}

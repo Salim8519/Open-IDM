@@ -4,6 +4,36 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- **Scheduler:** download only between set times on chosen days (overnight windows work).
+  At the stop time running downloads go back to the queue and continue in the next window.
+  Optionally quit, sleep or shut down when everything is done, after a 60-second countdown
+  you can cancel. The status bar shows the schedule with a one-click "Turn off".
+- **Tray / menu-bar icon:** open, pause all, resume all, turn the schedule on/off, quit; the
+  tooltip shows active downloads and speed. Closing the window keeps Peregrine running in
+  the tray (Windows, Linux; can be turned off). On macOS the close button hides the app.
+- **System notifications** when a download finishes or fails while the window is in the
+  background (can be turned off).
+- **Start when I sign in** (Windows, macOS, Linux; off by default): starts in the tray
+  without a window.
+- **14 more languages:** Chinese (Simplified), French, German, Hindi, Indonesian, Italian,
+  Japanese, Korean, Persian, Portuguese (Brazil), Russian, Spanish, Turkish and Urdu (Persian
+  and Urdu right-to-left). Machine-assisted; corrections from native speakers are welcome.
+
+### Changed
+- Toolbar buttons show clearly when they can be used: disabled buttons are faded, usable
+  ones are full strength, and Resume / Pause / Remove light up green / amber / red as soon as
+  the selection allows them; stronger hover and keyboard focus.
+
+### Fixed
+- **Browser downloads no longer start in the browser first.** The extension now decides
+  before Chrome/Edge/Brave name the file, show their download bubble or open Save as; a
+  download Peregrine takes never appears in the browser, and one it leaves continues
+  without restarting. (Before, the browser's download started and was cancelled a moment
+  later, so both seemed to run.)
+- **The Add dialog comes to the front** when the browser sends a download, instead of only
+  flashing the Peregrine button in the taskbar (Windows).
+
 ## [0.1.1] - 2026-11-13
 
 ### Added

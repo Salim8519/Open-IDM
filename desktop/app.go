@@ -26,10 +26,15 @@ type App struct {
 	srv     *api.Server
 	unsub   func()
 	initErr error
+	life    *life
 }
 
 // NewApp creates the app; the engine starts in startup.
-func NewApp() *App { return &App{} }
+func NewApp() *App {
+	a := &App{}
+	a.life = newLife(a)
+	return a
+}
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
@@ -76,7 +81,9 @@ func (a *App) initEngine() error {
 	a.svc.SetBrowserStateFile(filepath.Join(dir, "browser.json"))
 	a.unsub = a.svc.Subscribe(func(e api.Event) {
 		wruntime.EventsEmit(a.ctx, "peregrine:event", e)
+		a.life.event(e)
 	})
+	a.life.start(a.ctx)
 	srv, err := api.Listen(a.svc, 0, api.NewToken(), nil)
 	if err != nil {
 		log.Printf("peregrine: local API disabled: %v", err)
@@ -143,6 +150,7 @@ func (a *App) domReady(ctx context.Context) {
 }
 
 func (a *App) shutdown(ctx context.Context) {
+	a.life.stop()
 	if a.srv != nil {
 		api.RemoveIPCInfo()
 		_ = a.srv.Close()
@@ -162,8 +170,20 @@ func (a *App) showWindow() {
 	if a.ctx == nil {
 		return
 	}
+	a.life.mu.Lock()
+	a.life.hidden = false
+	a.life.mu.Unlock()
 	wruntime.WindowUnminimise(a.ctx)
 	wruntime.WindowShow(a.ctx)
+	if runtime.GOOS == "windows" {
+		// Briefly topmost so the window lands in front of the browser instead of only
+		// flashing in the taskbar (the native host grants the foreground right first).
+		wruntime.WindowSetAlwaysOnTop(a.ctx, true)
+		time.AfterFunc(400*time.Millisecond, func() { wruntime.WindowSetAlwaysOnTop(a.ctx, false) })
+	}
+	if runtime.GOOS == "darwin" {
+		wruntime.Show(a.ctx) // unhide the app (the close button hides it)
+	}
 }
 
 func (a *App) onSecondInstance(data options.SecondInstanceData) {

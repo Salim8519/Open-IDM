@@ -34,12 +34,12 @@ v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Pere
 - [x] Wails + React shell, engine wired in
 - [x] Main list, add dialog, batch add
 - [x] Categories and folders (Q4), duplicate handling (Q5)
-- [ ] Tray / menu-bar icon, native notifications (in-app toasts exist)
+- [x] Tray / menu-bar icon, native notifications, start at sign-in (ADR 0010)
 - [x] Clipboard monitor (capture without extension)
 - [x] Settings screen
-- [ ] Scheduler (Q3) — next (asked for by the maintainer)
+- [x] Scheduler (Q3): time window, days, stop requeues, when-done action
 - [x] End-to-end tests: UI ↔ real engine (Playwright), browser ↔ extension ↔ host ↔ app (Playwright), CLI kill-and-resume
-- [x] i18n EN + AR with RTL
+- [x] i18n: 16 languages, RTL for Arabic/Persian/Urdu
 - [x] Windows installer (NSIS) + portable zip + macOS DMG (universal) — built by the release workflow
 - [ ] Signed auto-update
 - [ ] Code signing: SignPath (Windows), Apple notarization (macOS)

@@ -1,0 +1,17 @@
+{
+  "open": "打开 Peregrine",
+  "pauseAll": "全部暂停",
+  "resumeAll": "全部继续",
+  "scheduled": "计划下载",
+  "quit": "退出 Peregrine",
+  "idle": "没有正在进行的下载",
+  "active": "{n} 个正在下载 · {speed}",
+  "completed": "下载完成",
+  "failed": "下载失败",
+  "stillRunning": "Peregrine 仍在托盘中运行。要退出，请使用托盘菜单中的“退出”。",
+  "queueDone": "所有计划下载均已完成",
+  "powerIn": "{secs} 秒后{action}。打开 Peregrine 可取消。",
+  "action.quit": "退出 Peregrine",
+  "action.sleep": "进入睡眠",
+  "action.shutdown": "关机"
+}

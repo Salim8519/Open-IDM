@@ -98,8 +98,15 @@ type Settings struct {
 	ClipboardWatch bool   `json:"clipboardWatch"`
 	AutoStartExt   bool   `json:"autoStartExt"` // start extension downloads without asking
 	Theme          string `json:"theme"`        // "system" | "light" | "dark"
-	Language       string `json:"language"`     // "en" | "ar"
+	Language       string `json:"language"`     // UI language code, e.g. "en", "ar", "zh"
 	MinExtSize     int64  `json:"minExtSize"`   // extension: only capture files >= this size
+
+	Schedule Schedule `json:"schedule"` // when the queue may run (Q3)
+
+	// Desktop-app options; the engine only stores them.
+	CloseToTray   bool `json:"closeToTray"`   // closing the window keeps the app in the tray
+	LaunchAtLogin bool `json:"launchAtLogin"` // start (hidden) when the user signs in
+	Notify        bool `json:"notify"`        // system notifications for finished/failed downloads
 }
 
 // DefaultSettings returns sensible defaults.
@@ -113,6 +120,9 @@ func DefaultSettings() Settings {
 		Theme:       "system",
 		Language:    "en",
 		MinExtSize:  1 << 20,
+		Schedule:    defaultSchedule(),
+		CloseToTray: true,
+		Notify:      true,
 	}
 }
 

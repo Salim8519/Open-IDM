@@ -1,0 +1,17 @@
+{
+  "open": "Открыть Peregrine",
+  "pauseAll": "Приостановить все",
+  "resumeAll": "Возобновить все",
+  "scheduled": "Загрузки по расписанию",
+  "quit": "Выйти из Peregrine",
+  "idle": "Нет активных загрузок",
+  "active": "Загружается: {n} · {speed}",
+  "completed": "Загрузка завершена",
+  "failed": "Ошибка загрузки",
+  "stillRunning": "Peregrine продолжает работать в трее. Чтобы закрыть программу, выберите «Выйти из Peregrine» в меню трея.",
+  "queueDone": "Все загрузки по расписанию завершены",
+  "powerIn": "{action} через {secs} с. Откройте Peregrine, чтобы отменить.",
+  "action.quit": "Закрытие Peregrine",
+  "action.sleep": "Переход в спящий режим",
+  "action.shutdown": "Выключение компьютера"
+}

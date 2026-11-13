@@ -322,3 +322,34 @@ test("first run asks to connect the browser and turns green when the extension c
   await app.getByTestId("set-connect-browser").click();
   await expect(app.getByTestId("connect-browser").getByTestId("browser-status")).toContainText("Connected");
 });
+
+test("schedule holds the queue until turned off", async ({ app, info }) => {
+  const hhmm = (d: Date) => `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const now = Date.now();
+  await app.getByTestId("tb-settings").click();
+  const dlg = app.getByTestId("settings-dialog");
+  await dlg.getByTestId("set-schedule-enabled").check();
+  // A window that starts in two hours, so it is closed now.
+  await dlg.getByTestId("set-schedule-start").fill(hhmm(new Date(now + 2 * 3600_000)));
+  await dlg.getByTestId("set-schedule-stop").fill(hhmm(new Date(now + 3 * 3600_000)));
+  await dlg.getByTestId("settings-save").click();
+  await expect(dlg).toBeHidden();
+  await expect(app.getByTestId("schedule-badge")).toContainText("Scheduled");
+
+  const name = "e2e-scheduled.bin";
+  await rpc(app, "add", { url: `${info.files}/file?size=200000&name=${name}`, filename: name });
+  const r = row(app, name);
+  await expect(r).toHaveAttribute("data-status", "queued");
+  await app.waitForTimeout(1500);
+  await expect(r).toHaveAttribute("data-status", "queued");
+  const st = await rpc<{ enabled: boolean; open: boolean; nextStart?: string }>(app, "scheduleStatus");
+  expect(st.enabled).toBe(true);
+  expect(st.open).toBe(false);
+  expect(st.nextStart).toBeTruthy();
+
+  await app.getByTestId("schedule-off").click();
+  await expect(app.getByTestId("schedule-badge")).toBeHidden();
+  await expect(r).toHaveAttribute("data-status", "completed", { timeout: 30_000 });
+  const s = await rpc<{ schedule: { enabled: boolean } }>(app, "getSettings");
+  expect(s.schedule.enabled).toBe(false);
+});

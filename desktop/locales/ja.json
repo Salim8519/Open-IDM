@@ -1,0 +1,17 @@
+{
+  "open": "Peregrine を開く",
+  "pauseAll": "すべて一時停止",
+  "resumeAll": "すべて再開",
+  "scheduled": "スケジュールしたダウンロード",
+  "quit": "Peregrine を終了",
+  "idle": "実行中のダウンロードはありません",
+  "active": "{n} 件ダウンロード中 · {speed}",
+  "completed": "ダウンロードが完了しました",
+  "failed": "ダウンロードに失敗しました",
+  "stillRunning": "Peregrine はトレイで実行中です。終了するにはトレイメニューの「終了」を選んでください。",
+  "queueDone": "スケジュールしたダウンロードがすべて完了しました",
+  "powerIn": "{secs} 秒後に{action}。キャンセルするには Peregrine を開いてください。",
+  "action.quit": "Peregrine を終了します",
+  "action.sleep": "スリープします",
+  "action.shutdown": "シャットダウンします"
+}

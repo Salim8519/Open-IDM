@@ -1,0 +1,17 @@
+{
+  "open": "Peregrine کھولیں",
+  "pauseAll": "سب روکیں",
+  "resumeAll": "سب جاری رکھیں",
+  "scheduled": "شیڈول شدہ ڈاؤن لوڈز",
+  "quit": "Peregrine بند کریں",
+  "idle": "کوئی فعال ڈاؤن لوڈ نہیں",
+  "active": "{n} ڈاؤن لوڈ ہو رہے ہیں · {speed}",
+  "completed": "ڈاؤن لوڈ مکمل",
+  "failed": "ڈاؤن لوڈ ناکام",
+  "stillRunning": "Peregrine اب بھی ٹرے میں چل رہا ہے۔ بند کرنے کے لیے ٹرے مینو میں “Peregrine بند کریں” استعمال کریں۔",
+  "queueDone": "تمام شیڈول شدہ ڈاؤن لوڈز مکمل ہو گئے",
+  "powerIn": "{action} — {secs} سیکنڈ میں۔ منسوخ کرنے کے لیے Peregrine کھولیں۔",
+  "action.quit": "Peregrine بند ہو رہا ہے",
+  "action.sleep": "سلیپ موڈ",
+  "action.shutdown": "کمپیوٹر بند ہو رہا ہے"
+}

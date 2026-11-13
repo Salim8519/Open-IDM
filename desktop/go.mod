@@ -3,8 +3,10 @@ module github.com/Salim8519/Peregrine/desktop
 go 1.27.4
 
 require (
+	fyne.io/systray v1.12.2
 	github.com/Salim8519/Peregrine v0.0.0
 	github.com/wailsapp/wails/v2 v2.17.1
+	golang.org/x/sys v0.50.0
 )
 
 require (
@@ -37,7 +39,6 @@ require (
 	github.com/wailsapp/go-webview2 v1.0.23 // indirect
 	golang.org/x/crypto v0.59.0 // indirect
 	golang.org/x/net v0.62.0 // indirect
-	golang.org/x/sys v0.50.0 // indirect
 	golang.org/x/text v0.44.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
 	modernc.org/libc v1.81.0 // indirect

@@ -27,15 +27,20 @@ const (
 	EventProgress EventType = "progress" // periodic batch of active downloads
 	EventRemoved  EventType = "removed"
 	EventSettings EventType = "settings"
+	// EventSchedule: the schedule window opened or closed, or the schedule changed.
+	EventSchedule EventType = "schedule"
+	// EventQueueDone: the queue ran empty after at least one download completed.
+	EventQueueDone EventType = "queueDone"
 )
 
 // Event is delivered to subscribers. For EventProgress, Downloads holds the batch.
 type Event struct {
-	Type      EventType  `json:"type"`
-	Download  *Download  `json:"download,omitempty"`
-	Downloads []Download `json:"downloads,omitempty"`
-	ID        string     `json:"id,omitempty"`
-	Settings  *Settings  `json:"settings,omitempty"`
+	Type      EventType       `json:"type"`
+	Download  *Download       `json:"download,omitempty"`
+	Downloads []Download      `json:"downloads,omitempty"`
+	ID        string          `json:"id,omitempty"`
+	Settings  *Settings       `json:"settings,omitempty"`
+	Schedule  *ScheduleStatus `json:"schedule,omitempty"`
 }
 
 // Manager owns all downloads, the queue and persistence. All methods are goroutine-safe.
@@ -54,6 +59,10 @@ type Manager struct {
 	closed    bool
 	wg        sync.WaitGroup
 	stopTick  chan struct{}
+
+	now       func() time.Time // clock; tests replace it before any call
+	schedOpen bool             // last known schedule state
+	completed bool             // a download completed since the queue was last empty
 }
 
 type speedMeter struct {
@@ -64,11 +73,18 @@ type speedMeter struct {
 
 // NewManager loads state from store and starts any queued downloads.
 func NewManager(store *Store) (*Manager, error) {
+	return newManager(store, time.Now)
+}
+
+func newManager(store *Store, now func() time.Time) (*Manager, error) {
 	st, err := store.LoadSettings()
 	if err != nil {
 		return nil, err
 	}
 	normalizeSettings(&st)
+	if st.Schedule.validate() != nil {
+		st.Schedule = defaultSchedule() // repair a bad stored value; never fail start-up
+	}
 	client, err := newClient(st.Proxy)
 	if err != nil {
 		client, _ = newClient("system")
@@ -83,7 +99,9 @@ func NewManager(store *Store) (*Manager, error) {
 		global:    newLimiter(st.GlobalLimit),
 		subs:      map[int]func(Event){},
 		stopTick:  make(chan struct{}),
+		now:       now,
 	}
+	m.schedOpen = st.Schedule.Status(m.now()).Open
 	list, err := store.LoadDownloads()
 	if err != nil {
 		return nil, err
@@ -124,6 +142,7 @@ func normalizeSettings(s *Settings) {
 	if s.GlobalLimit < 0 {
 		s.GlobalLimit = 0
 	}
+	normalizeSchedule(&s.Schedule)
 }
 
 // Close pauses running downloads (keeping them queued for next start) and saves state.
@@ -241,6 +260,9 @@ func (m *Manager) Settings() Settings {
 // UpdateSettings validates, applies and saves settings.
 func (m *Manager) UpdateSettings(s Settings) (Settings, error) {
 	normalizeSettings(&s)
+	if err := s.Schedule.validate(); err != nil {
+		return Settings{}, err
+	}
 	if s.Proxy != m.Settings().Proxy {
 		c, err := newClient(s.Proxy)
 		if err != nil {
@@ -257,9 +279,50 @@ func (m *Manager) UpdateSettings(s Settings) (Settings, error) {
 	m.settings = s
 	setLimiter(m.global, s.GlobalLimit)
 	m.emitLocked(Event{Type: EventSettings, Settings: &s})
+	stop := m.checkScheduleLocked(true)
 	m.scheduleLocked()
 	m.mu.Unlock()
+	stopTasks(stop)
 	return s, nil
+}
+
+// ScheduleStatus reports whether the schedule lets downloads run now.
+func (m *Manager) ScheduleStatus() ScheduleStatus {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	return m.settings.Schedule.Status(m.now())
+}
+
+var errScheduleStop = errors.New("schedule window closed")
+
+// checkScheduleLocked notices the window opening or closing. When it closes it returns the
+// running tasks, which the caller must stop (outside the lock) with stopTasks; they go
+// back to the queue. force emits the status even without a change.
+func (m *Manager) checkScheduleLocked(force bool) []*task {
+	st := m.settings.Schedule.Status(m.now())
+	changed := st.Open != m.schedOpen
+	m.schedOpen = st.Open
+	if changed || force {
+		m.emitLocked(Event{Type: EventSchedule, Schedule: &st})
+	}
+	if !changed {
+		return nil
+	}
+	if st.Open {
+		m.scheduleLocked()
+		return nil
+	}
+	stop := make([]*task, 0, len(m.tasks))
+	for _, t := range m.tasks {
+		stop = append(stop, t)
+	}
+	return stop
+}
+
+func stopTasks(ts []*task) {
+	for _, t := range ts {
+		t.cancel(errScheduleStop)
+	}
 }
 
 func (m *Manager) globalLimiter() *rate.Limiter { return m.global }
@@ -440,7 +503,7 @@ func (m *Manager) persistProgress(t *task) {
 
 // scheduleLocked starts queued downloads while slots are free.
 func (m *Manager) scheduleLocked() {
-	if m.closed {
+	if m.closed || !m.schedOpen {
 		return
 	}
 	active := len(m.tasks)
@@ -538,8 +601,8 @@ func (m *Manager) finish(t *task, err error) {
 		dd.Error = hashErr.Error()
 	case errors.Is(err, errPaused):
 		dd.Status = StatusPaused
-	case errors.Is(err, errShutdown):
-		dd.Status = StatusQueued // resume on next start
+	case errors.Is(err, errShutdown), errors.Is(err, errScheduleStop):
+		dd.Status = StatusQueued // resume on next start / next schedule window
 	case errors.Is(err, errRemoved):
 		// handled by Remove
 	default:
@@ -549,7 +612,25 @@ func (m *Manager) finish(t *task, err error) {
 	_ = m.store.SaveDownload(dd)
 	snap := m.snapshotLocked(dd)
 	m.emitLocked(Event{Type: EventUpdated, Download: &snap})
+	if dd.Status == StatusCompleted {
+		m.completed = true
+	}
 	m.scheduleLocked()
+	m.checkQueueDoneLocked()
+}
+
+// checkQueueDoneLocked emits EventQueueDone once the queue is empty after a completion.
+func (m *Manager) checkQueueDoneLocked() {
+	if !m.completed || len(m.tasks) > 0 {
+		return
+	}
+	for _, d := range m.downloads {
+		if d.Status == StatusQueued {
+			return
+		}
+	}
+	m.completed = false
+	m.emitLocked(Event{Type: EventQueueDone})
 }
 
 var errRemoved = errors.New("removed")
@@ -776,6 +857,7 @@ func (m *Manager) ticker() {
 			return
 		case now := <-tk.C:
 			m.mu.Lock()
+			stop := m.checkScheduleLocked(false)
 			var batch []Download
 			for id, t := range m.tasks {
 				sm := m.speeds[id]
@@ -801,6 +883,7 @@ func (m *Manager) ticker() {
 				m.emitLocked(Event{Type: EventProgress, Downloads: batch})
 			}
 			m.mu.Unlock()
+			stopTasks(stop)
 		}
 	}
 }

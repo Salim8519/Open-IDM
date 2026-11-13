@@ -4,6 +4,7 @@ package main
 import (
 	"embed"
 	"log"
+	"runtime"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -33,6 +34,12 @@ func main() {
 		OnStartup:        app.startup,
 		OnDomReady:       app.domReady,
 		OnShutdown:       app.shutdown,
+		OnBeforeClose:    app.life.beforeClose,
+		// --hidden comes from launch at login: start in the tray / menu bar.
+		StartHidden: launchedHidden(),
+		// macOS: the close button hides the app like other Mac apps (the Dock icon brings it
+		// back, Cmd+Q quits). Windows/Linux decide in beforeClose (close to tray setting).
+		HideWindowOnClose: runtime.GOOS == "darwin",
 		SingleInstanceLock: &options.SingleInstanceLock{
 			UniqueId:               "com.peregrine.app",
 			OnSecondInstanceLaunch: app.onSecondInstance,

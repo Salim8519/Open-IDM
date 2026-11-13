@@ -1,0 +1,17 @@
+{
+  "open": "Ouvrir Peregrine",
+  "pauseAll": "Tout mettre en pause",
+  "resumeAll": "Tout reprendre",
+  "scheduled": "Téléchargements planifiés",
+  "quit": "Quitter Peregrine",
+  "idle": "Aucun téléchargement actif",
+  "active": "{n} en cours · {speed}",
+  "completed": "Téléchargement terminé",
+  "failed": "Échec du téléchargement",
+  "stillRunning": "Peregrine fonctionne toujours dans la zone de notification. Utilisez Quitter dans son menu pour le fermer.",
+  "queueDone": "Tous les téléchargements planifiés sont terminés",
+  "powerIn": "{action} dans {secs} secondes. Ouvrez Peregrine pour annuler.",
+  "action.quit": "Fermeture de Peregrine",
+  "action.sleep": "Mise en veille",
+  "action.shutdown": "Arrêt de l’ordinateur"
+}
