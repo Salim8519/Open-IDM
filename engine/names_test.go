@@ -81,4 +81,8 @@ func TestRedact(t *testing.T) {
 	if strings.Contains(got, "SECRET") || strings.Contains(got, "pw@") {
 		t.Fatalf("not redacted: %s", got)
 	}
+	got = redact(`retrieve ftp://alice:hunter22@ftp.example.com/f.iso: EOF`)
+	if strings.Contains(got, "hunter22") || strings.Contains(got, "alice") {
+		t.Fatalf("ftp credentials not redacted: %s", got)
+	}
 }
