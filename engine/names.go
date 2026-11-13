@@ -67,7 +67,11 @@ func SanitizeFilename(name string) string {
 		for cut > 0 && !utf8.RuneStart(name[cut]) {
 			cut--
 		}
-		name = name[:cut] + ext
+		// Cutting can leave a trailing space or dot, which Windows forbids (found by fuzzing).
+		name = strings.TrimRight(name[:cut], ". ") + ext
+		if strings.Trim(name, ". ") == "" {
+			name = "download"
+		}
 	}
 	return name
 }
