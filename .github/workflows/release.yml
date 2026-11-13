@@ -176,7 +176,7 @@ jobs:
           awk "/^## \\[?${V//./\\.}\\]?/{f=1;next} /^## /{f=0} f" docs/CHANGELOG.md > notes.md
           [ -s notes.md ] || echo "Peregrine ${V}" > notes.md
           cat docs/RELEASE_FOOTER.md >> notes.md 2>/dev/null || true
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         with:
           name: Peregrine ${{ github.ref_name }}
           body_path: notes.md
