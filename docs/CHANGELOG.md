@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.2.0] - 2026-11-14
+
 ### Added
 - **Scheduler:** download only between set times on chosen days (overnight windows work).
   At the stop time running downloads go back to the queue and continue in the next window.

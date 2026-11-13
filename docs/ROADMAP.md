@@ -31,6 +31,7 @@ bottom; a phase is done when every box is ticked and CI is green on Windows and 
 
 ## Phase 2 — Desktop app (Windows + macOS)
 v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Peregrine/releases/tag/v0.1.0
+v0.2.0 released 2026-11-14: scheduler, tray, notifications, start at sign-in, 16 languages.
 - [x] Wails + React shell, engine wired in
 - [x] Main list, add dialog, batch add
 - [x] Categories and folders (Q4), duplicate handling (Q5)
