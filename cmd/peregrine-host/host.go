@@ -195,6 +195,9 @@ func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCErr
 	if rerr != nil {
 		return nil, rerr
 	}
+	if launchingMethods[method] {
+		allowForeground() // the app may show its Add dialog in front of the browser
+	}
 	raw, err := c.Call(method, fwd)
 	if err != nil {
 		var re *api.RPCError

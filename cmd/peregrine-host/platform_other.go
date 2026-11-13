@@ -30,3 +30,6 @@ func startDetached(path string) error {
 	}
 	return cmd.Process.Release()
 }
+
+// allowForeground is a Windows-only concern; macOS/Linux apps may activate themselves.
+func allowForeground() {}

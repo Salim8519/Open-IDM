@@ -99,7 +99,17 @@ async function buildCapture({ url, referrer, filename, mime, size, pageUrl }) {
   return c;
 }
 
-async function handleCreated(item) {
+// How long the browser's download may wait for the app (it may need a few seconds to start)
+// before we let the browser carry on by itself.
+const DECIDE_TIMEOUT_MS = 25_000;
+
+/**
+ * Decides whether Peregrine takes a download. Runs in onDeterminingFilename, i.e. before the
+ * browser picks a file name, shows its download bubble or opens a Save as dialog, so a
+ * captured download never appears as a browser download (it used to start in parallel).
+ * Returns true when the app took it.
+ */
+async function decideAndCapture(item) {
   const [settings, local, session, fallback] = await Promise.all([
     loadSettings(),
     chrome.storage.local.get(['appMinSize', 'appSettingsAt']),
@@ -116,12 +126,10 @@ async function handleCreated(item) {
   });
   if (decision.reason === 'skip-next') {
     await chrome.storage.session.set({ skipNext: false });
-    return;
+    return false;
   }
-  if (!decision.capture) return;
+  if (!decision.capture) return false;
 
-  // Hold the browser's copy while we ask the app (which may need a few seconds to start).
-  await chrome.downloads.pause(item.id).catch(() => {});
   const url = item.finalUrl || item.url;
   const capture = await buildCapture({
     url,
@@ -134,10 +142,9 @@ async function handleCreated(item) {
     await callNative('capture', capture);
   } catch (err) {
     console.info('Peregrine: leaving download to the browser:', err.code || err.message);
-    await giveBack(item.id, url);
-    return;
+    return false;
   }
-  await dropBrowserCopy(item.id);
+  return true;
 }
 
 /** The app accepted the download: remove the browser's copy (and its file, if it finished). */
@@ -148,25 +155,59 @@ async function dropBrowserCopy(id) {
   await chrome.downloads.erase({ id }).catch(() => {});
 }
 
-/** The app is unavailable: let the browser finish, or start it again if it cannot resume. */
-async function giveBack(id, url) {
-  const [cur] = await chrome.downloads.search({ id }).catch(() => []);
-  if (cur && cur.state === 'complete') return;
-  if (cur && cur.state === 'in_progress') {
-    if (!cur.paused) return;
-    try {
-      await chrome.downloads.resume(id);
-      return;
-    } catch {
-      await chrome.downloads.cancel(id).catch(() => {});
-    }
-  }
-  await chrome.downloads.erase({ id }).catch(() => {});
-  await browserDownload(url);
-}
+// Downloads the early hook has seen. If it never fires for one (some download paths skip
+// the extension naming step, e.g. under automation), onCreated takes over shortly after.
+const seenEarly = new Set();
+const EARLY_GRACE_MS = 500;
 
 chrome.downloads.onCreated.addListener((item) => {
-  handleCreated(item).catch((e) => console.warn('Peregrine: onCreated failed', e));
+  setTimeout(() => {
+    if (seenEarly.delete(item.id)) return;
+    lateCapture(item).catch((e) => console.warn('Peregrine: onCreated failed', e));
+  }, EARLY_GRACE_MS);
+});
+
+/** Fallback path: hold the browser's copy, ask the app, then drop or release it. */
+async function lateCapture(item) {
+  const [cur] = await chrome.downloads.search({ id: item.id }).catch(() => []);
+  if (!cur || cur.state !== 'in_progress') return;
+  await chrome.downloads.pause(item.id).catch(() => {});
+  // Keep the name known at creation: by now the browser may have given the file a temporary name.
+  if (await decideAndCapture({ ...cur, filename: item.filename })) {
+    await dropBrowserCopy(item.id);
+  } else {
+    await chrome.downloads.resume(item.id).catch(() => {});
+  }
+}
+
+chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
+  seenEarly.add(item.id);
+  setTimeout(() => seenEarly.delete(item.id), 60_000);
+  let settled = false;
+  // Let the browser continue with its own name (nothing taken, app missing, or timeout).
+  const release = () => {
+    if (settled) return;
+    settled = true;
+    try {
+      suggest();
+    } catch {
+      /* download already gone */
+    }
+  };
+  const timer = setTimeout(release, DECIDE_TIMEOUT_MS);
+  decideAndCapture(item)
+    .then(async (taken) => {
+      if (!taken) return release();
+      if (settled) return dropBrowserCopy(item.id); // the app answered after the timeout
+      settled = true;
+      await dropBrowserCopy(item.id);
+    })
+    .catch((e) => {
+      console.warn('Peregrine: download decision failed', e);
+      release();
+    })
+    .finally(() => clearTimeout(timer));
+  return true; // we call suggest() asynchronously
 });
 
 /** Send a single URL to the app (context menu / popup). */

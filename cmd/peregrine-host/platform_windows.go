@@ -33,6 +33,15 @@ func deleteRegistry(key string) error {
 	return err
 }
 
+// allowForeground lets the app bring its window to the front for the next user-visible
+// step (the Add dialog). Windows only lets the foreground process grant this; the host is
+// started by the browser the user is clicking in, so it may. Without it the app can only
+// flash its taskbar button. The grant ends with the user's next input.
+func allowForeground() {
+	const asfwAny = 0xFFFFFFFF
+	_, _, _ = windows.NewLazySystemDLL("user32.dll").NewProc("AllowSetForegroundWindow").Call(asfwAny)
+}
+
 // startDetached starts the app so it outlives the host. Chrome runs hosts inside a job
 // object; try to break away from it, and fall back if the job forbids that.
 func startDetached(path string) error {
