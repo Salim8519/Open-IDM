@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Pengelola Unduhan Peregrine" },
+  "extDescription": { "message": "Kirim unduhan dan media dari browser ke pengelola unduhan Peregrine di komputer Anda." },
+  "titleOff": { "message": "Peregrine (penangkapan nonaktif)" },
+
+  "menuDownload": { "message": "Unduh dengan Peregrine" },
+  "menuDownloadAll": { "message": "Unduh semua tautan dengan Peregrine" },
+  "noLinks": { "message": "Peregrine: tidak ada tautan yang bisa diunduh di halaman ini." },
+  "confirmDownloadAll": {
+    "message": "Kirim $COUNT$ tautan ke Peregrine?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine tidak berjalan dan tidak dapat dijalankan." },
+
+  "statusChecking": { "message": "Memeriksa koneksi…" },
+  "statusConnected": {
+    "message": "Terhubung ke Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "Aplikasi tidak berjalan" },
+  "statusNotInstalled": { "message": "Aplikasi Peregrine tidak ditemukan. Pasang aplikasinya untuk menangkap unduhan." },
+  "startApp": { "message": "Jalankan" },
+  "starting": { "message": "Menjalankan…" },
+  "interception": { "message": "Tangkap unduhan" },
+  "skipNext": { "message": "Lewati unduhan berikutnya" },
+  "skipNextHint": { "message": "Biarkan browser menangani unduhan berikutnya sekali saja." },
+  "mediaTitle": { "message": "Media di halaman ini" },
+  "mediaEmpty": { "message": "Belum ada media yang terdeteksi. Putar video atau audionya, lalu buka lagi menu ini." },
+  "download": { "message": "Unduh" },
+  "streamSoon": { "message": "Dukungan streaming segera hadir" },
+  "sent": { "message": "Terkirim" },
+  "failed": { "message": "Gagal" },
+  "options": { "message": "Pengaturan" },
+
+  "optionsTitle": { "message": "Pengaturan Peregrine" },
+  "optEnabled": { "message": "Tangkap unduhan browser" },
+  "optMinSize": { "message": "Ukuran minimum (MB)" },
+  "optMinSizeHint": {
+    "message": "File yang setidaknya sebesar ini tetap ditangkap meskipun jenisnya tidak ada di daftar. Kosongkan untuk memakai pengaturan aplikasi ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Jenis file yang ditangkap" },
+  "optExtensionsHint": { "message": "Pisahkan dengan spasi atau koma, misalnya: zip exe mp4" },
+  "optExcluded": { "message": "Jangan pernah menangkap di situs ini" },
+  "optExcludedHint": { "message": "Satu situs per baris, misalnya: example.com (termasuk subdomainnya)." },
+  "save": { "message": "Simpan" },
+  "saved": { "message": "Tersimpan" },
+  "resetDefaults": { "message": "Pulihkan bawaan" },
+  "bypassNote": { "message": "Tips: agar browser yang menangani satu unduhan, buka menu Peregrine dan aktifkan “Lewati unduhan berikutnya”. (Ekstensi tidak dapat mendeteksi tombol yang ditahan saat mengeklik.)" },
+  "privacyNote": { "message": "Detail unduhan hanya dikirim ke aplikasi Peregrine di komputer ini. Tidak ada yang dikirim ke internet." }
+}

@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine डाउनलोड मैनेजर" },
+  "extDescription": { "message": "ब्राउज़र के डाउनलोड और मीडिया को आपके कंप्यूटर पर Peregrine डाउनलोड मैनेजर में भेजें।" },
+  "titleOff": { "message": "Peregrine (डाउनलोड लेना बंद)" },
+
+  "menuDownload": { "message": "Peregrine से डाउनलोड करें" },
+  "menuDownloadAll": { "message": "सभी लिंक Peregrine से डाउनलोड करें" },
+  "noLinks": { "message": "Peregrine: इस पेज पर डाउनलोड करने लायक कोई लिंक नहीं मिला।" },
+  "confirmDownloadAll": {
+    "message": "$COUNT$ लिंक Peregrine को भेजें?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine चल नहीं रहा है और शुरू नहीं हो सका।" },
+
+  "statusChecking": { "message": "कनेक्शन जाँचा जा रहा है…" },
+  "statusConnected": {
+    "message": "Peregrine v$VERSION$ से कनेक्ट है",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "ऐप नहीं चल रहा" },
+  "statusNotInstalled": { "message": "Peregrine ऐप नहीं मिला। डाउनलोड लेने के लिए इसे इंस्टॉल करें।" },
+  "startApp": { "message": "शुरू करें" },
+  "starting": { "message": "शुरू हो रहा है…" },
+  "interception": { "message": "डाउनलोड लें" },
+  "skipNext": { "message": "अगला डाउनलोड छोड़ें" },
+  "skipNextHint": { "message": "अगला डाउनलोड एक बार ब्राउज़र को ही संभालने दें।" },
+  "mediaTitle": { "message": "इस पेज पर मीडिया" },
+  "mediaEmpty": { "message": "अभी तक कोई मीडिया नहीं मिला। वीडियो या ऑडियो चलाएँ, फिर यह मेनू दोबारा खोलें।" },
+  "download": { "message": "डाउनलोड" },
+  "streamSoon": { "message": "स्ट्रीम सपोर्ट जल्द आ रहा है" },
+  "sent": { "message": "भेजा गया" },
+  "failed": { "message": "विफल" },
+  "options": { "message": "सेटिंग्स" },
+
+  "optionsTitle": { "message": "Peregrine सेटिंग्स" },
+  "optEnabled": { "message": "ब्राउज़र के डाउनलोड लें" },
+  "optMinSize": { "message": "न्यूनतम आकार (MB)" },
+  "optMinSizeHint": {
+    "message": "कम से कम इतनी बड़ी फ़ाइलें ली जाती हैं, भले ही उनका प्रकार सूची में न हो। ऐप की सेटिंग ($SIZE$) इस्तेमाल करने के लिए खाली छोड़ें।",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "कौन-से फ़ाइल प्रकार लें" },
+  "optExtensionsHint": { "message": "स्पेस या कॉमा से अलग करें, जैसे: zip exe mp4" },
+  "optExcluded": { "message": "इन साइटों पर कभी न लें" },
+  "optExcludedHint": { "message": "हर लाइन में एक साइट, जैसे: example.com (इसके सबडोमेन भी शामिल हैं)।" },
+  "save": { "message": "सहेजें" },
+  "saved": { "message": "सहेजा गया" },
+  "resetDefaults": { "message": "डिफ़ॉल्ट बहाल करें" },
+  "bypassNote": { "message": "सुझाव: किसी डाउनलोड को ब्राउज़र से ही होने देने के लिए Peregrine मेनू खोलें और “अगला डाउनलोड छोड़ें” चालू करें। (क्लिक करते समय कोई कुंजी दबी है या नहीं, एक्सटेंशन यह नहीं जान सकते।)" },
+  "privacyNote": { "message": "डाउनलोड की जानकारी सिर्फ़ इस कंप्यूटर के Peregrine ऐप को भेजी जाती है। इंटरनेट पर कुछ नहीं भेजा जाता।" }
+}

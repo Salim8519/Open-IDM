@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine ダウンロードマネージャー" },
+  "extDescription": { "message": "ブラウザーのダウンロードやメディアを、お使いのコンピューターの Peregrine ダウンロードマネージャーに送ります。" },
+  "titleOff": { "message": "Peregrine（取り込みオフ）" },
+
+  "menuDownload": { "message": "Peregrine でダウンロード" },
+  "menuDownloadAll": { "message": "すべてのリンクを Peregrine でダウンロード" },
+  "noLinks": { "message": "Peregrine: このページにダウンロードできるリンクは見つかりませんでした。" },
+  "confirmDownloadAll": {
+    "message": "$COUNT$ 件のリンクを Peregrine に送りますか？",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine が起動しておらず、起動できませんでした。" },
+
+  "statusChecking": { "message": "接続を確認しています…" },
+  "statusConnected": {
+    "message": "Peregrine v$VERSION$ に接続しました",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "アプリが起動していません" },
+  "statusNotInstalled": { "message": "Peregrine アプリが見つかりません。ダウンロードを取り込むにはインストールしてください。" },
+  "startApp": { "message": "起動" },
+  "starting": { "message": "起動しています…" },
+  "interception": { "message": "ダウンロードを取り込む" },
+  "skipNext": { "message": "次のダウンロードをスキップ" },
+  "skipNextHint": { "message": "次のダウンロードを 1 回だけブラウザーに任せます。" },
+  "mediaTitle": { "message": "このページのメディア" },
+  "mediaEmpty": { "message": "メディアはまだ検出されていません。動画や音声を再生してから、このメニューを開き直してください。" },
+  "download": { "message": "ダウンロード" },
+  "streamSoon": { "message": "ストリームには近日対応予定" },
+  "sent": { "message": "送信済み" },
+  "failed": { "message": "失敗" },
+  "options": { "message": "設定" },
+
+  "optionsTitle": { "message": "Peregrine の設定" },
+  "optEnabled": { "message": "ブラウザーのダウンロードを取り込む" },
+  "optMinSize": { "message": "最小サイズ (MB)" },
+  "optMinSizeHint": {
+    "message": "このサイズ以上のファイルは、種類が一覧になくても取り込まれます。空欄にするとアプリの設定 ($SIZE$) を使います。",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "取り込むファイルの種類" },
+  "optExtensionsHint": { "message": "スペースまたはカンマで区切ります。例: zip exe mp4" },
+  "optExcluded": { "message": "取り込まないサイト" },
+  "optExcludedHint": { "message": "1 行に 1 サイト。例: example.com（サブドメインも対象になります）。" },
+  "save": { "message": "保存" },
+  "saved": { "message": "保存しました" },
+  "resetDefaults": { "message": "既定値に戻す" },
+  "bypassNote": { "message": "ヒント: ダウンロードを 1 回だけブラウザーに任せるには、Peregrine のメニューを開いて「次のダウンロードをスキップ」をオンにします。（クリック中にキーが押されているかどうかは、拡張機能からは検出できません。）" },
+  "privacyNote": { "message": "ダウンロードの情報は、このコンピューターの Peregrine アプリにのみ送られます。インターネットには何も送られません。" }
+}

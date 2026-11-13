@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- **Browser extension in 16 languages:** the 14 new app languages (Chinese (Simplified),
+  French, German, Hindi, Indonesian, Italian, Japanese, Korean, Persian, Portuguese (Brazil),
+  Russian, Spanish, Turkish, Urdu) now also translate the extension's menus, popup and
+  settings, following the browser's language (Persian and Urdu right-to-left).
+
 ## [0.1.1] - 2026-11-13
 
 ### Added

@@ -1,4 +1,4 @@
-// Static checks: manifest sanity, locale parity, every i18n key used is defined,
+// Static checks: manifest sanity (locale parity is in locales.test.js), every i18n key used is defined,
 // no remote code, and the fixed extension ID matches the "key".
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -11,7 +11,6 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (p) => readFileSync(join(root, p), 'utf8');
 const manifest = JSON.parse(read('manifest.json'));
 const en = JSON.parse(read('_locales/en/messages.json'));
-const ar = JSON.parse(read('_locales/ar/messages.json'));
 export const EXTENSION_ID = 'bcnjpgddmjlffmcfgnfjaadkdjphdhfd';
 
 test('extension ID derives from the manifest key', () => {
@@ -33,14 +32,6 @@ test('manifest is MV3 with the expected permissions and files', () => {
   for (const p of [manifest.background.service_worker, manifest.action.default_popup, manifest.options_ui.page,
     ...Object.values(manifest.icons), ...Object.values(manifest.action.default_icon)]) {
     assert.ok(existsSync(join(root, p)), `missing ${p}`);
-  }
-});
-
-test('locales have the same keys and placeholders', () => {
-  assert.deepEqual(Object.keys(ar).sort(), Object.keys(en).sort());
-  for (const k of Object.keys(en)) {
-    assert.deepEqual(Object.keys(ar[k].placeholders || {}), Object.keys(en[k].placeholders || {}), k);
-    assert.ok(ar[k].message.trim(), `empty ar message ${k}`);
   }
 });
 

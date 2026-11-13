@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine 下载管理器" },
+  "extDescription": { "message": "将浏览器下载和媒体发送到您电脑上的 Peregrine 下载管理器。" },
+  "titleOff": { "message": "Peregrine（已关闭接管）" },
+
+  "menuDownload": { "message": "使用 Peregrine 下载" },
+  "menuDownloadAll": { "message": "使用 Peregrine 下载所有链接" },
+  "noLinks": { "message": "Peregrine：此页面上没有找到可下载的链接。" },
+  "confirmDownloadAll": {
+    "message": "将 $COUNT$ 个链接发送到 Peregrine？",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine 未运行，且无法启动。" },
+
+  "statusChecking": { "message": "正在检查连接…" },
+  "statusConnected": {
+    "message": "已连接到 Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "应用未运行" },
+  "statusNotInstalled": { "message": "未找到 Peregrine 应用。安装后即可接管下载。" },
+  "startApp": { "message": "启动" },
+  "starting": { "message": "正在启动…" },
+  "interception": { "message": "接管下载" },
+  "skipNext": { "message": "跳过下一个下载" },
+  "skipNextHint": { "message": "让浏览器处理下一个下载（仅一次）。" },
+  "mediaTitle": { "message": "此页面上的媒体" },
+  "mediaEmpty": { "message": "尚未检测到媒体。请播放视频或音频，然后重新打开此菜单。" },
+  "download": { "message": "下载" },
+  "streamSoon": { "message": "即将支持流媒体" },
+  "sent": { "message": "已发送" },
+  "failed": { "message": "失败" },
+  "options": { "message": "设置" },
+
+  "optionsTitle": { "message": "Peregrine 设置" },
+  "optEnabled": { "message": "接管浏览器下载" },
+  "optMinSize": { "message": "最小大小（MB）" },
+  "optMinSizeHint": {
+    "message": "达到此大小的文件即使类型不在列表中也会被接管。留空则使用应用中的设置（$SIZE$）。",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "要接管的文件类型" },
+  "optExtensionsHint": { "message": "用空格或逗号分隔，例如：zip exe mp4" },
+  "optExcluded": { "message": "从不在这些网站上接管" },
+  "optExcludedHint": { "message": "每行一个网站，例如：example.com（也包括其子域名）。" },
+  "save": { "message": "保存" },
+  "saved": { "message": "已保存" },
+  "resetDefaults": { "message": "恢复默认设置" },
+  "bypassNote": { "message": "提示：如需让浏览器处理某个下载，请打开 Peregrine 菜单并开启“跳过下一个下载”。（扩展无法检测点击时是否按住了某个键。）" },
+  "privacyNote": { "message": "下载信息只会发送到这台电脑上的 Peregrine 应用，不会发送到互联网。" }
+}
