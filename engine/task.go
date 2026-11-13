@@ -53,6 +53,8 @@ type task struct {
 	failErr   error
 	resumable bool
 
+	protoFields // resume state of non-HTTP protocols
+
 	file       *os.File
 	downloaded atomic.Int64
 	active     atomic.Int32

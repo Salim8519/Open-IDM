@@ -60,6 +60,8 @@ type Manager struct {
 	wg        sync.WaitGroup
 	stopTick  chan struct{}
 
+	protocols []Protocol // non-HTTP downloaders, newest registration first
+
 	now       func() time.Time // clock; tests replace it before any call
 	schedOpen bool             // last known schedule state
 	completed bool             // a download completed since the queue was last empty
@@ -334,16 +336,24 @@ type ProbeInfo struct {
 	Size      int64  `json:"size"`
 	Resumable bool   `json:"resumable"`
 	Category  string `json:"category"`
+	Kind      string `json:"kind,omitempty"` // downloader that will handle it ("" = http)
 }
 
 // Probe fetches name, size and resumability of a URL without downloading it.
 func (m *Manager) Probe(ctx context.Context, rawURL string, headers map[string]string) (ProbeInfo, error) {
-	if err := validateURL(rawURL); err != nil {
-		return ProbeInfo{}, err
-	}
+	rawURL = strings.TrimSpace(rawURL)
 	m.mu.Lock()
+	kind, err := m.kindForLocked(rawURL, "")
 	c, ua := m.client, m.settings.UserAgent
 	m.mu.Unlock()
+	if err != nil {
+		return ProbeInfo{}, err
+	}
+	if kind != KindHTTP {
+		// Other protocols learn name and size when they start (e.g. torrent metadata).
+		name := SanitizeFilename(filenameFrom(rawURL, "", ""))
+		return ProbeInfo{URL: rawURL, Filename: name, Size: -1, Category: Category(name), Kind: kind}, nil
+	}
 	pr, err := probe(ctx, c, rawURL, headers, ua)
 	if err != nil {
 		return ProbeInfo{}, err
@@ -374,9 +384,6 @@ func newID() string {
 // Add queues a new download.
 func (m *Manager) Add(r Request) (Download, error) {
 	r.URL = strings.TrimSpace(r.URL)
-	if err := validateURL(r.URL); err != nil {
-		return Download{}, err
-	}
 	if !ValidChecksum(r.Checksum) {
 		return Download{}, fmt.Errorf("invalid checksum %q (use e.g. sha256:<64 hex chars>)", r.Checksum)
 	}
@@ -384,6 +391,10 @@ func (m *Manager) Add(r Request) (Download, error) {
 	defer m.mu.Unlock()
 	if m.closed {
 		return Download{}, errShutdown
+	}
+	kind, err := m.kindForLocked(r.URL, r.Kind)
+	if err != nil {
+		return Download{}, err
 	}
 	name := r.Filename
 	if name == "" {
@@ -411,6 +422,9 @@ func (m *Manager) Add(r Request) (Download, error) {
 		ETA:         -1,
 		AutoName:    r.Filename == "",
 		AutoDir:     r.Dir == "",
+	}
+	if kind != KindHTTP {
+		d.Kind = kind
 	}
 	m.nextOrder++
 	m.resolveDirLocked(d)
@@ -540,9 +554,21 @@ func (m *Manager) startLocked(d *Download) {
 	snap := m.snapshotLocked(d)
 	m.emitLocked(Event{Type: EventUpdated, Download: &snap})
 	m.wg.Add(1)
+	var p Protocol
+	if d.Kind != "" && d.Kind != KindHTTP {
+		p = m.protocolLocked(d.Kind)
+	}
 	go func() {
 		defer m.wg.Done()
-		err := t.run()
+		var err error
+		switch {
+		case d.Kind != "" && d.Kind != KindHTTP && p == nil:
+			err = fmt.Errorf("download type %q is not available in this build", d.Kind)
+		case p != nil:
+			err = t.runProtocol(p)
+		default:
+			err = t.run()
+		}
 		m.finish(t, err)
 	}()
 }
@@ -558,7 +584,11 @@ func (m *Manager) finish(t *task, err error) {
 	d := m.snapshot(t.id)
 	if err == nil && d != nil {
 		// Verify and move into place outside the lock: hashing large files takes time.
-		sum, hashErr = hashFile(d.PartPath(), d.Checksum)
+		if d.IsDir {
+			sum, hashErr = "", nil // a folder has no single checksum
+		} else {
+			sum, hashErr = hashFile(d.PartPath(), d.Checksum)
+		}
 		if hashErr == nil {
 			finalPath = d.Path()
 			if exists(finalPath) { // someone created a file with our name meanwhile
@@ -567,7 +597,7 @@ func (m *Manager) finish(t *task, err error) {
 			if rerr := os.Rename(d.PartPath(), finalPath); rerr != nil {
 				hashErr = fmt.Errorf("move into place: %w", rerr)
 			} else {
-				markFromInternet(finalPath, d.URL, d.Headers["Referer"])
+				markTree(finalPath, d.URL, d.Headers["Referer"])
 			}
 		}
 	}
@@ -692,9 +722,10 @@ func (m *Manager) Restart(id string) error {
 	}
 	wasCompleted := d.Status == StatusCompleted
 	if !wasCompleted {
-		_ = os.Remove(d.PartPath())
+		_ = removePart(d)
 	}
 	d.Segments, d.Downloaded, d.ETag, d.LastMod, d.Size = nil, 0, "", "", -1
+	d.ProtoState = nil
 	d.CompletedAt, d.SHA256, d.Error = nil, "", ""
 	d.Status = StatusQueued
 	if wasCompleted {
@@ -727,9 +758,13 @@ func (m *Manager) Remove(id string, deleteFile bool) error {
 	delete(m.downloads, id)
 	_ = m.store.DeleteDownload(id)
 	if d.Status != StatusCompleted {
-		_ = os.Remove(d.PartPath()) // an unfinished part file is useless without its state
+		_ = removePart(d) // an unfinished part file is useless without its state
 	} else if deleteFile {
-		_ = os.Remove(d.Path())
+		if d.IsDir {
+			_ = os.RemoveAll(d.Path())
+		} else {
+			_ = os.Remove(d.Path())
+		}
 	}
 	m.emitLocked(Event{Type: EventRemoved, ID: id})
 	m.scheduleLocked()

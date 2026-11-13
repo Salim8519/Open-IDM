@@ -3,6 +3,7 @@
 package engine
 
 import (
+	"encoding/json"
 	"errors"
 	"time"
 )
@@ -44,6 +45,9 @@ type Request struct {
 	Checksum    string            `json:"checksum,omitempty"` // "sha256:<hex>", "md5:<hex>", ...
 	SpeedLimit  int64             `json:"speedLimit,omitempty"`
 	Paused      bool              `json:"paused,omitempty"` // add without starting
+	// Kind forces a downloader ("http", "ftp", "hls", "dash", "video", "torrent"); empty =
+	// detect from the URL (see Protocol.Match).
+	Kind string `json:"kind,omitempty"`
 }
 
 // Download is a snapshot of one download's state, safe to serialize to the UI.
@@ -74,6 +78,9 @@ type Download struct {
 	Order       int64             `json:"order"`
 	AutoName    bool              `json:"autoName,omitempty"` // name may still change after probing
 	AutoDir     bool              `json:"autoDir,omitempty"`  // folder follows settings/category
+	Kind        string            `json:"kind,omitempty"`     // downloader; "" = http
+	ProtoState  json.RawMessage   `json:"protoState,omitempty"`
+	IsDir       bool              `json:"isDir,omitempty"` // output is a folder (multi-file torrent)
 }
 
 // Path returns the final path of the file.
