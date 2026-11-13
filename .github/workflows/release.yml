@@ -67,11 +67,17 @@ jobs:
       - name: Install Wails (same version as desktop/go.mod)
         shell: bash
         run: go install github.com/wailsapp/wails/v2/cmd/wails@$(cd desktop && go list -m -f '{{.Version}}' github.com/wailsapp/wails/v2)
+      - name: Install NSIS (Wails needs makensis for the installer)
+        shell: pwsh
+        run: |
+          choco install nsis -y --no-progress
+          Add-Content -Path $env:GITHUB_PATH -Value "${env:ProgramFiles(x86)}\NSIS"
       - name: Build app + installer
         shell: bash
         working-directory: desktop
         run: |
           V="${VERSION#v}"
+          makensis -VERSION
           # The host must exist before the installer is built (project.nsi bundles it).
           mkdir -p build/bin
           CGO_ENABLED=0 go -C .. build -trimpath -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" -o desktop/build/bin/peregrine-host.exe ./cmd/peregrine-host
@@ -82,7 +88,10 @@ jobs:
         run: |
           V="${VERSION#v}"
           mkdir -p out portable/Peregrine
-          cp desktop/build/bin/*installer*.exe "out/Peregrine-${V}-windows-x64-setup.exe"
+          ls -la desktop/build/bin
+          installer=$(ls desktop/build/bin/*installer*.exe 2>/dev/null | head -1)
+          if [ -z "$installer" ]; then echo "::error::NSIS installer was not built"; exit 1; fi
+          cp "$installer" "out/Peregrine-${V}-windows-x64-setup.exe"
           cp desktop/build/bin/Peregrine.exe desktop/build/bin/peregrine-host.exe LICENSE portable/Peregrine/
           (cd portable && 7z a -tzip "../out/Peregrine-${V}-windows-x64-portable.zip" Peregrine >/dev/null)
       - uses: actions/upload-artifact@v4
