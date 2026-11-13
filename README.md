@@ -6,6 +6,7 @@
 
 <p align="center">
   <b>The fast, free, open-source download manager.</b><br>
+  A free alternative to IDM and FDM.<br>
   Multi-connection downloads · crash-proof resume · browser integration · no ads, no tracking.
 </p>
 

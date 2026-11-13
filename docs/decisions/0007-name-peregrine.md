@@ -18,6 +18,10 @@ tray (`assets/logo/peregrine.svg`). Brand colors: #2F6BFF → #22D3EE gradient, 
 - The GitHub repository keeps its URL (`Salim8519/Open-IDM`) for now; renaming it later is
   safe because GitHub redirects old URLs, but the Go module path would need updating.
 
+Confirmed by the maintainer on 2026-11-13 after reviewing "Open IDM" as the product name:
+the "IDM" trademark would put the browser-store listings at risk. Descriptions may say
+"alternative to IDM" (naming what it replaces), but the product name stays Peregrine.
+
 ## Consequences
 - Search found no existing download manager named Peregrine (2026-11-13). A formal trademark
   search was not done.
