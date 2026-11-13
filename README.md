@@ -44,7 +44,8 @@ loses progress — not on a dropped connection, not on a crash, not on a power c
 - **Secure** — no telemetry, filenames sanitized against path tricks, Mark-of-the-Web /
   quarantine on downloaded files, local API locked to 127.0.0.1 with a secret token.
 - **16 languages:** English, Arabic, Chinese (Simplified), French, German, Hindi, Indonesian, Italian, Japanese, Korean, Persian, Portuguese (Brazil), Russian, Spanish, Turkish and Urdu, with full right-to-left layout for Arabic, Persian and
-  Urdu. Light and dark themes.
+  Urdu. Light and dark themes. The browser extension speaks the same 16 languages and follows
+  your browser's language.
 - **CLI** — `peregrine get <url>` for scripts and servers (Windows, macOS, Linux).
 
 ## Install

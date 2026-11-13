@@ -15,7 +15,7 @@ the folder's contents.
 | Name | Peregrine Download Manager *(from the manifest)* |
 | Summary (≤132) | Send browser downloads and media to the Peregrine download manager on your computer. *(from the manifest)* |
 | Category | Chrome: Productivity → Tools. Edge: Productivity |
-| Languages | English, Arabic |
+| Languages | English, Arabic, Chinese (Simplified), French, German, Hindi, Indonesian, Italian, Japanese, Korean, Persian, Portuguese (Brazil), Russian, Spanish, Turkish, Urdu. Name and summary are translated automatically from `extension/_locales`; the store shows them per language. The long description below is English only for now (the stores fall back to it for other languages). |
 | Homepage | https://github.com/Salim8519/Peregrine |
 | Support | https://github.com/Salim8519/Peregrine/issues |
 | Privacy policy | https://github.com/Salim8519/Peregrine/blob/main/extension/PRIVACY.md |

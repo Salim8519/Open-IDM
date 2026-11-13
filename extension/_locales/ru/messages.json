@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Менеджер загрузок Peregrine" },
+  "extDescription": { "message": "Передаёт загрузки и медиафайлы из браузера в менеджер загрузок Peregrine на вашем компьютере." },
+  "titleOff": { "message": "Peregrine (перехват выключен)" },
+
+  "menuDownload": { "message": "Скачать с помощью Peregrine" },
+  "menuDownloadAll": { "message": "Скачать все ссылки с помощью Peregrine" },
+  "noLinks": { "message": "Peregrine: на этой странице не найдено ссылок для скачивания." },
+  "confirmDownloadAll": {
+    "message": "Отправить ссылки ($COUNT$) в Peregrine?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine не запущен, и запустить его не удалось." },
+
+  "statusChecking": { "message": "Проверка подключения…" },
+  "statusConnected": {
+    "message": "Подключено к Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "Приложение не запущено" },
+  "statusNotInstalled": { "message": "Приложение Peregrine не найдено. Установите его, чтобы перехватывать загрузки." },
+  "startApp": { "message": "Запустить" },
+  "starting": { "message": "Запуск…" },
+  "interception": { "message": "Перехватывать загрузки" },
+  "skipNext": { "message": "Пропустить следующую загрузку" },
+  "skipNextHint": { "message": "Один раз отдать следующую загрузку браузеру." },
+  "mediaTitle": { "message": "Медиа на этой странице" },
+  "mediaEmpty": { "message": "Медиа пока не найдены. Включите видео или аудио и снова откройте это меню." },
+  "download": { "message": "Скачать" },
+  "streamSoon": { "message": "Поддержка потоков скоро появится" },
+  "sent": { "message": "Отправлено" },
+  "failed": { "message": "Ошибка" },
+  "options": { "message": "Настройки" },
+
+  "optionsTitle": { "message": "Настройки Peregrine" },
+  "optEnabled": { "message": "Перехватывать загрузки браузера" },
+  "optMinSize": { "message": "Минимальный размер (МБ)" },
+  "optMinSizeHint": {
+    "message": "Файлы не меньше этого размера перехватываются, даже если их типа нет в списке. Оставьте пустым, чтобы использовать настройку приложения ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Типы файлов для перехвата" },
+  "optExtensionsHint": { "message": "Через пробел или запятую, например: zip exe mp4" },
+  "optExcluded": { "message": "Никогда не перехватывать на этих сайтах" },
+  "optExcludedHint": { "message": "По одному сайту в строке, например: example.com (включая его поддомены)." },
+  "save": { "message": "Сохранить" },
+  "saved": { "message": "Сохранено" },
+  "resetDefaults": { "message": "Восстановить значения по умолчанию" },
+  "bypassNote": { "message": "Совет: чтобы браузер сам скачал один файл, откройте меню Peregrine и включите «Пропустить следующую загрузку». (Расширения не могут определить, удерживается ли клавиша при щелчке.)" },
+  "privacyNote": { "message": "Сведения о загрузках отправляются только в приложение Peregrine на этом компьютере. В интернет ничего не отправляется." }
+}

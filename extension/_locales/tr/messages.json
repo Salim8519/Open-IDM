@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine İndirme Yöneticisi" },
+  "extDescription": { "message": "Tarayıcı indirmelerini ve medyayı bilgisayarınızdaki Peregrine indirme yöneticisine gönderir." },
+  "titleOff": { "message": "Peregrine (yakalama kapalı)" },
+
+  "menuDownload": { "message": "Peregrine ile indir" },
+  "menuDownloadAll": { "message": "Tüm bağlantıları Peregrine ile indir" },
+  "noLinks": { "message": "Peregrine: bu sayfada indirilebilir bağlantı bulunamadı." },
+  "confirmDownloadAll": {
+    "message": "$COUNT$ bağlantı Peregrine’e gönderilsin mi?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine çalışmıyor ve başlatılamadı." },
+
+  "statusChecking": { "message": "Bağlantı denetleniyor…" },
+  "statusConnected": {
+    "message": "Peregrine v$VERSION$ ile bağlı",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "Uygulama çalışmıyor" },
+  "statusNotInstalled": { "message": "Peregrine uygulaması bulunamadı. İndirmeleri yakalamak için uygulamayı yükleyin." },
+  "startApp": { "message": "Başlat" },
+  "starting": { "message": "Başlatılıyor…" },
+  "interception": { "message": "İndirmeleri yakala" },
+  "skipNext": { "message": "Sonraki indirmeyi atla" },
+  "skipNextHint": { "message": "Sonraki indirmeyi bir kez tarayıcıya bırak." },
+  "mediaTitle": { "message": "Bu sayfadaki medya" },
+  "mediaEmpty": { "message": "Henüz medya algılanmadı. Videoyu veya sesi oynatın, ardından bu menüyü yeniden açın." },
+  "download": { "message": "İndir" },
+  "streamSoon": { "message": "Akış desteği yakında" },
+  "sent": { "message": "Gönderildi" },
+  "failed": { "message": "Başarısız" },
+  "options": { "message": "Ayarlar" },
+
+  "optionsTitle": { "message": "Peregrine ayarları" },
+  "optEnabled": { "message": "Tarayıcı indirmelerini yakala" },
+  "optMinSize": { "message": "En küçük boyut (MB)" },
+  "optMinSizeHint": {
+    "message": "En az bu boyuttaki dosyalar, türleri listede olmasa da yakalanır. Uygulama ayarını ($SIZE$) kullanmak için boş bırakın.",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Yakalanacak dosya türleri" },
+  "optExtensionsHint": { "message": "Boşluk veya virgülle ayırın, örneğin: zip exe mp4" },
+  "optExcluded": { "message": "Bu sitelerde asla yakalama" },
+  "optExcludedHint": { "message": "Her satıra bir site, örneğin: example.com (alt alan adlarını da kapsar)." },
+  "save": { "message": "Kaydet" },
+  "saved": { "message": "Kaydedildi" },
+  "resetDefaults": { "message": "Varsayılanları geri yükle" },
+  "bypassNote": { "message": "İpucu: bir indirmeyi tarayıcıya bırakmak için Peregrine menüsünü açın ve “Sonraki indirmeyi atla” seçeneğini açın. (Tıklarken bir tuşa basılı tutulduğunu uzantılar algılayamaz.)" },
+  "privacyNote": { "message": "İndirme ayrıntıları yalnızca bu bilgisayardaki Peregrine uygulamasına gönderilir. İnternete hiçbir şey gönderilmez." }
+}

@@ -19,6 +19,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 - **14 more languages:** Chinese (Simplified), French, German, Hindi, Indonesian, Italian,
   Japanese, Korean, Persian, Portuguese (Brazil), Russian, Spanish, Turkish and Urdu (Persian
   and Urdu right-to-left). Machine-assisted; corrections from native speakers are welcome.
+- **Browser extension in 16 languages:** the 14 new app languages (Chinese (Simplified),
+  French, German, Hindi, Indonesian, Italian, Japanese, Korean, Persian, Portuguese (Brazil),
+  Russian, Spanish, Turkish, Urdu) now also translate the extension's menus, popup and
+  settings, following the browser's language (Persian and Urdu right-to-left).
 
 ### Changed
 - Toolbar buttons show clearly when they can be used: disabled buttons are faded, usable

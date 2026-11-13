@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine – gestionnaire de téléchargements" },
+  "extDescription": { "message": "Envoie les téléchargements et médias du navigateur au gestionnaire de téléchargements Peregrine de votre ordinateur." },
+  "titleOff": { "message": "Peregrine (capture désactivée)" },
+
+  "menuDownload": { "message": "Télécharger avec Peregrine" },
+  "menuDownloadAll": { "message": "Télécharger tous les liens avec Peregrine" },
+  "noLinks": { "message": "Peregrine : aucun lien téléchargeable trouvé sur cette page." },
+  "confirmDownloadAll": {
+    "message": "Envoyer $COUNT$ liens à Peregrine ?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine n’est pas lancé et n’a pas pu être démarré." },
+
+  "statusChecking": { "message": "Vérification de la connexion…" },
+  "statusConnected": {
+    "message": "Connecté à Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "L’application n’est pas lancée" },
+  "statusNotInstalled": { "message": "Application Peregrine introuvable. Installez-la pour capturer les téléchargements." },
+  "startApp": { "message": "Démarrer" },
+  "starting": { "message": "Démarrage…" },
+  "interception": { "message": "Capturer les téléchargements" },
+  "skipNext": { "message": "Ignorer le prochain téléchargement" },
+  "skipNextHint": { "message": "Laisser le navigateur gérer le prochain téléchargement, une seule fois." },
+  "mediaTitle": { "message": "Médias de cette page" },
+  "mediaEmpty": { "message": "Aucun média détecté pour l’instant. Lancez la vidéo ou l’audio, puis rouvrez ce menu." },
+  "download": { "message": "Télécharger" },
+  "streamSoon": { "message": "Prise en charge des flux bientôt disponible" },
+  "sent": { "message": "Envoyé" },
+  "failed": { "message": "Échec" },
+  "options": { "message": "Paramètres" },
+
+  "optionsTitle": { "message": "Paramètres de Peregrine" },
+  "optEnabled": { "message": "Capturer les téléchargements du navigateur" },
+  "optMinSize": { "message": "Taille minimale (Mo)" },
+  "optMinSizeHint": {
+    "message": "Les fichiers d’au moins cette taille sont capturés même si leur type n’est pas dans la liste. Laissez vide pour utiliser le réglage de l’application ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Types de fichiers à capturer" },
+  "optExtensionsHint": { "message": "Séparés par des espaces ou des virgules, par exemple : zip exe mp4" },
+  "optExcluded": { "message": "Ne jamais capturer sur ces sites" },
+  "optExcludedHint": { "message": "Un site par ligne, par exemple : example.com (ses sous-domaines sont aussi concernés)." },
+  "save": { "message": "Enregistrer" },
+  "saved": { "message": "Enregistré" },
+  "resetDefaults": { "message": "Rétablir les valeurs par défaut" },
+  "bypassNote": { "message": "Astuce : pour laisser le navigateur gérer un téléchargement, ouvrez le menu de Peregrine et activez « Ignorer le prochain téléchargement ». (Les extensions ne peuvent pas détecter une touche maintenue pendant le clic.)" },
+  "privacyNote": { "message": "Les informations de téléchargement sont envoyées uniquement à l’application Peregrine de cet ordinateur. Rien n’est envoyé sur Internet." }
+}

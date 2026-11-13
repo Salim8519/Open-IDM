@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "مدیر دانلود Peregrine" },
+  "extDescription": { "message": "دانلودها و رسانه‌های مرورگر را به مدیر دانلود Peregrine روی رایانهٔ شما می‌فرستد." },
+  "titleOff": { "message": "Peregrine (گرفتن دانلود خاموش)" },
+
+  "menuDownload": { "message": "دانلود با Peregrine" },
+  "menuDownloadAll": { "message": "دانلود همهٔ پیوندها با Peregrine" },
+  "noLinks": { "message": "Peregrine: هیچ پیوند قابل دانلودی در این صفحه پیدا نشد." },
+  "confirmDownloadAll": {
+    "message": "$COUNT$ پیوند به Peregrine فرستاده شود؟",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine در حال اجرا نیست و نتوانست اجرا شود." },
+
+  "statusChecking": { "message": "در حال بررسی اتصال…" },
+  "statusConnected": {
+    "message": "متصل به Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "برنامه در حال اجرا نیست" },
+  "statusNotInstalled": { "message": "برنامهٔ Peregrine پیدا نشد. برای گرفتن دانلودها آن را نصب کنید." },
+  "startApp": { "message": "اجرا" },
+  "starting": { "message": "در حال اجرا…" },
+  "interception": { "message": "گرفتن دانلودها" },
+  "skipNext": { "message": "رد کردن دانلود بعدی" },
+  "skipNextHint": { "message": "دانلود بعدی را یک بار به خود مرورگر بسپارید." },
+  "mediaTitle": { "message": "رسانه‌های این صفحه" },
+  "mediaEmpty": { "message": "هنوز رسانه‌ای پیدا نشده است. ویدیو یا صدا را پخش کنید و سپس این منو را دوباره باز کنید." },
+  "download": { "message": "دانلود" },
+  "streamSoon": { "message": "پشتیبانی از استریم به‌زودی" },
+  "sent": { "message": "فرستاده شد" },
+  "failed": { "message": "ناموفق" },
+  "options": { "message": "تنظیمات" },
+
+  "optionsTitle": { "message": "تنظیمات Peregrine" },
+  "optEnabled": { "message": "گرفتن دانلودهای مرورگر" },
+  "optMinSize": { "message": "حداقل حجم (مگابایت)" },
+  "optMinSizeHint": {
+    "message": "فایل‌هایی که دست‌کم این حجم را دارند گرفته می‌شوند، حتی اگر نوعشان در فهرست نباشد. برای استفاده از تنظیم برنامه ($SIZE$) خالی بگذارید.",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "نوع فایل‌هایی که گرفته شوند" },
+  "optExtensionsHint": { "message": "با فاصله یا ویرگول جدا کنید، مثلاً: zip exe mp4" },
+  "optExcluded": { "message": "هرگز در این سایت‌ها نگیر" },
+  "optExcludedHint": { "message": "هر سایت در یک خط، مثلاً: example.com (زیردامنه‌هایش را هم شامل می‌شود)." },
+  "save": { "message": "ذخیره" },
+  "saved": { "message": "ذخیره شد" },
+  "resetDefaults": { "message": "بازگردانی پیش‌فرض‌ها" },
+  "bypassNote": { "message": "نکته: برای اینکه یک دانلود را خود مرورگر انجام دهد، منوی Peregrine را باز کنید و «رد کردن دانلود بعدی» را روشن کنید. (افزونه‌ها نمی‌توانند تشخیص دهند که هنگام کلیک کلیدی نگه داشته شده است.)" },
+  "privacyNote": { "message": "جزئیات دانلود فقط به برنامهٔ Peregrine روی همین رایانه فرستاده می‌شود. هیچ چیزی به اینترنت فرستاده نمی‌شود." }
+}

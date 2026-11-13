@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine – gestore di download" },
+  "extDescription": { "message": "Invia i download e i contenuti multimediali del browser al gestore di download Peregrine sul tuo computer." },
+  "titleOff": { "message": "Peregrine (intercettazione disattivata)" },
+
+  "menuDownload": { "message": "Scarica con Peregrine" },
+  "menuDownloadAll": { "message": "Scarica tutti i link con Peregrine" },
+  "noLinks": { "message": "Peregrine: nessun link scaricabile trovato in questa pagina." },
+  "confirmDownloadAll": {
+    "message": "Inviare $COUNT$ link a Peregrine?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine non è in esecuzione e non è stato possibile avviarlo." },
+
+  "statusChecking": { "message": "Verifica della connessione…" },
+  "statusConnected": {
+    "message": "Connesso a Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "App non in esecuzione" },
+  "statusNotInstalled": { "message": "App Peregrine non trovata. Installala per intercettare i download." },
+  "startApp": { "message": "Avvia" },
+  "starting": { "message": "Avvio…" },
+  "interception": { "message": "Intercetta i download" },
+  "skipNext": { "message": "Salta il prossimo download" },
+  "skipNextHint": { "message": "Lascia gestire al browser il prossimo download, una sola volta." },
+  "mediaTitle": { "message": "Contenuti multimediali della pagina" },
+  "mediaEmpty": { "message": "Nessun contenuto rilevato finora. Avvia il video o l’audio, poi riapri questo menu." },
+  "download": { "message": "Scarica" },
+  "streamSoon": { "message": "Supporto per gli stream in arrivo" },
+  "sent": { "message": "Inviato" },
+  "failed": { "message": "Non riuscito" },
+  "options": { "message": "Impostazioni" },
+
+  "optionsTitle": { "message": "Impostazioni di Peregrine" },
+  "optEnabled": { "message": "Intercetta i download del browser" },
+  "optMinSize": { "message": "Dimensione minima (MB)" },
+  "optMinSizeHint": {
+    "message": "I file di almeno questa dimensione vengono intercettati anche se il loro tipo non è nell’elenco. Lascia vuoto per usare l’impostazione dell’app ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Tipi di file da intercettare" },
+  "optExtensionsHint": { "message": "Separati da spazi o virgole, per esempio: zip exe mp4" },
+  "optExcluded": { "message": "Non intercettare mai su questi siti" },
+  "optExcludedHint": { "message": "Un sito per riga, per esempio: example.com (vale anche per i suoi sottodomini)." },
+  "save": { "message": "Salva" },
+  "saved": { "message": "Salvato" },
+  "resetDefaults": { "message": "Ripristina predefiniti" },
+  "bypassNote": { "message": "Suggerimento: per lasciare un download al browser, apri il menu di Peregrine e attiva «Salta il prossimo download». (Le estensioni non possono rilevare un tasto tenuto premuto durante il clic.)" },
+  "privacyNote": { "message": "I dettagli dei download vengono inviati solo all’app Peregrine su questo computer. Nulla viene inviato su Internet." }
+}

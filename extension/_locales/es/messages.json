@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Gestor de descargas Peregrine" },
+  "extDescription": { "message": "Envía las descargas y los archivos multimedia del navegador al gestor de descargas Peregrine de tu ordenador." },
+  "titleOff": { "message": "Peregrine (captura desactivada)" },
+
+  "menuDownload": { "message": "Descargar con Peregrine" },
+  "menuDownloadAll": { "message": "Descargar todos los enlaces con Peregrine" },
+  "noLinks": { "message": "Peregrine: no se encontraron enlaces descargables en esta página." },
+  "confirmDownloadAll": {
+    "message": "¿Enviar $COUNT$ enlaces a Peregrine?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine no se está ejecutando y no se pudo iniciar." },
+
+  "statusChecking": { "message": "Comprobando la conexión…" },
+  "statusConnected": {
+    "message": "Conectado a Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "La aplicación no se está ejecutando" },
+  "statusNotInstalled": { "message": "No se encontró la aplicación Peregrine. Instálala para capturar descargas." },
+  "startApp": { "message": "Iniciar" },
+  "starting": { "message": "Iniciando…" },
+  "interception": { "message": "Capturar descargas" },
+  "skipNext": { "message": "Omitir la próxima descarga" },
+  "skipNextHint": { "message": "Deja que el navegador gestione la próxima descarga una vez." },
+  "mediaTitle": { "message": "Multimedia en esta página" },
+  "mediaEmpty": { "message": "Aún no se ha detectado contenido multimedia. Reproduce el vídeo o el audio y vuelve a abrir este menú." },
+  "download": { "message": "Descargar" },
+  "streamSoon": { "message": "Compatibilidad con streams próximamente" },
+  "sent": { "message": "Enviado" },
+  "failed": { "message": "Error" },
+  "options": { "message": "Configuración" },
+
+  "optionsTitle": { "message": "Configuración de Peregrine" },
+  "optEnabled": { "message": "Capturar descargas del navegador" },
+  "optMinSize": { "message": "Tamaño mínimo (MB)" },
+  "optMinSizeHint": {
+    "message": "Los archivos de al menos este tamaño se capturan aunque su tipo no esté en la lista. Déjalo vacío para usar el ajuste de la aplicación ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Tipos de archivo que capturar" },
+  "optExtensionsHint": { "message": "Separados por espacios o comas, por ejemplo: zip exe mp4" },
+  "optExcluded": { "message": "No capturar nunca en estos sitios" },
+  "optExcludedHint": { "message": "Un sitio por línea, por ejemplo: example.com (también abarca sus subdominios)." },
+  "save": { "message": "Guardar" },
+  "saved": { "message": "Guardado" },
+  "resetDefaults": { "message": "Restablecer valores predeterminados" },
+  "bypassNote": { "message": "Consejo: para que el navegador gestione una descarga, abre el menú de Peregrine y activa «Omitir la próxima descarga». (Las extensiones no pueden detectar si se mantiene pulsada una tecla al hacer clic.)" },
+  "privacyNote": { "message": "Los datos de las descargas solo se envían a la aplicación Peregrine de este ordenador. No se envía nada a internet." }
+}

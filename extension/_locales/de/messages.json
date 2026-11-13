@@ -1,0 +1,51 @@
+{
+  "extName": { "message": "Peregrine Download-Manager" },
+  "extDescription": { "message": "Sendet Browser-Downloads und Medien an den Peregrine Download-Manager auf Ihrem Computer." },
+  "titleOff": { "message": "Peregrine (Übernahme aus)" },
+
+  "menuDownload": { "message": "Mit Peregrine herunterladen" },
+  "menuDownloadAll": { "message": "Alle Links mit Peregrine herunterladen" },
+  "noLinks": { "message": "Peregrine: Auf dieser Seite wurden keine herunterladbaren Links gefunden." },
+  "confirmDownloadAll": {
+    "message": "$COUNT$ Links an Peregrine senden?",
+    "placeholders": { "count": { "content": "$1", "example": "12" } }
+  },
+  "appUnavailable": { "message": "Peregrine läuft nicht und konnte nicht gestartet werden." },
+
+  "statusChecking": { "message": "Verbindung wird geprüft…" },
+  "statusConnected": {
+    "message": "Verbunden mit Peregrine v$VERSION$",
+    "placeholders": { "version": { "content": "$1", "example": "0.1.0" } }
+  },
+  "statusNotRunning": { "message": "App läuft nicht" },
+  "statusNotInstalled": { "message": "Peregrine-App nicht gefunden. Installieren Sie sie, um Downloads zu übernehmen." },
+  "startApp": { "message": "Starten" },
+  "starting": { "message": "Wird gestartet…" },
+  "interception": { "message": "Downloads übernehmen" },
+  "skipNext": { "message": "Nächsten Download überspringen" },
+  "skipNextHint": { "message": "Den nächsten Download einmalig dem Browser überlassen." },
+  "mediaTitle": { "message": "Medien auf dieser Seite" },
+  "mediaEmpty": { "message": "Noch keine Medien erkannt. Spielen Sie das Video oder Audio ab und öffnen Sie dieses Menü erneut." },
+  "download": { "message": "Herunterladen" },
+  "streamSoon": { "message": "Stream-Unterstützung folgt bald" },
+  "sent": { "message": "Gesendet" },
+  "failed": { "message": "Fehlgeschlagen" },
+  "options": { "message": "Einstellungen" },
+
+  "optionsTitle": { "message": "Peregrine-Einstellungen" },
+  "optEnabled": { "message": "Browser-Downloads übernehmen" },
+  "optMinSize": { "message": "Mindestgröße (MB)" },
+  "optMinSizeHint": {
+    "message": "Dateien ab dieser Größe werden übernommen, auch wenn ihr Typ nicht aufgeführt ist. Leer lassen, um die Einstellung der App zu verwenden ($SIZE$).",
+    "placeholders": { "size": { "content": "$1", "example": "1 MB" } }
+  },
+  "optExtensions": { "message": "Zu übernehmende Dateitypen" },
+  "optExtensionsHint": { "message": "Durch Leerzeichen oder Kommas getrennt, zum Beispiel: zip exe mp4" },
+  "optExcluded": { "message": "Auf diesen Websites nie übernehmen" },
+  "optExcludedHint": { "message": "Eine Website pro Zeile, zum Beispiel: example.com (gilt auch für ihre Subdomains)." },
+  "save": { "message": "Speichern" },
+  "saved": { "message": "Gespeichert" },
+  "resetDefaults": { "message": "Standardwerte wiederherstellen" },
+  "bypassNote": { "message": "Tipp: Um einen Download dem Browser zu überlassen, öffnen Sie das Peregrine-Menü und schalten Sie „Nächsten Download überspringen“ ein. (Erweiterungen können nicht erkennen, ob beim Klicken eine Taste gedrückt wird.)" },
+  "privacyNote": { "message": "Download-Details werden nur an die Peregrine-App auf diesem Computer gesendet. Nichts wird ins Internet gesendet." }
+}
