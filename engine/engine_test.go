@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/internal/testsrv"
+	"github.com/Salim8519/Peregrine/internal/testsrv"
 )
 
 func newTestManager(t *testing.T, dbPath string, mutate func(*Settings)) *Manager {

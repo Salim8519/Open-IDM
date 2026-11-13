@@ -43,7 +43,7 @@ jobs:
             name="peregrine-cli-${V}-${os}-${arch}"
             mkdir -p "build/$name"
             CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath \
-              -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" \
+              -ldflags "-s -w -X github.com/Salim8519/Peregrine/engine.Version=${V}" \
               -o "build/$name/peregrine${ext}" ./cmd/peregrine
             cp LICENSE README.md "build/$name/"
             if [ "$os" = windows ]; then (cd build && zip -qr "../out/$name.zip" "$name"); else tar -C build -czf "out/$name.tar.gz" "$name"; fi
@@ -81,9 +81,9 @@ jobs:
           # The host must exist before the installer is built (project.nsi bundles it).
           mkdir -p build/bin
           bash ../scripts/stage-extension.sh build/bin/extension
-          CGO_ENABLED=0 go -C .. build -trimpath -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" -o desktop/build/bin/peregrine-host.exe ./cmd/peregrine-host
+          CGO_ENABLED=0 go -C .. build -trimpath -ldflags "-s -w -X github.com/Salim8519/Peregrine/engine.Version=${V}" -o desktop/build/bin/peregrine-host.exe ./cmd/peregrine-host
           wails build -platform windows/amd64 -nsis -webview2 download \
-            -ldflags "-X github.com/Salim8519/Open-IDM/engine.Version=${V}"
+            -ldflags "-X github.com/Salim8519/Peregrine/engine.Version=${V}"
       - name: Package
         shell: bash
         run: |
@@ -118,13 +118,13 @@ jobs:
         working-directory: desktop
         run: |
           V="${VERSION#v}"
-          wails build -clean -platform darwin/universal -ldflags "-X github.com/Salim8519/Open-IDM/engine.Version=${V}"
+          wails build -clean -platform darwin/universal -ldflags "-X github.com/Salim8519/Peregrine/engine.Version=${V}"
       - name: Add native messaging host + sign ad-hoc
         run: |
           V="${VERSION#v}"
           APP=desktop/build/bin/Peregrine.app
           for arch in amd64 arm64; do
-            CGO_ENABLED=0 GOOS=darwin GOARCH=$arch go build -trimpath -ldflags "-s -w -X github.com/Salim8519/Open-IDM/engine.Version=${V}" -o /tmp/peregrine-host-$arch ./cmd/peregrine-host
+            CGO_ENABLED=0 GOOS=darwin GOARCH=$arch go build -trimpath -ldflags "-s -w -X github.com/Salim8519/Peregrine/engine.Version=${V}" -o /tmp/peregrine-host-$arch ./cmd/peregrine-host
           done
           lipo -create -output "$APP/Contents/MacOS/peregrine-host" /tmp/peregrine-host-amd64 /tmp/peregrine-host-arm64
           bash scripts/stage-extension.sh "$APP/Contents/Resources/extension"
@@ -152,6 +152,9 @@ jobs:
           mkdir -p out
           bash scripts/stage-extension.sh stage
           (cd stage && zip -qr "../out/Peregrine-${V}-chromium-extension.zip" .)
+          # Same files without the manifest "key": upload this one to Chrome Web Store / Edge Add-ons.
+          bash scripts/stage-extension.sh stage-store --store
+          (cd stage-store && zip -qr "../out/Peregrine-${V}-chromium-store-upload.zip" .)
       - uses: actions/upload-artifact@v4
         with:
           name: extension
@@ -178,7 +181,7 @@ jobs:
           cat SHA256SUMS.txt
       - name: Attest build provenance
         # Signed statement that every file was built by this workflow from this commit.
-        # Verify with: gh attestation verify <file> -R Salim8519/Open-IDM
+        # Verify with: gh attestation verify <file> -R Salim8519/Peregrine
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: "artifacts/*"

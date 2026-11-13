@@ -4,11 +4,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.1.1] - 2026-11-13
+
 ### Added
+- **Store-ready extension package:** `Peregrine-<version>-chromium-store-upload.zip` (no
+  manifest key) plus the full listing, permission justifications and images in `docs/store/`.
 - **"Connect your browser" guide** on first launch: opens the extensions page of Chrome, Edge
   or Brave, shows the bundled extension folder for *Load unpacked*, and turns green by itself
   when the extension connects. Reopen it from Settings → Browser & clipboard.
 - The installer, portable zip and macOS app now include the unpacked extension.
+
+### Changed
+- The repository is now `github.com/Salim8519/Peregrine` (old links redirect).
 
 ## [0.1.0] - 2026-11-13
 First public preview. Windows and macOS builds are not code-signed yet.

@@ -1,4 +1,4 @@
-module github.com/Salim8519/Open-IDM
+module github.com/Salim8519/Peregrine
 
 go 1.27.4
 

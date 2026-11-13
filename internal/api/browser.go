@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/engine"
+	"github.com/Salim8519/Peregrine/engine"
 )
 
 // ExtensionID is the fixed ID of the Peregrine Chromium extension (from the "key" in

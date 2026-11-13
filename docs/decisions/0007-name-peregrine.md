@@ -15,8 +15,9 @@ tray (`assets/logo/peregrine.svg`). Brand colors: #2F6BFF → #22D3EE gradient, 
 
 - Binaries: `Peregrine` (desktop app), `peregrine` (CLI), `peregrine-host` (native messaging).
 - Native messaging host name: `com.peregrine.host`. Data folder: `<config>/Peregrine`.
-- The GitHub repository keeps its URL (`Salim8519/Open-IDM`) for now; renaming it later is
-  safe because GitHub redirects old URLs, but the Go module path would need updating.
+- The GitHub repository was renamed from `Salim8519/Open-IDM` to `Salim8519/Peregrine` on
+  2026-11-13 (maintainer's request); GitHub redirects the old URLs. The Go module path is now
+  `github.com/Salim8519/Peregrine`.
 
 Confirmed by the maintainer on 2026-11-13 after reviewing "Open IDM" as the product name:
 the "IDM" trademark would put the browser-store listings at risk. Descriptions may say

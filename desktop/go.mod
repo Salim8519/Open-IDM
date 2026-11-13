@@ -1,9 +1,9 @@
-module github.com/Salim8519/Open-IDM/desktop
+module github.com/Salim8519/Peregrine/desktop
 
 go 1.27.4
 
 require (
-	github.com/Salim8519/Open-IDM v0.0.0
+	github.com/Salim8519/Peregrine v0.0.0
 	github.com/wailsapp/wails/v2 v2.17.1
 )
 
@@ -46,4 +46,4 @@ require (
 	modernc.org/sqlite v1.62.0 // indirect
 )
 
-replace github.com/Salim8519/Open-IDM => ../
+replace github.com/Salim8519/Peregrine => ../

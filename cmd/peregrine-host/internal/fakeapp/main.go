@@ -16,12 +16,13 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Salim8519/Open-IDM/internal/api"
+	"github.com/Salim8519/Peregrine/internal/api"
 )
 
 func main() {
 	record := flag.String("record", "", "append received calls to this JSON-lines file")
 	minSize := flag.Int64("min-size", 1<<20, "minExtSize reported by getSettings")
+	version := flag.String("version", "9.9.9-fake", "version reported to the extension")
 	flag.Parse()
 	if os.Getenv("PEREGRINE_HOME") == "" {
 		fmt.Fprintln(os.Stderr, "fakeapp: PEREGRINE_HOME must be set (refusing to touch the real config dir)")
@@ -56,7 +57,7 @@ func main() {
 		var result any
 		switch req.Method {
 		case "version":
-			result = map[string]string{"version": "9.9.9-fake"}
+			result = map[string]string{"version": *version}
 		case "getSettings":
 			result = map[string]any{"minExtSize": *minSize, "autoStartExt": false, "language": "en", "downloadDir": "C:\\secret", "proxy": "http://user:pw@proxy"}
 		case "capture":

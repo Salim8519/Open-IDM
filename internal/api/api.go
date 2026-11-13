@@ -14,7 +14,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/engine"
+	"github.com/Salim8519/Peregrine/engine"
 )
 
 // Hooks lets the host app provide platform actions. Any field may be nil.

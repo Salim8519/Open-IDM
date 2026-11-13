@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/engine"
-	"github.com/Salim8519/Open-IDM/internal/api"
+	"github.com/Salim8519/Peregrine/engine"
+	"github.com/Salim8519/Peregrine/internal/api"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )

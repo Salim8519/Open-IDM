@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Salim8519/Open-IDM/engine"
+	"github.com/Salim8519/Peregrine/engine"
 )
 
 func newService(t *testing.T, hooks Hooks) *Service {

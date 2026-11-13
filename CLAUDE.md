@@ -1,6 +1,6 @@
 # CLAUDE.md — rules for every AI session
 
-Peregrine (repo: Salim8519/Open-IDM; the name is settled in ADR 0007)
+Peregrine (repo: Salim8519/Peregrine; the name is settled in ADR 0007)
 is a free, open-source, fast, secure download manager for Windows and macOS, plus a
 Chromium browser extension (ADR 0005). It is a vibe-coded project: these docs are the
 project's memory.

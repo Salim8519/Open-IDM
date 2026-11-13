@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/internal/api"
+	"github.com/Salim8519/Peregrine/internal/api"
 )
 
 func main() {

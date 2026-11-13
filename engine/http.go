@@ -14,7 +14,7 @@ import (
 )
 
 // DefaultUserAgent is sent when neither the request nor settings provide one.
-var DefaultUserAgent = "Mozilla/5.0 (compatible; Peregrine/" + Version + "; +https://github.com/Salim8519/Open-IDM)"
+var DefaultUserAgent = "Mozilla/5.0 (compatible; Peregrine/" + Version + "; +https://github.com/Salim8519/Peregrine)"
 
 // Version is the engine version, overridden at build time with -ldflags.
 var Version = "0.1.0"

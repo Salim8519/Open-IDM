@@ -18,9 +18,9 @@ import (
 	"os/signal"
 	"path/filepath"
 
-	"github.com/Salim8519/Open-IDM/engine"
-	"github.com/Salim8519/Open-IDM/internal/api"
-	"github.com/Salim8519/Open-IDM/internal/testsrv"
+	"github.com/Salim8519/Peregrine/engine"
+	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/testsrv"
 )
 
 func main() {

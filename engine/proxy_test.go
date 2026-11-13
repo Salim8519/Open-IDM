@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/internal/testsrv"
+	"github.com/Salim8519/Peregrine/internal/testsrv"
 )
 
 // TestHTTPProxy routes a segmented download through a forward proxy.

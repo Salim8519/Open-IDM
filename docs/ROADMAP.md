@@ -30,7 +30,7 @@ bottom; a phase is done when every box is ticked and CI is green on Windows and 
 - [ ] Benchmark: saturate 1 Gbps locally; compare with aria2, IDM and FDM on real servers (next)
 
 ## Phase 2 — Desktop app (Windows + macOS)
-v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Open-IDM/releases/tag/v0.1.0
+v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Peregrine/releases/tag/v0.1.0
 - [x] Wails + React shell, engine wired in
 - [x] Main list, add dialog, batch add
 - [x] Categories and folders (Q4), duplicate handling (Q5)
@@ -57,7 +57,8 @@ v0.1.0 preview released 2026-11-13 (unsigned): https://github.com/Salim8519/Open
 - [x] Context menu: "Download with Peregrine", "Download all links"
 - [x] Media detection popup (direct video; HLS/DASH listed, download in Phase 4)
 - [x] First-run "Connect your browser" guide; extension bundled with the app (ADR 0009)
-- [ ] Publish: Chrome Web Store, Edge Add-ons (then installer adds store entries so the browser offers the extension itself, ADR 0009)
+- [x] Store package and listing ready (`docs/store/LISTING.md`)
+- [ ] Publish: Chrome Web Store, Edge Add-ons — maintainer uploads (then installer adds store entries so the browser offers the extension itself, ADR 0009)
 - [ ] **v1.0 release**
 
 ## Phase 4 — Video and torrent

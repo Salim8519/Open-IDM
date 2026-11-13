@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Please **do not open a public issue** for security problems. Use GitHub's private
-[security advisory form](https://github.com/Salim8519/Open-IDM/security/advisories/new) instead.
+[security advisory form](https://github.com/Salim8519/Peregrine/security/advisories/new) instead.
 Include what you found, how to reproduce it and the affected version. You will get a reply
 as soon as possible; fixes for confirmed issues ship in a patch release with credit to the
 reporter unless you prefer otherwise.
@@ -20,7 +20,7 @@ machine — and comes with:
 - `SHA256SUMS.txt` — check the file was not corrupted or swapped:
   `sha256sum -c SHA256SUMS.txt --ignore-missing` (or `Get-FileHash` on Windows).
 - A signed **build provenance attestation** proving which workflow and commit produced it:
-  `gh attestation verify <file> -R Salim8519/Open-IDM`
+  `gh attestation verify <file> -R Salim8519/Peregrine`
 
 If either check fails, do not run the file and please report it.
 

@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Salim8519/Open-IDM/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Salim8519/Open-IDM?include_prereleases&label=download&color=2F6BFF"></a>
-  <a href="https://github.com/Salim8519/Open-IDM/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Salim8519/Open-IDM/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/Salim8519/Peregrine/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Salim8519/Peregrine?include_prereleases&label=download&color=2F6BFF"></a>
+  <a href="https://github.com/Salim8519/Peregrine/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Salim8519/Peregrine/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-22D3EE"></a>
 </p>
 
@@ -48,7 +48,7 @@ loses progress — not on a dropped connection, not on a crash, not on a power c
 
 ## Install
 
-Download from the [latest release](https://github.com/Salim8519/Open-IDM/releases/latest):
+Download from the [latest release](https://github.com/Salim8519/Peregrine/releases/latest):
 
 | Platform | File |
 |---|---|
@@ -105,7 +105,7 @@ This project is built with AI assistance ("vibe-coded") with strict rules — se
 ## Security
 
 Verify downloads with `SHA256SUMS.txt` and the signed build provenance
-(`gh attestation verify <file> -R Salim8519/Open-IDM`). How Peregrine is protected and how to
+(`gh attestation verify <file> -R Salim8519/Peregrine`). How Peregrine is protected and how to
 report a vulnerability: [SECURITY.md](SECURITY.md) · threat model: [docs/SECURITY-MODEL.md](docs/SECURITY-MODEL.md).
 
 ## Privacy

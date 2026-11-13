@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Salim8519/Open-IDM/engine"
-	"github.com/Salim8519/Open-IDM/internal/api"
+	"github.com/Salim8519/Peregrine/engine"
+	"github.com/Salim8519/Peregrine/internal/api"
 )
 
 // hostVersion is the native messaging host version (set with -ldflags at release time).
