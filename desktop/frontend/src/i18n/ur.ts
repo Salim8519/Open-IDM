@@ -215,4 +215,11 @@ export const ur: Strings = {
   "power.sleep": "کمپیوٹر {n} سیکنڈ میں سلیپ موڈ میں چلا جائے گا۔",
   "power.shutdown": "کمپیوٹر {n} سیکنڈ میں بند ہو جائے گا۔",
   "power.cancel": "منسوخ کریں",
+  "kind.torrent": "ٹورینٹ",
+  "kind.video": "ویڈیو سائٹ",
+  "kind.hls": "اسٹریم (HLS)",
+  "kind.dash": "اسٹریم (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "یہ ویڈیو صفحہ ہے — اس کی ویڈیو ڈاؤن لوڈ کریں",
+  "add.videoPageHint": "یوٹیوب اور ان ویڈیو سائٹس کے لیے جنہیں Peregrine خود نہیں پہچانتا۔",
 };

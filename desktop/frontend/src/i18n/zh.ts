@@ -216,4 +216,11 @@ export const zh: Strings = {
   "power.sleep": "电脑将在 {n} 秒后进入睡眠。",
   "power.shutdown": "电脑将在 {n} 秒后关机。",
   "power.cancel": "取消",
+  "kind.torrent": "种子",
+  "kind.video": "视频网站",
+  "kind.hls": "流媒体 (HLS)",
+  "kind.dash": "流媒体 (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "这是视频页面——下载其中的视频",
+  "add.videoPageHint": "适用于 Peregrine 无法自动识别的 YouTube 等视频网站。",
 };

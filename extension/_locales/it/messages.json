@@ -47,5 +47,7 @@
   "saved": { "message": "Salvato" },
   "resetDefaults": { "message": "Ripristina predefiniti" },
   "bypassNote": { "message": "Suggerimento: per lasciare un download al browser, apri il menu di Peregrine e attiva «Salta il prossimo download». (Le estensioni non possono rilevare un tasto tenuto premuto durante il clic.)" },
-  "privacyNote": { "message": "I dettagli dei download vengono inviati solo all’app Peregrine su questo computer. Nulla viene inviato su Internet." }
+  "privacyNote": { "message": "I dettagli dei download vengono inviati solo all’app Peregrine su questo computer. Nulla viene inviato su Internet." },
+  "menuDownloadVideo": { "message": "Scarica video con Peregrine" },
+  "pageVideo": { "message": "Scarica il video di questa pagina" }
 }

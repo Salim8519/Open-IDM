@@ -47,5 +47,7 @@
   "saved": { "message": "保存しました" },
   "resetDefaults": { "message": "既定値に戻す" },
   "bypassNote": { "message": "ヒント: ダウンロードを 1 回だけブラウザーに任せるには、Peregrine のメニューを開いて「次のダウンロードをスキップ」をオンにします。（クリック中にキーが押されているかどうかは、拡張機能からは検出できません。）" },
-  "privacyNote": { "message": "ダウンロードの情報は、このコンピューターの Peregrine アプリにのみ送られます。インターネットには何も送られません。" }
+  "privacyNote": { "message": "ダウンロードの情報は、このコンピューターの Peregrine アプリにのみ送られます。インターネットには何も送られません。" },
+  "menuDownloadVideo": { "message": "Peregrine で動画をダウンロード" },
+  "pageVideo": { "message": "このページの動画をダウンロード" }
 }

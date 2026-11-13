@@ -47,5 +47,7 @@
   "saved": { "message": "Guardado" },
   "resetDefaults": { "message": "Restablecer valores predeterminados" },
   "bypassNote": { "message": "Consejo: para que el navegador gestione una descarga, abre el menú de Peregrine y activa «Omitir la próxima descarga». (Las extensiones no pueden detectar si se mantiene pulsada una tecla al hacer clic.)" },
-  "privacyNote": { "message": "Los datos de las descargas solo se envían a la aplicación Peregrine de este ordenador. No se envía nada a internet." }
+  "privacyNote": { "message": "Los datos de las descargas solo se envían a la aplicación Peregrine de este ordenador. No se envía nada a internet." },
+  "menuDownloadVideo": { "message": "Descargar vídeo con Peregrine" },
+  "pageVideo": { "message": "Descargar el vídeo de esta página" }
 }

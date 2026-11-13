@@ -214,6 +214,13 @@ export const en = {
   "power.sleep": "The computer will go to sleep in {n} seconds.",
   "power.shutdown": "The computer will shut down in {n} seconds.",
   "power.cancel": "Cancel",
+  "kind.torrent": "Torrent",
+  "kind.video": "Video site",
+  "kind.hls": "Stream (HLS)",
+  "kind.dash": "Stream (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "This is a video page — download its video",
+  "add.videoPageHint": "For YouTube and other video sites that Peregrine does not recognise automatically.",
 } as const;
 
 export type StringKey = keyof typeof en;

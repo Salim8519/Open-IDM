@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { expandPattern, looksDownloadable, nameFromURL, parseBatch } from "./batch";
+import { expandPattern, isDownloadURL, looksDownloadable, nameFromURL, parseBatch } from "./batch";
 
 describe("expandPattern", () => {
   it("keeps strings without patterns", () => {
@@ -30,7 +30,8 @@ describe("expandPattern", () => {
 describe("parseBatch", () => {
   it("parses lines, expands, filters and dedupes", () => {
     const text = "http://x/a.zip\n\n  not a url \nhttp://x/a.zip\nhttps://y/p[1-2].bin\nftp://z/f";
-    expect(parseBatch(text)).toEqual(["http://x/a.zip", "https://y/p1.bin", "https://y/p2.bin"]);
+    // ftp:// is a supported download type since the protocol plug-ins (it used to be dropped).
+    expect(parseBatch(text)).toEqual(["http://x/a.zip", "https://y/p1.bin", "https://y/p2.bin", "ftp://z/f"]);
   });
 });
 
@@ -45,5 +46,27 @@ describe("looksDownloadable", () => {
   it("extracts names", () => {
     expect(nameFromURL("https://e.com/a/b%20c.zip?x")).toBe("b c.zip");
     expect(nameFromURL("https://e.com/")).toBe("e.com");
+  });
+});
+
+describe("new link types", () => {
+  it("isDownloadURL accepts http(s), ftp(s) and magnet links with a hash", () => {
+    expect(isDownloadURL("https://example.com/a.zip")).toBe(true);
+    expect(isDownloadURL("ftp://ftp.example.com/f.iso")).toBe(true);
+    expect(isDownloadURL("ftps://ftp.example.com/f.iso")).toBe(true);
+    expect(isDownloadURL("magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x")).toBe(true);
+    expect(isDownloadURL("magnet:?dn=no-hash")).toBe(false);
+    expect(isDownloadURL("file:///etc/passwd")).toBe(false);
+    expect(isDownloadURL("javascript:alert(1)")).toBe(false);
+  });
+  it("parseBatch keeps magnet and ftp lines", () => {
+    const m = "magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567";
+    expect(parseBatch(`${m}\nftp://h/a.iso\nnot a link`)).toEqual([m, "ftp://h/a.iso"]);
+  });
+  it("clipboard offers magnet links and streams", () => {
+    expect(looksDownloadable("magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567")).toBe(true);
+    expect(looksDownloadable("https://cdn.example.com/live/master.m3u8?token=1")).toBe(true);
+    expect(looksDownloadable("https://cdn.example.com/v/manifest.mpd")).toBe(true);
+    expect(looksDownloadable("ftp://ftp.example.com/pub/f.iso")).toBe(true);
   });
 });

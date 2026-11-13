@@ -216,4 +216,11 @@ export const ja: Strings = {
   "power.sleep": "{n} 秒後にコンピューターをスリープします。",
   "power.shutdown": "{n} 秒後にコンピューターをシャットダウンします。",
   "power.cancel": "キャンセル",
+  "kind.torrent": "トレント",
+  "kind.video": "動画サイト",
+  "kind.hls": "ストリーム (HLS)",
+  "kind.dash": "ストリーム (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "動画ページとして扱い、動画をダウンロードする",
+  "add.videoPageHint": "Peregrine が自動で認識しない YouTube などの動画サイト向けです。",
 };

@@ -216,4 +216,11 @@ export const ru: Strings = {
   "power.sleep": "Компьютер перейдёт в спящий режим через {n} с.",
   "power.shutdown": "Компьютер выключится через {n} с.",
   "power.cancel": "Отмена",
+  "kind.torrent": "Торрент",
+  "kind.video": "Видеосайт",
+  "kind.hls": "Поток (HLS)",
+  "kind.dash": "Поток (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "Это страница с видео — скачать видео",
+  "add.videoPageHint": "Для YouTube и других видеосайтов, которые Peregrine не распознаёт автоматически.",
 };

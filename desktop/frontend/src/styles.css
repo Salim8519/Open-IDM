@@ -1393,3 +1393,22 @@ tr.selected .cat-icon {
   opacity: 0.5;
   cursor: default;
 }
+
+/* ---------- download kinds ---------- */
+.kind-badge {
+  display: inline-block;
+  margin-inline-start: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 16px;
+  color: var(--muted);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.kind-torrent { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 45%, transparent); }
+.kind-video { color: var(--err); border-color: color-mix(in srgb, var(--err) 45%, transparent); }
+.kind-hls, .kind-dash { color: var(--accent-text); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+.kind-ftp { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }

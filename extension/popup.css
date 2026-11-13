@@ -13,3 +13,6 @@ h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: v
 .media-meta { font-size: 11px; color: var(--muted); }
 .tag { font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 4px; background: var(--cyan); color: var(--dark); margin-inline-end: 4px; }
 footer { margin-top: 10px; text-align: end; }
+
+/* Full-width action inside a card (e.g. "Download the video on this page"). */
+button.wide { display: block; width: 100%; margin-block: 4px 10px; }

@@ -203,15 +203,26 @@ func (a *App) captureURL(u string) {
 	}
 }
 
-// urlArg returns the first http(s) URL among args.
+// urlArg returns the first downloadable link among args: http(s), ftp(s) or a magnet link
+// (the OS passes magnet links here once Peregrine is their handler).
 func urlArg(args []string) string {
 	for _, s := range args {
 		l := strings.ToLower(s)
-		if strings.HasPrefix(l, "http://") || strings.HasPrefix(l, "https://") {
-			return s
+		for _, p := range []string{"http://", "https://", "ftp://", "ftps://", "magnet:?"} {
+			if strings.HasPrefix(l, p) {
+				return s
+			}
 		}
 	}
 	return ""
+}
+
+// onURLOpen handles links macOS hands to the app (magnet: links).
+func (a *App) onURLOpen(u string) {
+	a.showWindow()
+	if v := urlArg([]string{u}); v != "" {
+		a.captureURL(v)
+	}
 }
 
 // Call is the single binding used by the frontend: JSON params in, JSON result out.

@@ -511,3 +511,44 @@ func TestRedact(t *testing.T) {
 		t.Fatalf("redactText: %q", got)
 	}
 }
+
+// New download types: magnet links, FTPS, and an explicit kind from an allowlist.
+func TestCaptureKindsAndSchemes(t *testing.T) {
+	ok := []struct{ url, kind string }{
+		{"magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x", ""},
+		{"ftps://ftp.example.com/f.iso", ""},
+		{"https://www.youtube.com/watch?v=abc", "video"},
+		{"https://cdn.example.com/master.m3u8", "hls"},
+		{"https://example.com/a.torrent", "torrent"},
+	}
+	for _, c := range ok {
+		app := &fakeApp{}
+		h, _ := newTestHost(app, true)
+		params, _ := json.Marshal(map[string]any{"url": c.url, "kind": c.kind})
+		out := call(t, h, `{"id":1,"method":"capture","params":`+string(params)+`}`)
+		if out["error"] != nil {
+			t.Fatalf("%s rejected: %v", c.url, out)
+		}
+		if app.last["url"] != c.url {
+			t.Fatalf("%s forwarded as %v", c.url, app.last["url"])
+		}
+		if got, _ := app.last["kind"].(string); got != c.kind {
+			t.Fatalf("%s kind = %q, want %q", c.url, got, c.kind)
+		}
+	}
+	bad := []struct{ url, kind string }{
+		{"magnet:?dn=no-hash", ""},
+		{"file:///etc/passwd", ""},
+		{"javascript:alert(1)", ""},
+		{"https://example.com/a", "shell"},
+	}
+	for _, c := range bad {
+		app := &fakeApp{}
+		h, _ := newTestHost(app, true)
+		params, _ := json.Marshal(map[string]any{"url": c.url, "kind": c.kind})
+		out := call(t, h, `{"id":1,"method":"capture","params":`+string(params)+`}`)
+		if out["error"] == nil {
+			t.Fatalf("%s (kind %q) accepted", c.url, c.kind)
+		}
+	}
+}

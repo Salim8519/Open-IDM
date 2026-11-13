@@ -14,6 +14,7 @@ const FALLBACK_TTL_MS = 2 * 60 * 1000;
 const APP_SETTINGS_TTL_MS = 10 * 60 * 1000;
 const MENU_LINK = 'peregrine-link';
 const MENU_ALL = 'peregrine-all';
+const MENU_VIDEO = 'peregrine-video';
 const t = (key, subs) => chrome.i18n.getMessage(key, subs) || key;
 
 // ---------- settings ----------
@@ -82,7 +83,7 @@ function basename(p) {
   return p ? String(p).split(/[\\/]/).pop() : '';
 }
 
-async function buildCapture({ url, referrer, filename, mime, size, pageUrl }) {
+async function buildCapture({ url, referrer, filename, mime, size, pageUrl, kind }) {
   const headers = { 'User-Agent': navigator.userAgent };
   try {
     const cookie = buildCookieHeader(await chrome.cookies.getAll({ url }));
@@ -92,6 +93,7 @@ async function buildCapture({ url, referrer, filename, mime, size, pageUrl }) {
   }
   if (referrer) headers.Referer = referrer;
   const c = { url, headers, source: 'extension' };
+  if (kind) c.kind = kind;
   if (filename) c.filename = filename;
   if (mime) c.mimeType = mime;
   if (size > 0) c.size = size;
@@ -211,8 +213,8 @@ chrome.downloads.onDeterminingFilename.addListener((item, suggest) => {
 });
 
 /** Send a single URL to the app (context menu / popup). */
-async function captureUrl({ url, referrer, pageUrl, filename, mime, size }) {
-  const c = await buildCapture({ url, referrer, pageUrl, filename, mime, size });
+async function captureUrl({ url, referrer, pageUrl, filename, mime, size, kind }) {
+  const c = await buildCapture({ url, referrer, pageUrl, filename, mime, size, kind });
   return callNative('capture', c);
 }
 
@@ -222,11 +224,19 @@ function setupMenus() {
   chrome.contextMenus.removeAll(() => {
     chrome.contextMenus.create({ id: MENU_LINK, title: t('menuDownload'), contexts: ['link', 'image', 'video', 'audio'] });
     chrome.contextMenus.create({ id: MENU_ALL, title: t('menuDownloadAll'), contexts: ['page'] });
+    chrome.contextMenus.create({ id: MENU_VIDEO, title: t('menuDownloadVideo'), contexts: ['page', 'video'] });
   });
 }
 
 function isWebUrl(u) {
-  return /^(https?|ftp):\/\//i.test(u || '');
+  return /^(https?|ftps?):\/\//i.test(u || '');
+}
+
+/** Links Peregrine can take from a context menu: web/FTP links and BitTorrent magnet links. */
+function isCapturable(u) {
+  if (isWebUrl(u)) return true;
+  if (!/^magnet:\?/i.test(u || '')) return false;
+  return new URLSearchParams(u.slice(u.indexOf('?') + 1)).getAll('xt').some((x) => /^urn:bt(ih|mh):/i.test(x));
 }
 
 async function pageDialog(tabId, kind, message) {
@@ -279,15 +289,21 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
   (async () => {
     if (info.menuItemId === MENU_LINK) {
       const url = info.linkUrl || info.srcUrl;
-      if (!isWebUrl(url)) return;
+      if (!isCapturable(url)) return;
       try {
         await captureUrl({ url, referrer: info.pageUrl || (tab && tab.url) });
       } catch (err) {
         console.info('Peregrine: context-menu fallback to browser:', err.code || err.message);
-        await browserDownload(url);
+        if (isWebUrl(url)) await browserDownload(url);
       }
     } else if (info.menuItemId === MENU_ALL) {
       await downloadAllLinks(tab);
+    } else if (info.menuItemId === MENU_VIDEO) {
+      const page = info.pageUrl || (tab && tab.url);
+      if (!/^https?:\/\//i.test(page || '')) return;
+      await captureUrl({ url: page, referrer: page, kind: 'video' }).catch(async (err) => {
+        if (isUnavailable(err) && tab && tab.id !== undefined) await pageDialog(tab.id, 'alert', t('appUnavailable'));
+      });
     }
   })().catch((e) => console.warn('Peregrine: menu action failed', e));
 });
@@ -381,12 +397,27 @@ async function onMessage(msg) {
       } catch (err) {
         return { ok: false, error: err.code || 'error' };
       }
+    case 'downloadPageVideo': {
+      let page;
+      try {
+        page = (await chrome.tabs.get(Number(msg.tabId))).url;
+      } catch {
+        return { ok: false, error: 'not_found' };
+      }
+      if (!/^https?:\/\//i.test(page || '')) return { ok: false, error: 'not_a_page' };
+      try {
+        await captureUrl({ url: page, referrer: page, kind: 'video' });
+        return { ok: true };
+      } catch (err) {
+        return { ok: false, error: err.code || 'error' };
+      }
+    }
     case 'getMedia':
       return { media: await getTabMedia(Number(msg.tabId)) };
     case 'downloadMedia': {
       const tabId = Number(msg.tabId);
       const entry = (await getTabMedia(tabId)).find((e) => e.url === msg.url);
-      if (!entry || entry.kind !== 'file') return { ok: false, error: 'not_found' };
+      if (!entry) return { ok: false, error: 'not_found' };
       let pageUrl;
       try {
         pageUrl = (await chrome.tabs.get(tabId)).url;
@@ -394,7 +425,9 @@ async function onMessage(msg) {
         /* tab closed */
       }
       try {
-        await captureUrl({ url: entry.url, referrer: pageUrl, filename: entry.filename, mime: entry.mime, size: entry.size });
+        // Streams (HLS/DASH) go to the stream downloader; plain files to the normal engine.
+        const kind = entry.kind === 'hls' || entry.kind === 'dash' ? entry.kind : undefined;
+        await captureUrl({ url: entry.url, referrer: pageUrl, filename: kind ? undefined : entry.filename, mime: entry.mime, size: entry.size, kind });
         return { ok: true };
       } catch (err) {
         return { ok: false, error: err.code || 'error' };

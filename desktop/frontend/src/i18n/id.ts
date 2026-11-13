@@ -216,4 +216,11 @@ export const id: Strings = {
   "power.sleep": "Komputer akan masuk mode tidur dalam {n} detik.",
   "power.shutdown": "Komputer akan dimatikan dalam {n} detik.",
   "power.cancel": "Batal",
+  "kind.torrent": "Torrent",
+  "kind.video": "Situs video",
+  "kind.hls": "Streaming (HLS)",
+  "kind.dash": "Streaming (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "Ini halaman video — unduh videonya",
+  "add.videoPageHint": "Untuk YouTube dan situs video lain yang tidak dikenali Peregrine secara otomatis.",
 };

@@ -47,5 +47,7 @@
   "saved": { "message": "Enregistré" },
   "resetDefaults": { "message": "Rétablir les valeurs par défaut" },
   "bypassNote": { "message": "Astuce : pour laisser le navigateur gérer un téléchargement, ouvrez le menu de Peregrine et activez « Ignorer le prochain téléchargement ». (Les extensions ne peuvent pas détecter une touche maintenue pendant le clic.)" },
-  "privacyNote": { "message": "Les informations de téléchargement sont envoyées uniquement à l’application Peregrine de cet ordinateur. Rien n’est envoyé sur Internet." }
+  "privacyNote": { "message": "Les informations de téléchargement sont envoyées uniquement à l’application Peregrine de cet ordinateur. Rien n’est envoyé sur Internet." },
+  "menuDownloadVideo": { "message": "Télécharger la vidéo avec Peregrine" },
+  "pageVideo": { "message": "Télécharger la vidéo de cette page" }
 }

@@ -47,5 +47,7 @@
   "saved": { "message": "저장됨" },
   "resetDefaults": { "message": "기본값 복원" },
   "bypassNote": { "message": "팁: 다운로드 하나를 브라우저가 처리하게 하려면 Peregrine 메뉴를 열고 ‘다음 다운로드 건너뛰기’를 켜세요. (클릭할 때 키를 누르고 있는지는 확장 프로그램이 감지할 수 없습니다.)" },
-  "privacyNote": { "message": "다운로드 정보는 이 컴퓨터의 Peregrine 앱으로만 전송됩니다. 인터넷으로는 아무것도 전송되지 않습니다." }
+  "privacyNote": { "message": "다운로드 정보는 이 컴퓨터의 Peregrine 앱으로만 전송됩니다. 인터넷으로는 아무것도 전송되지 않습니다." },
+  "menuDownloadVideo": { "message": "Peregrine으로 동영상 다운로드" },
+  "pageVideo": { "message": "이 페이지의 동영상 다운로드" }
 }

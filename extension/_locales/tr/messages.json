@@ -47,5 +47,7 @@
   "saved": { "message": "Kaydedildi" },
   "resetDefaults": { "message": "Varsayılanları geri yükle" },
   "bypassNote": { "message": "İpucu: bir indirmeyi tarayıcıya bırakmak için Peregrine menüsünü açın ve “Sonraki indirmeyi atla” seçeneğini açın. (Tıklarken bir tuşa basılı tutulduğunu uzantılar algılayamaz.)" },
-  "privacyNote": { "message": "İndirme ayrıntıları yalnızca bu bilgisayardaki Peregrine uygulamasına gönderilir. İnternete hiçbir şey gönderilmez." }
+  "privacyNote": { "message": "İndirme ayrıntıları yalnızca bu bilgisayardaki Peregrine uygulamasına gönderilir. İnternete hiçbir şey gönderilmez." },
+  "menuDownloadVideo": { "message": "Videoyu Peregrine ile indir" },
+  "pageVideo": { "message": "Bu sayfadaki videoyu indir" }
 }

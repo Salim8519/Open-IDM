@@ -269,7 +269,15 @@ func checkURL(raw string) error {
 		return errors.New("invalid url")
 	}
 	switch strings.ToLower(u.Scheme) {
-	case "http", "https", "ftp":
+	case "http", "https", "ftp", "ftps":
+	case "magnet":
+		// magnet:?xt=urn:btih:<hash> (or btmh for v2); no host part.
+		for _, xt := range u.Query()["xt"] {
+			if l := strings.ToLower(xt); strings.HasPrefix(l, "urn:btih:") || strings.HasPrefix(l, "urn:btmh:") {
+				return nil
+			}
+		}
+		return errors.New("magnet link without a BitTorrent hash")
 	default:
 		return fmt.Errorf("unsupported url scheme %q", u.Scheme)
 	}
@@ -294,6 +302,16 @@ func cleanHeaders(in map[string]string) map[string]string {
 	return out
 }
 
+// allowedKinds are the download types the extension may ask for (engine.Request.Kind).
+var allowedKinds = map[string]bool{"": true, "http": true, "ftp": true, "hls": true, "dash": true, "video": true, "torrent": true}
+
+func checkKind(k string) error {
+	if !allowedKinds[k] {
+		return fmt.Errorf("unsupported download type %q", truncate(k, 20))
+	}
+	return nil
+}
+
 func cleanPageURL(raw string) string {
 	if raw == "" || len(raw) > maxURLLen {
 		return ""
@@ -314,11 +332,15 @@ func sanitizeCapture(params json.RawMessage) (api.Capture, error) {
 	if err := checkURL(in.URL); err != nil {
 		return api.Capture{}, err
 	}
+	if err := checkKind(in.Kind); err != nil {
+		return api.Capture{}, err
+	}
 	out := api.Capture{
 		Request: engine.Request{
 			URL:      in.URL,
 			Filename: truncate(in.Filename, 255),
 			Headers:  cleanHeaders(in.Headers),
+			Kind:     in.Kind,
 		},
 		Source:   "extension",
 		PageURL:  cleanPageURL(in.PageURL),
@@ -338,11 +360,15 @@ func sanitizeRequest(params json.RawMessage) (engine.Request, error) {
 	if err := checkURL(in.URL); err != nil {
 		return engine.Request{}, err
 	}
+	if err := checkKind(in.Kind); err != nil {
+		return engine.Request{}, err
+	}
 	return engine.Request{
 		URL:      in.URL,
 		Filename: truncate(in.Filename, 255),
 		Headers:  cleanHeaders(in.Headers),
 		Paused:   in.Paused,
+		Kind:     in.Kind,
 	}, nil
 }
 

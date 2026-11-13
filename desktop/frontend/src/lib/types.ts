@@ -21,6 +21,8 @@ export interface Download {
   connections: number;
   active: number;
   speed: number;
+  kind?: DownloadKind;
+  isDir?: boolean; // output is a folder (multi-file torrent)
   eta: number; // seconds, -1 unknown
   checksum?: string;
   sha256?: string;
@@ -41,7 +43,11 @@ export interface AddRequest {
   checksum?: string;
   speedLimit?: number;
   paused?: boolean;
+  kind?: DownloadKind;
 }
+
+/** Which downloader handles a link ("" or "http" = the built-in segmented HTTP engine). */
+export type DownloadKind = "" | "http" | "ftp" | "hls" | "dash" | "video" | "torrent";
 
 export interface ProbeInfo {
   url: string;
@@ -49,6 +55,7 @@ export interface ProbeInfo {
   size: number;
   resumable: boolean;
   category: string;
+  kind?: DownloadKind;
 }
 
 export interface Settings {

@@ -47,5 +47,7 @@
   "saved": { "message": "Gespeichert" },
   "resetDefaults": { "message": "Standardwerte wiederherstellen" },
   "bypassNote": { "message": "Tipp: Um einen Download dem Browser zu überlassen, öffnen Sie das Peregrine-Menü und schalten Sie „Nächsten Download überspringen“ ein. (Erweiterungen können nicht erkennen, ob beim Klicken eine Taste gedrückt wird.)" },
-  "privacyNote": { "message": "Download-Details werden nur an die Peregrine-App auf diesem Computer gesendet. Nichts wird ins Internet gesendet." }
+  "privacyNote": { "message": "Download-Details werden nur an die Peregrine-App auf diesem Computer gesendet. Nichts wird ins Internet gesendet." },
+  "menuDownloadVideo": { "message": "Video mit Peregrine herunterladen" },
+  "pageVideo": { "message": "Video auf dieser Seite herunterladen" }
 }

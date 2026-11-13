@@ -77,27 +77,39 @@ async function loadMedia() {
 
     const btn = document.createElement('button');
     btn.textContent = t('download');
-    if (m.kind !== 'file') {
+    btn.className = 'primary';
+    btn.addEventListener('click', async () => {
       btn.disabled = true;
-      btn.title = t('streamSoon');
-      meta.append(' · ' + t('streamSoon'));
-    } else {
-      btn.className = 'primary';
-      btn.addEventListener('click', async () => {
-        btn.disabled = true;
-        const r = await send({ type: 'downloadMedia', tabId: tab.id, url: m.url });
-        btn.textContent = r && r.ok ? t('sent') : t('failed');
-        if (!(r && r.ok)) {
-          btn.disabled = false;
-          refreshStatus();
-        }
-      });
-    }
+      const r = await send({ type: 'downloadMedia', tabId: tab.id, url: m.url });
+      btn.textContent = r && r.ok ? t('sent') : t('failed');
+      if (!(r && r.ok)) {
+        btn.disabled = false;
+        refreshStatus();
+      }
+    });
     li.append(info, btn);
     list.append(li);
   }
 }
 
+// "Download the video on this page" (YouTube and other video sites, via the app's video downloader).
+async function setupPageVideo() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const btn = $('pageVideoBtn');
+  if (!tab || tab.id === undefined || !/^https?:\/\//i.test(tab.url || '')) return;
+  btn.hidden = false;
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    const r = await send({ type: 'downloadPageVideo', tabId: tab.id });
+    btn.textContent = r && r.ok ? t('sent') : t('failed');
+    if (!(r && r.ok)) {
+      btn.disabled = false;
+      refreshStatus();
+    }
+  });
+}
+
 loadToggles();
+setupPageVideo();
 loadMedia();
 refreshStatus();

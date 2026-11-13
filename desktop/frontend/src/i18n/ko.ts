@@ -216,4 +216,11 @@ export const ko: Strings = {
   "power.sleep": "{n}초 후에 컴퓨터가 절전 모드로 전환됩니다.",
   "power.shutdown": "{n}초 후에 컴퓨터가 종료됩니다.",
   "power.cancel": "취소",
+  "kind.torrent": "토렌트",
+  "kind.video": "동영상 사이트",
+  "kind.hls": "스트림 (HLS)",
+  "kind.dash": "스트림 (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "동영상 페이지입니다 — 동영상 다운로드",
+  "add.videoPageHint": "Peregrine이 자동으로 인식하지 못하는 YouTube 등 동영상 사이트용입니다.",
 };

@@ -47,5 +47,7 @@
   "saved": { "message": "已保存" },
   "resetDefaults": { "message": "恢复默认设置" },
   "bypassNote": { "message": "提示：如需让浏览器处理某个下载，请打开 Peregrine 菜单并开启“跳过下一个下载”。（扩展无法检测点击时是否按住了某个键。）" },
-  "privacyNote": { "message": "下载信息只会发送到这台电脑上的 Peregrine 应用，不会发送到互联网。" }
+  "privacyNote": { "message": "下载信息只会发送到这台电脑上的 Peregrine 应用，不会发送到互联网。" },
+  "menuDownloadVideo": { "message": "使用 Peregrine 下载视频" },
+  "pageVideo": { "message": "下载此页面中的视频" }
 }

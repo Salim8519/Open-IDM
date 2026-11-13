@@ -216,4 +216,11 @@ export const fr: Strings = {
   "power.sleep": "L’ordinateur va se mettre en veille dans {n} secondes.",
   "power.shutdown": "L’ordinateur va s’éteindre dans {n} secondes.",
   "power.cancel": "Annuler",
+  "kind.torrent": "Torrent",
+  "kind.video": "Site vidéo",
+  "kind.hls": "Flux (HLS)",
+  "kind.dash": "Flux (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "C’est une page vidéo : télécharger sa vidéo",
+  "add.videoPageHint": "Pour YouTube et les autres sites vidéo que Peregrine ne reconnaît pas automatiquement.",
 };

@@ -216,4 +216,11 @@ export const de: Strings = {
   "power.sleep": "Der Computer wechselt in {n} Sekunden in den Ruhezustand.",
   "power.shutdown": "Der Computer wird in {n} Sekunden heruntergefahren.",
   "power.cancel": "Abbrechen",
+  "kind.torrent": "Torrent",
+  "kind.video": "Videoseite",
+  "kind.hls": "Stream (HLS)",
+  "kind.dash": "Stream (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "Dies ist eine Videoseite – Video herunterladen",
+  "add.videoPageHint": "Für YouTube und andere Videoseiten, die Peregrine nicht automatisch erkennt.",
 };

@@ -47,5 +47,7 @@
   "saved": { "message": "Tersimpan" },
   "resetDefaults": { "message": "Pulihkan bawaan" },
   "bypassNote": { "message": "Tips: agar browser yang menangani satu unduhan, buka menu Peregrine dan aktifkan “Lewati unduhan berikutnya”. (Ekstensi tidak dapat mendeteksi tombol yang ditahan saat mengeklik.)" },
-  "privacyNote": { "message": "Detail unduhan hanya dikirim ke aplikasi Peregrine di komputer ini. Tidak ada yang dikirim ke internet." }
+  "privacyNote": { "message": "Detail unduhan hanya dikirim ke aplikasi Peregrine di komputer ini. Tidak ada yang dikirim ke internet." },
+  "menuDownloadVideo": { "message": "Unduh video dengan Peregrine" },
+  "pageVideo": { "message": "Unduh video di halaman ini" }
 }

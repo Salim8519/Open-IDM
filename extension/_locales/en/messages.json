@@ -47,5 +47,7 @@
   "saved": { "message": "Saved" },
   "resetDefaults": { "message": "Restore defaults" },
   "bypassNote": { "message": "Tip: to let the browser handle one download, open the Peregrine menu and turn on “Skip next download”. (Holding a key while clicking cannot be detected by extensions.)" },
-  "privacyNote": { "message": "Download details are sent only to the Peregrine app on this computer. Nothing is sent to the internet." }
+  "privacyNote": { "message": "Download details are sent only to the Peregrine app on this computer. Nothing is sent to the internet." },
+  "menuDownloadVideo": { "message": "Download video with Peregrine" },
+  "pageVideo": { "message": "Download the video on this page" }
 }

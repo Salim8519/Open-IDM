@@ -216,4 +216,11 @@ export const ar: Strings = {
   "power.sleep": "سيدخل الجهاز في وضع السكون خلال {n} ثانية.",
   "power.shutdown": "سيُطفأ الجهاز خلال {n} ثانية.",
   "power.cancel": "إلغاء",
+  "kind.torrent": "تورنت",
+  "kind.video": "موقع فيديو",
+  "kind.hls": "بث (HLS)",
+  "kind.dash": "بث (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "هذه صفحة فيديو — نزّل الفيديو منها",
+  "add.videoPageHint": "لمواقع يوتيوب وغيرها التي لا يتعرّف عليها Peregrine تلقائيًا.",
 };

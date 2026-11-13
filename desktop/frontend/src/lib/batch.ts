@@ -51,9 +51,28 @@ export function isHttpURL(s: string): boolean {
   }
 }
 
+/** True for magnet links that name a BitTorrent hash (v1 btih or v2 btmh). */
+export function isMagnet(s: string): boolean {
+  if (!/^magnet:\?/i.test(s)) return false;
+  return new URLSearchParams(s.slice(s.indexOf("?") + 1))
+    .getAll("xt")
+    .some((x) => /^urn:bt(ih|mh):/i.test(x));
+}
+
+/** Links Peregrine can download: http(s), ftp(s) and magnet links. */
+export function isDownloadURL(s: string): boolean {
+  if (isMagnet(s)) return true;
+  try {
+    const u = new URL(s);
+    return ["http:", "https:", "ftp:", "ftps:"].includes(u.protocol) && !!u.host;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Parses pasted text: one link per line (or whitespace separated), expands patterns,
- * drops non-http(s) entries and duplicates, keeps order.
+ * drops entries that are not downloadable links and duplicates, keeps order.
  */
 export function parseBatch(text: string, limit = MAX_EXPANSION): string[] {
   const seen = new Set<string>();
@@ -62,7 +81,7 @@ export function parseBatch(text: string, limit = MAX_EXPANSION): string[] {
     const t = token.trim();
     if (!t) continue;
     for (const u of expandPattern(t, limit)) {
-      if (!isHttpURL(u) || seen.has(u)) continue;
+      if (!isDownloadURL(u) || seen.has(u)) continue;
       seen.add(u);
       out.push(u);
       if (out.length >= limit) return out;
@@ -72,12 +91,16 @@ export function parseBatch(text: string, limit = MAX_EXPANSION): string[] {
 }
 
 const DOWNLOADABLE =
-  /\.(zip|rar|7z|tar|gz|tgz|bz2|xz|zst|iso|img|exe|msi|dmg|pkg|deb|rpm|apk|appimage|mp4|mkv|avi|mov|webm|flv|wmv|m4v|mp3|flac|wav|aac|ogg|m4a|opus|pdf|epub|docx?|xlsx?|pptx?|csv|bin|torrent|jpe?g|png|gif|webp)$/i;
+  /\.(zip|rar|7z|tar|gz|tgz|bz2|xz|zst|iso|img|exe|msi|dmg|pkg|deb|rpm|apk|appimage|mp4|mkv|avi|mov|webm|flv|wmv|m4v|mp3|flac|wav|aac|ogg|m4a|opus|pdf|epub|docx?|xlsx?|pptx?|csv|bin|torrent|m3u8|mpd|jpe?g|png|gif|webp)$/i;
 
-/** Heuristic for the clipboard monitor: an http(s) link whose path ends in a file extension. */
+/**
+ * Heuristic for the clipboard monitor: a magnet link, or an http(s)/ftp(s) link whose path
+ * ends in a file extension (including .m3u8/.mpd streams).
+ */
 export function looksDownloadable(s: string): boolean {
   const t = s.trim();
-  if (!isHttpURL(t) || /\s/.test(t)) return false;
+  if (/\s/.test(t) || !isDownloadURL(t)) return false;
+  if (isMagnet(t)) return true;
   const u = new URL(t);
   return DOWNLOADABLE.test(decodeURIComponent(u.pathname)) || /[?&](download|dl)=/i.test(u.search);
 }

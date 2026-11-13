@@ -215,4 +215,11 @@ export const fa: Strings = {
   "power.sleep": "رایانه تا {n} ثانیهٔ دیگر به حالت خواب می‌رود.",
   "power.shutdown": "رایانه تا {n} ثانیهٔ دیگر خاموش می‌شود.",
   "power.cancel": "لغو",
+  "kind.torrent": "تورنت",
+  "kind.video": "سایت ویدیو",
+  "kind.hls": "پخش (HLS)",
+  "kind.dash": "پخش (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "این صفحهٔ ویدیو است — ویدیوی آن دانلود شود",
+  "add.videoPageHint": "برای یوتیوب و سایت‌های ویدیویی دیگری که Peregrine خودکار تشخیص نمی‌دهد.",
 };

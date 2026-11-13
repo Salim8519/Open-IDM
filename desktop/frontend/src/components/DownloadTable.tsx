@@ -1,4 +1,5 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { KindBadge } from "./KindBadge";
 import { Download } from "../lib/types";
 import { useI18n, StringKey } from "../i18n";
 import { formatBytes, formatETA, formatSpeed } from "../lib/format";
@@ -75,6 +76,7 @@ export function DownloadTable({ rows, selected, sortKey, sortDir, onSort, onRowC
                   <span className="ellipsis" title={d.filename} data-testid="row-name">
                     {d.filename}
                   </span>
+                  <KindBadge kind={d.kind} />
                 </div>
               </td>
               <td className="c-size num" data-testid="row-size">

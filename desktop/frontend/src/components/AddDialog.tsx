@@ -5,8 +5,9 @@ import { CategoryIcon } from "./FileIcon";
 import { useI18n } from "../i18n";
 import { Client } from "../lib/api";
 import { formatBytes } from "../lib/format";
-import { isHttpURL } from "../lib/batch";
-import { Capture, ProbeInfo, Settings } from "../lib/types";
+import { isDownloadURL } from "../lib/batch";
+import { Capture, DownloadKind, ProbeInfo, Settings } from "../lib/types";
+import { KindBadge } from "./KindBadge";
 
 export interface AddInitial extends Partial<Capture> {}
 
@@ -24,6 +25,8 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
   const [filename, setFilename] = useState(initial.filename ?? "");
   const [connections, setConnections] = useState(initial.connections || settings?.connections || 8);
   const [checksum, setChecksum] = useState(initial.checksum ?? "");
+  // "This is a video page": hand an ordinary web page to the video-site downloader.
+  const [videoPage, setVideoPage] = useState(initial.kind === "video");
   const [probe, setProbe] = useState<ProbeInfo | null>(null);
   const [probing, setProbing] = useState(false);
   const [probeError, setProbeError] = useState("");
@@ -37,7 +40,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
     const u = url.trim();
     setProbe(null);
     setProbeError("");
-    if (!isHttpURL(u)) {
+    if (!isDownloadURL(u)) {
       setProbing(false);
       return;
     }
@@ -71,7 +74,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
 
   const submit = async (paused: boolean) => {
     const u = url.trim();
-    if (!isHttpURL(u)) {
+    if (!isDownloadURL(u)) {
       setError(t("add.invalidUrl"));
       return;
     }
@@ -87,6 +90,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
         checksum: checksum.trim() || undefined,
         headers,
         paused,
+        kind: videoPage ? "video" : (initial.kind as DownloadKind | undefined) || undefined,
       });
       onClose();
     } catch (err) {
@@ -149,7 +153,7 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
               <CategoryIcon category={probe.category} size={22} />
               <div className="probe-info">
                 <strong className="ellipsis" data-testid="probe-name">
-                  {probe.filename}
+                  {probe.filename} <KindBadge kind={videoPage ? "video" : probe.kind} />
                 </strong>
                 <span className="muted">
                   <span data-testid="probe-size"><bdi>{probe.size >= 0 ? formatBytes(probe.size) : t("add.unknownSize")}</bdi></span>
@@ -166,6 +170,18 @@ export function AddDialog({ client, settings, initial, onClose }: Props) {
             <span className="muted"><bdi>{formatBytes(initial.size)}</bdi></span>
           ) : null}
         </div>
+        {/^https?:/i.test(url.trim()) && (!probe?.kind || probe.kind === "http" || probe.kind === "video") && (
+          <label className="check" title={t("add.videoPageHint")}>
+            <input
+              type="checkbox"
+              checked={videoPage || probe?.kind === "video"}
+              disabled={probe?.kind === "video"}
+              onChange={(e) => setVideoPage(e.target.checked)}
+              data-testid="add-video-page"
+            />
+            {t("add.videoPage")}
+          </label>
+        )}
 
         <label className="field">
           <span>{t("add.folder")}</span>

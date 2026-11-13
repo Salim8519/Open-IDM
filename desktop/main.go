@@ -49,6 +49,7 @@ func main() {
 			Theme: windows.SystemDefault,
 		},
 		Mac: &mac.Options{
+			OnUrlOpen: app.onURLOpen, // magnet: links (registered in wails.json "protocols")
 			About: &mac.AboutInfo{
 				Title:   "Peregrine",
 				Message: "Free, open-source download manager",

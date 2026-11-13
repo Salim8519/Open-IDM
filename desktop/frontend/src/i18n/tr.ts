@@ -216,4 +216,11 @@ export const tr: Strings = {
   "power.sleep": "Bilgisayar {n} saniye içinde uyku moduna geçecek.",
   "power.shutdown": "Bilgisayar {n} saniye içinde kapanacak.",
   "power.cancel": "İptal",
+  "kind.torrent": "Torrent",
+  "kind.video": "Video sitesi",
+  "kind.hls": "Akış (HLS)",
+  "kind.dash": "Akış (DASH)",
+  "kind.ftp": "FTP",
+  "add.videoPage": "Bu bir video sayfası — videosunu indir",
+  "add.videoPageHint": "Peregrine'in otomatik tanımadığı YouTube ve diğer video siteleri için.",
 };
