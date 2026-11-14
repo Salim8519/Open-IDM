@@ -104,7 +104,9 @@ type Settings struct {
 	MaxRetries     int    `json:"maxRetries"`
 	ClipboardWatch bool   `json:"clipboardWatch"`
 	AutoStartExt   bool   `json:"autoStartExt"` // start extension downloads without asking
-	Theme          string `json:"theme"`        // "system" | "light" | "dark"
+	// Theme: "field" (Field Guide, follows the system day/night; the default),
+	// "field-day", "field-night", or Classic: "system", "light", "dark".
+	Theme          string `json:"theme"`
 	Language       string `json:"language"`     // UI language code, e.g. "en", "ar", "zh"
 	MinExtSize     int64  `json:"minExtSize"`   // extension: only capture files >= this size
 
@@ -114,6 +116,25 @@ type Settings struct {
 	CloseToTray   bool `json:"closeToTray"`   // closing the window keeps the app in the tray
 	LaunchAtLogin bool `json:"launchAtLogin"` // start (hidden) when the user signs in
 	Notify        bool `json:"notify"`        // system notifications for finished/failed downloads
+
+	// UIVersion records which one-time settings migrations have run (see migrateSettings).
+	UIVersion int `json:"uiVersion"`
+}
+
+// currentUIVersion is bumped when saved settings need a one-time migration.
+// 1: the Field Guide theme became the default.
+const currentUIVersion = 1
+
+// migrateSettings upgrades settings saved by an older version. Settings from before the
+// Field Guide theme still carry the old default ("system"); they move to the new default
+// once. An explicit light/dark choice is kept.
+func migrateSettings(st *Settings) {
+	if st.UIVersion < 1 {
+		if st.Theme == "" || st.Theme == "system" {
+			st.Theme = "field"
+		}
+	}
+	st.UIVersion = currentUIVersion
 }
 
 // DefaultSettings returns sensible defaults.
@@ -124,7 +145,8 @@ func DefaultSettings() Settings {
 		Connections: 8,
 		MaxRetries:  10,
 		Proxy:       "system",
-		Theme:       "system",
+		Theme:       "field",
+		UIVersion:   currentUIVersion,
 		Language:    "en",
 		MinExtSize:  1 << 20,
 		Schedule:    defaultSchedule(),

@@ -326,9 +326,28 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
             <label className="field">
               <span>{t("settings.theme")}</span>
               <select value={s.theme} onChange={(e) => set("theme", e.target.value)} data-testid="set-theme">
-                <option value="system">{t("settings.themeSystem")}</option>
-                <option value="light">{t("settings.themeLight")}</option>
-                <option value="dark">{t("settings.themeDark")}</option>
+                <optgroup label={t("settings.themeGroupField")}>
+                  <option value="field">
+                    {t("settings.themeGroupField")} · {t("settings.themeSystem")}
+                  </option>
+                  <option value="field-day">
+                    {t("settings.themeGroupField")} · {t("settings.themeDay")}
+                  </option>
+                  <option value="field-night">
+                    {t("settings.themeGroupField")} · {t("settings.themeNight")}
+                  </option>
+                </optgroup>
+                <optgroup label={t("settings.themeGroupClassic")}>
+                  <option value="system">
+                    {t("settings.themeGroupClassic")} · {t("settings.themeSystem")}
+                  </option>
+                  <option value="light">
+                    {t("settings.themeGroupClassic")} · {t("settings.themeLight")}
+                  </option>
+                  <option value="dark">
+                    {t("settings.themeGroupClassic")} · {t("settings.themeDark")}
+                  </option>
+                </optgroup>
               </select>
             </label>
             <label className="field">

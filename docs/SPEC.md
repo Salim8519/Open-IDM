@@ -94,7 +94,8 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
   not focused (setting).
 - Start when the user signs in (opt-in), hidden in the tray: HKCU Run key (Windows),
   LaunchAgent (macOS), XDG autostart (Linux).
-- Light/dark theme, follows the system; RTL support (Arabic, Persian, Urdu); 16 UI languages
+- Themes: Field Guide (default; day and night editions that follow the system) and
+  Classic (light/dark/system), chosen in Settings; RTL support (Arabic, Persian, Urdu); 16 UI languages
   (`desktop/frontend/src/i18n`, tray/notification text in `desktop/locales`).
 - Settings: connections, speed limits, folders, proxy, scheduler, updates, extension pairing.
 - Signed auto-update (user can disable).

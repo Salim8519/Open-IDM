@@ -65,7 +65,11 @@ type Modal =
   | { type: "limit"; id: string }
   | null;
 
-function useEffectiveTheme(theme: string | undefined): "light" | "dark" {
+// The value written to <html data-theme>: the Field Guide theme (default) in its day or
+// night edition, or the Classic theme in light or dark.
+type EffectiveTheme = "field-day" | "field-night" | "light" | "dark";
+
+function useEffectiveTheme(theme: string | undefined): EffectiveTheme {
   const query = "(prefers-color-scheme: dark)";
   const [sysDark, setSysDark] = useState(() => window.matchMedia?.(query).matches ?? true);
   useEffect(() => {
@@ -75,8 +79,9 @@ function useEffectiveTheme(theme: string | undefined): "light" | "dark" {
     mq.addEventListener("change", on);
     return () => mq.removeEventListener("change", on);
   }, []);
-  if (theme === "light" || theme === "dark") return theme;
-  return sysDark ? "dark" : "light";
+  if (theme === "light" || theme === "dark" || theme === "field-day" || theme === "field-night") return theme;
+  if (theme === "system") return sysDark ? "dark" : "light"; // Classic, automatic
+  return sysDark ? "field-night" : "field-day"; // "field" and anything unknown
 }
 
 const isTyping = (el: EventTarget | null) =>
@@ -154,7 +159,14 @@ export default function App() {
     html.lang = lang;
     html.dir = isRTL(lang) ? "rtl" : "ltr";
     html.dataset.theme = theme;
-  }, [lang, theme]);
+    if (settings) {
+      try {
+        localStorage.setItem("peregrine.theme", theme); // for the first paint next launch (main.tsx)
+      } catch {
+        // ignore
+      }
+    }
+  }, [lang, theme, settings]);
 
   // ---- filtering, search, sort ----
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");

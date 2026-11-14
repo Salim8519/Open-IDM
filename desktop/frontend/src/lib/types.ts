@@ -69,7 +69,8 @@ export interface Settings {
   maxRetries: number;
   clipboardWatch: boolean;
   autoStartExt: boolean;
-  theme: string; // "system" | "light" | "dark"
+  theme: string; // "field" (default) | "field-day" | "field-night" | Classic: "system" | "light" | "dark"
+  uiVersion?: number; // engine bookkeeping for one-time settings migrations
   language: string; // a code from i18n LANGUAGES, e.g. "en", "ar", "zh"
   minExtSize: number;
   schedule: Schedule;

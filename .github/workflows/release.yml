@@ -119,6 +119,7 @@ jobs:
             Build: ${FFMPEG_WIN_URL}
             Source: https://ffmpeg.org/download.html and https://www.gyan.dev/ffmpeg/builds/
           EOF
+          { echo; echo "The user interface embeds the Noto Naskh Arabic font (Arabic subset),"; echo "SIL Open Font License 1.1:"; echo; cat desktop/frontend/src/fonts/OFL-NotoNaskhArabic.txt; } >> desktop/build/bin/THIRD-PARTY-NOTICES.txt
           ls -la desktop/build/bin
       - name: Build app + installer
         shell: bash
@@ -219,6 +220,7 @@ jobs:
             Builds: ${FFMPEG_MAC_BASE}/${FFMPEG_MAC_AMD64}/ and ${FFMPEG_MAC_BASE}/${FFMPEG_MAC_ARM64}/
             Source: https://ffmpeg.org/download.html and https://ffmpeg.martin-riedl.de/
           EOF
+          { echo; echo "The user interface embeds the Noto Naskh Arabic font (Arabic subset),"; echo "SIL Open Font License 1.1:"; echo; cat desktop/frontend/src/fonts/OFL-NotoNaskhArabic.txt; } >> "$APP/Contents/Resources/THIRD-PARTY-NOTICES.txt"
           rm -rf "$T"
           codesign --force --deep --sign - "$APP"
       - name: Make DMG

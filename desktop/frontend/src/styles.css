@@ -73,6 +73,125 @@
   color-scheme: light;
 }
 
+/*
+ * Field Guide theme (the default, ADR 0017): the look of a naturalist's field guide.
+ * Warm paper and ink, a serif text face, and rust as the one accent. The day edition is
+ * printed paper; the night edition is the same page under a lamp. Classic (above) stays
+ * available in Settings.
+ */
+@font-face {
+  font-family: "Noto Naskh Arabic";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./fonts/NotoNaskhArabic-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+:root[data-theme="field-day"],
+:root[data-theme="field-night"] {
+  --font: "Noto Naskh Arabic", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  --radius: 2px;
+  --radius-lg: 3px;
+}
+
+:root[data-theme="field-day"] {
+  --accent: #9c4a23;
+  --accent-strong: #84391a;
+  --accent-text: #8a3f1d;
+  --on-accent: #fffaf0;
+  --ok: #4d6b2e;
+  --warn: #9a6a12;
+  --err: #b3361f;
+
+  --bg: #efe8d6;
+  --side: #e6dcc4;
+  --raised: #f6f1e4;
+  --field: #f8f4e9;
+  --line: #c9bc9f;
+  --line-soft: #ddd2b9;
+  --text: #2a2419;
+  --muted: #6e634f;
+  --faint: #a1957a;
+  --hover: rgba(42, 36, 25, 0.045);
+  --tb-hover: rgba(42, 36, 25, 0.08);
+  --tb-press: rgba(42, 36, 25, 0.13);
+  --sel: rgba(156, 74, 35, 0.13);
+  --track: #dccfb2;
+  --done-fill: #a1957a;
+  --shadow: 0 10px 30px rgba(42, 36, 25, 0.2), 0 0 0 1px rgba(42, 36, 25, 0.25);
+  color-scheme: light;
+}
+
+:root[data-theme="field-night"] {
+  --accent: #d9875f;
+  --accent-strong: #c47450;
+  --accent-text: #e9a27e;
+  --on-accent: #1c1914;
+  --ok: #a9c27c;
+  --warn: #e3b45a;
+  --err: #f07a5f;
+
+  --bg: #1c1914;
+  --side: #221e18;
+  --raised: #2a251d;
+  --field: #24201a;
+  --line: #3e372b;
+  --line-soft: #2e2921;
+  --text: #ebe2cc;
+  --muted: #a79b82;
+  --faint: #6f6654;
+  --hover: rgba(235, 226, 204, 0.04);
+  --tb-hover: rgba(235, 226, 204, 0.08);
+  --tb-press: rgba(235, 226, 204, 0.13);
+  --sel: rgba(217, 135, 95, 0.17);
+  --track: #342e24;
+  --done-fill: #6f6654;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(235, 226, 204, 0.08);
+  color-scheme: dark;
+}
+
+/* Field Guide details: section labels set like a field guide's (small caps, rust),
+   titles like plate captions, the segment map ruled in ink. */
+:root[data-theme^="field"] .side-head,
+:root[data-theme^="field"] .segmap-head .label,
+:root[data-theme^="field"] .detail-props dt {
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+:root[data-theme^="field"] .side-head {
+  color: var(--accent-text);
+  font-size: 13px;
+  font-weight: 400;
+}
+:root[data-theme^="field"] :is(.detail-title h3, .dialog-head h2, .empty h2) {
+  font-weight: 700;
+  font-size: 15px;
+}
+:root[data-theme^="field"] .empty h2 {
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 400;
+}
+:root[data-theme^="field"] .segmap {
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+/* small caps and italics do not exist in Arabic script: keep those labels plain */
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) :is(.side-head, .segmap-head .label, .detail-props dt) {
+  font-variant: normal;
+  letter-spacing: 0;
+}
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) .empty h2 {
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Naskh needs a little more size than Latin at the same pixel height. */
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) body {
+  font-size: 14px;
+}
+
 * {
   box-sizing: border-box;
 }

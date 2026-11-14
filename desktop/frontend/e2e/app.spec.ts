@@ -12,6 +12,8 @@ test("empty state and version on first start", async ({ app }) => {
   await expect(app.getByTestId("empty")).toContainText("No downloads yet");
   await expect(app.locator(".statusbar")).toContainText("Peregrine");
   await expect(app.locator("html")).toHaveAttribute("dir", "ltr");
+  // A fresh install uses the Field Guide theme (ADR 0017), in the system's edition.
+  await expect(app.locator("html")).toHaveAttribute("data-theme", /^field-(day|night)$/);
 });
 
 test("add via the Add dialog downloads the file with the correct size", async ({ app, info }) => {

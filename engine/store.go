@@ -84,7 +84,10 @@ func (s *Store) LoadSettings() (Settings, error) {
 	if err != nil {
 		return st, err
 	}
+	// Saved JSON without uiVersion must read as 0 (not the default), so migrations run.
+	st.UIVersion = 0
 	_ = json.Unmarshal([]byte(raw), &st)
+	migrateSettings(&st)
 	return st, nil
 }
 

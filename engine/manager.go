@@ -145,6 +145,14 @@ func normalizeSettings(s *Settings) {
 		s.GlobalLimit = 0
 	}
 	normalizeSchedule(&s.Schedule)
+	switch s.Theme {
+	case "field", "field-day", "field-night", "system", "light", "dark":
+	default:
+		s.Theme = "field"
+	}
+	// Settings that come from the UI are current by definition, even if the client did
+	// not send uiVersion; otherwise a later load would migrate a Classic choice away.
+	s.UIVersion = currentUIVersion
 }
 
 // Close pauses running downloads (keeping them queued for next start) and saves state.

@@ -30,7 +30,8 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 11, G: 16, B: 32, A: 255},
+		// Shown for a moment before the UI paints: the Field Guide night paper (#1c1914).
+		BackgroundColour: &options.RGBA{R: 28, G: 25, B: 20, A: 255},
 		OnStartup:        app.startup,
 		OnDomReady:       app.domReady,
 		OnShutdown:       app.shutdown,

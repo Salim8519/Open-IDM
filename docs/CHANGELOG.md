@@ -5,6 +5,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 ## Unreleased
 
 ### Added
+- New default look, **Field Guide**: warm paper and ink with a serif face, in a day and a
+  night edition that follow your system. Arabic, Persian and Urdu use the Noto Naskh Arabic
+  font, bundled with the app. The previous look is still available as **Classic** in
+  Settings → Theme. If you never changed the theme, you get Field Guide after updating; if
+  you picked light or dark, nothing changes.
 - Project website at https://peregrinedownloader.app with download links that always
   point to the newest release (Windows, macOS, Linux CLI, browser extension), in English
   and Arabic.
