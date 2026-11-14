@@ -111,20 +111,24 @@ ${rtl ? '<link rel="preload" href="/fonts/NotoNaskhArabic-arabic.woff2" as="font
   src:url(/fonts/NotoNaskhArabic-arabic.woff2) format("woff2");
   unicode-range:U+0600-06FF,U+0750-077F,U+0870-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FEFC}
 :root{
-  --p:#efe8d6;--p2:#e6dcc4;--p3:#dccfb2;--k:#2a2419;--g:#6e634f;--rule:#2a2419;--soft:#c9bc9f;
-  --rust:#9c4a23;--sea:#2f5d62;--ok:#4d6b2e;--hot:#b3361f;
+  --p:#f5eddb;--p2:#ece1c8;--p3:#e2d4b4;--k:#211b12;--g:#5c513e;--rule:#2a2419;--soft:#c9bc9f;
+  --rust:#a8481a;--sea:#2f5d62;--ok:#27692b;--hot:#c0331c;--sun:#f4c34f;--on:#fffaf0;
   --serif:"Noto Naskh Arabic",Georgia,"Iowan Old Style","Palatino Linotype",Palatino,"Times New Roman",serif;
   --mono:ui-monospace,"Cascadia Mono","SF Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
-  --p:#1c1914;--p2:#25211a;--p3:#2e291f;--k:#ebe2cc;--g:#a79b82;--rule:#6d6350;--soft:#4a4335;
-  --rust:#e0916a;--sea:#86b9be;--ok:#a9c27c;--hot:#f07a5f;
+  --p:#1c1914;--p2:#25211a;--p3:#2e291f;--k:#f6eedb;--g:#c3b598;--rule:#6d6350;--soft:#4a4335;
+  --rust:#f29a62;--sea:#86b9be;--ok:#9fd67a;--hot:#ff8466;--sun:#e8b33c;--on:#1c1914;
 }}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--p);color:var(--k);font:18px/1.75 var(--serif)}
-:lang(ar) body{line-height:1.95}
+:lang(ar) body{line-height:1.95;font-weight:500}
+b,strong,h1,h2,h3{font-weight:700!important}
+/* a sunny highlighter stroke under the big title */
+h1 span.hl{background:linear-gradient(transparent 62%,color-mix(in srgb,var(--sun) 70%,transparent) 62%,color-mix(in srgb,var(--sun) 70%,transparent) 92%,transparent 92%);padding-inline:.08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@media (prefers-color-scheme:dark){h1 span.hl{background:linear-gradient(transparent 70%,color-mix(in srgb,var(--sun) 45%,transparent) 70%,color-mix(in srgb,var(--sun) 45%,transparent) 94%,transparent 94%)}}
 a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 .w{max-width:980px;margin-inline:auto;padding-inline:20px}
 .skip{position:absolute;inset-inline-start:-999px}.skip:focus{inset-inline-start:12px;top:12px;background:var(--p2);padding:8px;z-index:9}
@@ -141,10 +145,12 @@ details.lang{position:relative;padding:0}
 details.lang summary{cursor:pointer;list-style:none;padding:3px 12px}
 details.lang ul{position:absolute;inset-inline-end:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;background:var(--p2);border:1px solid var(--rule);z-index:5}
 details.lang a{display:block;padding:6px 12px;text-decoration:none}
-@media (max-width:560px){.top .tag{display:none}.top nav .dlnav{display:none}}
+.top{flex-wrap:wrap;row-gap:0}
+@media (max-width:760px){.top .tag{display:none}}
+@media (max-width:560px){.top nav .dlnav{display:none}}
 
 .entry{text-align:center;padding-block:30px 8px}
-.no{font-size:15px;color:var(--rust);margin:0}
+.no{display:inline-block;font-size:15px;font-weight:700;color:#211b12;background:var(--sun);padding:2px 12px;margin:0;transform:rotate(-1.5deg)}
 h1{font-weight:700;font-size:clamp(42px,10vw,84px);line-height:1.15;margin:4px 0 2px}
 :lang(ar) h1{line-height:1.6;margin-bottom:10px}
 :lang(en) h1{font-weight:400;letter-spacing:-.01em}
@@ -157,11 +163,11 @@ h1{font-weight:700;font-size:clamp(42px,10vw,84px);line-height:1.15;margin:4px 0
 .f-lead path{stroke:var(--g);stroke-width:1;stroke-dasharray:3 4}
 .f-arrow{stroke:var(--rust);stroke-width:2.2}
 .f-label text{fill:var(--k);stroke:none;font:17px var(--serif);text-anchor:middle}
-.lead{font-size:clamp(19px,2.4vw,21px);max-width:31em;margin:22px auto 0}
+.lead{font-size:clamp(19px,2.4vw,21px);max-width:31em;margin:22px auto 0;font-weight:600}
 .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border:1px solid var(--k);text-decoration:none;font-weight:700;font-size:18px}
-.btn.solid{background:var(--k);color:var(--p)}
-.btn.solid:hover{background:var(--rust);border-color:var(--rust);color:#fff}
+.btn.solid{background:var(--rust);border-color:var(--rust);color:var(--on)}
+.btn.solid:hover{filter:brightness(1.08)}
 .btn.line:hover{background:var(--p2)}
 .facts{font-size:14px;color:var(--g);margin-top:14px}
 @media (max-width:560px){.cta .btn{flex:1 1 100%}}
@@ -253,8 +259,8 @@ pre .c{color:var(--g)}pre .pr{color:var(--rust);user-select:none}
 .dl li.you{background:linear-gradient(to left,transparent,var(--p2) 30%,var(--p2) 70%,transparent)}
 .dl .name{font-size:21px}
 .dl .name small{display:block;font-size:15px;color:var(--g)}
-.dl .go{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 18px;border:1px solid var(--k);text-decoration:none;font-weight:700;white-space:nowrap}
-.dl .go:hover{background:var(--k);color:var(--p)}
+.dl .go{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 18px;border:1px solid var(--rust);background:var(--rust);color:var(--on);text-decoration:none;font-weight:700;white-space:nowrap}
+.dl .go:hover{filter:brightness(1.08)}
 .dl .alt{grid-column:1/-1;font-size:15px;color:var(--g)}
 .dl .alt a{padding-block:6px;display:inline-block}
 .note2{font-size:15px;color:var(--g);margin-top:14px;max-width:44em}
@@ -276,7 +282,7 @@ footer nav a{display:inline-block;padding:6px 8px}
 <main id="main">
   <div class="entry">
     <p class="no">${t.entry.no}</p>
-    <h1>${t.entry.title}</h1>
+    <h1><span class="hl">${t.entry.title}</span></h1>
     <p class="sci">Falco peregrinus digitalis</p>
     <figure class="plate">${falcon(t.entry.labels)}<figcaption>${t.entry.plate}</figcaption></figure>
     <p class="lead">${t.entry.lead}</p>
