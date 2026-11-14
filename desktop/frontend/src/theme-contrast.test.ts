@@ -84,6 +84,16 @@ for (const theme of ["field-day", "field-night"]) {
       expect(ratio(t["on-accent"], t["accent-strong"])).toBeGreaterThanOrEqual(TEXT);
       expect(ratio(t["on-accent"], t.accent)).toBeGreaterThanOrEqual(TEXT);
     });
+    it("ink on the sun highlight ≥ 4.5", () => {
+      expect(ratio(t["on-sun"], t.sun)).toBeGreaterThanOrEqual(TEXT);
+    });
+    for (const hue of ["clay", "plum", "sea", "ochre", "indigo", "moss"]) {
+      it(`category hue ${hue} ≥ 4.5 on sidebar, paper and selected row`, () => {
+        for (const s of ["side", "bg", "selected row"]) {
+          expect(ratio(t[`hue-${hue}`], surfaces[s])).toBeGreaterThanOrEqual(TEXT);
+        }
+      });
+    }
     it("danger button text ≥ 4.5", () => {
       expect(ratio(t["on-err"], t.err)).toBeGreaterThanOrEqual(TEXT);
     });

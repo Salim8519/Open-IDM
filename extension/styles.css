@@ -13,38 +13,42 @@
   unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFC;
 }
 :root {
-  --bg: #efe8d6;
-  --surface: #f6f1e4;
-  --field: #fbf8f0;
-  --text: #211c13;
-  --muted: #4f4535;
-  --line: #c3b595;
+  --bg: #f5eddb;
+  --surface: #faf4e6;
+  --field: #fdfaf2;
+  --text: #211b12;
+  --muted: #5c513e;
+  --line: #d3c39f;
   --edge: #857759;
-  --accent: #8f3f1b;
-  --accent-strong: #7e3514;
-  --accent-text: #7a3315;
+  --accent: #b5501f;
+  --accent-strong: #a8481a;
+  --accent-text: #933a10;
   --on-accent: #fffaf0;
-  --ok: #3f5a22;
-  --warn: #6e4a05;
-  --err: #9e2c17;
+  --ok: #27692b;
+  --warn: #7a4f00;
+  --err: #b0301a;
+  --sun: #f4c34f;
+  --on-sun: #211b12;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1c1914;
-    --surface: #2a251d;
+    --surface: #2e291f;
     --field: #16130f;
-    --text: #f1e9d5;
-    --muted: #c2b69c;
+    --text: #f6eedb;
+    --muted: #c3b598;
     --line: #4a4234;
-    --edge: #7d7360;
-    --accent: #e0906a;
-    --accent-strong: #d9875f;
-    --accent-text: #eca983;
+    --edge: #807662;
+    --accent: #f7ab7a;
+    --accent-strong: #f29a62;
+    --accent-text: #f5ad7f;
     --on-accent: #1c1914;
-    --ok: #b3cc85;
-    --warn: #e8bc66;
-    --err: #f4866c;
+    --ok: #9fd67a;
+    --warn: #e8b33c;
+    --err: #ff8466;
+    --sun: #e8b33c;
+    --on-sun: #1c1914;
   }
 }
 * { box-sizing: border-box; }
@@ -66,7 +70,7 @@ button {
   cursor: pointer;
 }
 button:hover:not(:disabled) { border-color: var(--text); }
-button.primary { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--on-accent); font-weight: 600; }
+button.primary { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--on-accent); font-weight: 700; }
 button.primary:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
 /* disabled stays legible: quieter ink, not a see-through fade */
 button:disabled { color: var(--muted); border-style: dashed; cursor: default; }

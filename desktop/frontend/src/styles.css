@@ -102,66 +102,86 @@
 }
 
 :root[data-theme="field-day"] {
-  /* Every text/background pair passes WCAG AA (4.5:1); icons, fills and control edges
-     pass 3:1. Measured ratios are in ADR 0018: re-measure when changing a value. */
-  --accent: #8f3f1b;
-  --accent-strong: #7e3514;
-  --accent-text: #7a3315;
+  /* Same paper, ink and colours as the website (peregrinedownloader.app). Every text/background
+     pair passes WCAG AA (4.5:1); icons, fills and control edges pass 3:1. Measured ratios are in
+     ADR 0018 and theme-contrast.test.ts fails if a pair drops below. */
+  --accent: #b5501f;
+  --accent-strong: #a8481a;
+  --accent-text: #933a10;
   --on-accent: #fffaf0;
   --on-err: #fffaf0;
-  --ok: #3f5a22;
-  --warn: #6e4a05;
-  --err: #9e2c17;
+  --ok: #27692b;
+  --warn: #7a4f00;
+  --err: #b0301a;
+  --sun: #f4c34f; /* highlighter yellow: always with ink text */
+  --on-sun: #211b12;
 
-  --bg: #efe8d6;
-  --side: #e6dcc4;
-  --raised: #f6f1e4;
-  --field: #fbf8f0;
-  --line: #c3b595;
-  --line-soft: #d9cdb2;
+  /* field-guide hues for file categories (icons) */
+  --hue-clay: #b0381e;
+  --hue-plum: #6d3b6b;
+  --hue-sea: #2f5d62;
+  --hue-ochre: #8a5a00;
+  --hue-indigo: #3b4f8a;
+  --hue-moss: #4a6b1f;
+
+  --bg: #f5eddb;
+  --side: #ece1c8;
+  --raised: #faf4e6;
+  --field: #fdfaf2;
+  --line: #d3c39f;
+  --line-soft: #e2d4b4;
   --edge: #857759;
-  --text: #211c13;
-  --muted: #4f4535;
-  --faint: #5d5244;
-  --disabled: #7e725a; /* 3:1 floor: legible, clearly quieter than enabled ink */
-  --hover: rgba(42, 36, 25, 0.05);
-  --tb-hover: rgba(42, 36, 25, 0.09);
-  --tb-press: rgba(42, 36, 25, 0.15);
-  --sel: rgba(156, 74, 35, 0.14);
-  --track: #d6c8a8;
-  --done-fill: #766a54;
-  --shadow: 0 10px 30px rgba(42, 36, 25, 0.22), 0 0 0 1px rgba(42, 36, 25, 0.45);
+  --text: #211b12;
+  --muted: #5c513e;
+  --faint: #6a5d47;
+  --disabled: #857759; /* 3:1 floor: legible, clearly quieter than enabled ink */
+  --hover: rgba(33, 27, 18, 0.05);
+  --tb-hover: rgba(33, 27, 18, 0.09);
+  --tb-press: rgba(33, 27, 18, 0.15);
+  --sel: rgba(244, 195, 79, 0.34);
+  --track: #e2d4b4;
+  --done-fill: #7a6c52;
+  --shadow: 0 10px 30px rgba(33, 27, 18, 0.22), 0 0 0 1px rgba(33, 27, 18, 0.45);
   color-scheme: light;
 }
 
 :root[data-theme="field-night"] {
-  --accent: #e0906a;
-  --accent-strong: #d9875f;
-  --accent-text: #eca983;
+  --accent: #f7ab7a;
+  --accent-strong: #f29a62;
+  --accent-text: #f5ad7f;
   --on-accent: #1c1914;
   --on-err: #1c1914;
-  --ok: #b3cc85;
-  --warn: #e8bc66;
-  --err: #f4866c;
+  --ok: #9fd67a;
+  --warn: #e8b33c;
+  --err: #ff8466;
+  --sun: #e8b33c;
+  --on-sun: #1c1914;
+
+  --hue-clay: #ff8f6e;
+  --hue-plum: #d6a3d1;
+  --hue-sea: #86b9be;
+  --hue-ochre: #e8b33c;
+  --hue-indigo: #a9b6ef;
+  --hue-moss: #a9cf7c;
 
   --bg: #1c1914;
-  --side: #221e18;
-  --raised: #2a251d;
+  --side: #25211a;
+  --raised: #2e291f;
   --field: #16130f;
   --line: #4a4234;
-  --line-soft: #332d24;
-  --edge: #7d7360;
-  --text: #f1e9d5;
-  --muted: #c2b69c;
-  --faint: #aea288;
-  --disabled: #857a66;
-  --hover: rgba(235, 226, 204, 0.05);
-  --tb-hover: rgba(235, 226, 204, 0.09);
-  --tb-press: rgba(235, 226, 204, 0.15);
-  --sel: rgba(217, 135, 95, 0.18);
+  --line-soft: #342e24;
+  --edge: #807662;
+  --text: #f6eedb;
+  --muted: #c3b598;
+  --faint: #bdb194;
+  --disabled: #8a7f6a;
+  --hover: rgba(246, 238, 219, 0.05);
+  --tb-hover: rgba(246, 238, 219, 0.09);
+  --tb-press: rgba(246, 238, 219, 0.15);
+  --sel: rgba(232, 179, 60, 0.2);
   --track: #3a3328;
-  --done-fill: #968b74;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(235, 226, 204, 0.22);
+  --done-fill: #9a8f78;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(246, 238, 219, 0.22);
   color-scheme: dark;
 }
 
@@ -214,6 +234,37 @@
 }
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) .kind-badge {
   font-size: 11.5px;
+}
+
+/* Bolder, happier pass (ADR 0018, matches the website): labels and headings in bold ink,
+   the current sidebar item marked with the sun highlighter, file categories in their own
+   field-guide hues (each passes 4.5:1 on the sidebar). */
+:root[data-theme^="field"] :is(.side-head, .dl-table thead th, .field > span, .settings legend, .detail-props dt, .segmap-head .label, .brand-name) {
+  font-weight: 700;
+}
+:root[data-theme^="field"] :is(.tb-btn.primary, .btn.primary, .btn.danger) {
+  font-weight: 700;
+}
+:root[data-theme^="field"] .side-item.active {
+  background: var(--sun);
+  color: var(--on-sun);
+}
+:root[data-theme^="field"] .side-item.active :is(svg, .count) {
+  color: var(--on-sun);
+}
+:root[data-theme^="field"] .f-downloading .count:not(:empty) {
+  font-weight: 700;
+}
+:root[data-theme^="field"] .cat-Video { color: var(--hue-clay); }
+:root[data-theme^="field"] .cat-Music { color: var(--hue-plum); }
+:root[data-theme^="field"] .cat-Documents { color: var(--hue-sea); }
+:root[data-theme^="field"] .cat-Compressed { color: var(--hue-ochre); }
+:root[data-theme^="field"] .cat-Programs { color: var(--hue-indigo); }
+:root[data-theme^="field"] .cat-Images { color: var(--hue-moss); }
+:root[data-theme^="field"] .side-item.active .cat-icon { color: var(--on-sun); }
+/* Arabic script: body at 500 (as on the website), labels and headings at 700 */
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) :is(h1, h2, h3, h4, .detail-title h3, .dialog-head h2) {
+  font-weight: 700;
 }
 
 /* Contrast pass (ADR 0018): controls never blend into the paper. */
