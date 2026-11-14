@@ -20,6 +20,7 @@ import (
 
 	"github.com/Salim8519/Peregrine/engine"
 	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/protocols"
 	"github.com/Salim8519/Peregrine/internal/testsrv"
 )
 
@@ -57,6 +58,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	protocols.Register(m, protocols.Options{})
 	st := m.Settings()
 	st.DownloadDir = dl
 	if _, err := m.UpdateSettings(st); err != nil {

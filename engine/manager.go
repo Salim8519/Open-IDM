@@ -196,7 +196,7 @@ func (m *Manager) emitLocked(e Event) {
 func (m *Manager) snapshotLocked(d *Download) Download {
 	c := *d
 	c.Headers = nil             // never send cookies/auth to the UI
-	c.URL = hidePassword(c.URL) // nor a password inside the link (ftp://user:pass@host)
+	c.URL = HidePassword(c.URL) // nor a password inside the link (ftp://user:pass@host)
 	c.ProtoState = nil          // protocol internals (may hold tracker passkeys)
 	if t, ok := m.tasks[d.ID]; ok {
 		c.Downloaded = t.downloaded.Load()
@@ -942,8 +942,8 @@ func redact(s string) string {
 	return strings.Join(fields, " ")
 }
 
-// hidePassword removes the password from a URL's userinfo, keeping the user name.
-func hidePassword(raw string) string {
+// HidePassword removes the password from a URL's userinfo, keeping the user name.
+func HidePassword(raw string) string {
 	u, err := url.Parse(raw)
 	if err != nil || u.User == nil {
 		return raw

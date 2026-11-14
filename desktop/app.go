@@ -14,19 +14,21 @@ import (
 
 	"github.com/Salim8519/Peregrine/engine"
 	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/protocols"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	wruntime "github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App is bound to the frontend. It owns the engine for the lifetime of the window.
 type App struct {
-	ctx     context.Context
-	m       *engine.Manager
-	svc     *api.Service
-	srv     *api.Server
-	unsub   func()
-	initErr error
-	life    *life
+	ctx            context.Context
+	m              *engine.Manager
+	svc            *api.Service
+	srv            *api.Server
+	unsub          func()
+	initErr        error
+	closeProtocols func() // releases torrent ports etc. after the engine stops
+	life           *life
 }
 
 // NewApp creates the app; the engine starts in startup.
@@ -63,6 +65,7 @@ func (a *App) initEngine() error {
 		return fmt.Errorf("start engine: %w", err)
 	}
 	a.m = m
+	a.closeProtocols = protocols.Register(m, protocols.Options{})
 	a.svc = api.NewService(m, api.Hooks{
 		OpenPath:   openPath,
 		RevealPath: revealPath,
@@ -163,6 +166,9 @@ func (a *App) shutdown(ctx context.Context) {
 	}
 	if a.m != nil {
 		_ = a.m.Close()
+	}
+	if a.closeProtocols != nil {
+		a.closeProtocols()
 	}
 }
 

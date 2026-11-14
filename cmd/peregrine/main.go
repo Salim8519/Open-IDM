@@ -24,6 +24,7 @@ import (
 
 	"github.com/Salim8519/Peregrine/engine"
 	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/protocols"
 )
 
 func main() {
@@ -180,12 +181,13 @@ func cmdGet(args []string) error {
 	if err != nil {
 		return err
 	}
+	defer protocols.Register(m, protocols.Options{})() // runs after m.Close
 	defer m.Close()
 
 	// Resume an earlier attempt for the same URL and folder.
 	var id string
 	for _, d := range m.List() {
-		if d.URL == url && filepath.Clean(d.Dir) == dir && d.Status != engine.StatusCompleted {
+		if d.URL == engine.HidePassword(url) && filepath.Clean(d.Dir) == dir && d.Status != engine.StatusCompleted {
 			if *name == "" || d.Filename == *name {
 				id = d.ID
 				if !*quiet {
@@ -334,6 +336,7 @@ func cmdServe(args []string) error {
 	if err != nil {
 		return err
 	}
+	defer protocols.Register(m, protocols.Options{})() // runs after m.Close
 	defer m.Close()
 	svc := api.NewService(m, api.Hooks{})
 	defer svc.Close()
