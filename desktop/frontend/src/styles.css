@@ -3,8 +3,9 @@
  *
  * Design rules (keep these when editing):
  *  - Neutral graphite surfaces; ONE accent (brand blue) used only for meaning:
- *    the primary action, selection, and bytes actively arriving. No gradients or glows —
- *    the gradient lives in the logo only.
+ *    the primary action, selection, and bytes actively arriving. No gradients or glows.
+ *  - Field Guide (below) keeps a contrast floor: 4.5:1 text, 3:1 icons/edges/fills (ADR 0018,
+ *    enforced by theme-contrast.test.ts).
  *  - Status is plain coloured text, not pills. Completed is the resting state, so it is quiet.
  *  - Numbers are tabular so columns of sizes and speeds line up.
  *  - Square-ish corners (4px controls, 8px dialogs). Dense rows: this is a tool.
@@ -16,6 +17,7 @@
   --accent-strong: #2f6bff;
   --accent-text: #8cb0ff;
   --on-accent: #ffffff;
+  --on-err: #ffffff;
   --ok: #5bb381;
   --warn: #d6a24a;
   --err: #ef6a5f;
@@ -33,6 +35,8 @@
   --field: #1d1d20;
   --line: #2d2d32;
   --line-soft: #232327;
+  --edge: #4a4a52;
+  --disabled: #66666e;
   --text: #ececee;
   --muted: #9a9aa2;
   --faint: #66666e;
@@ -60,6 +64,8 @@
   --field: #ffffff;
   --line: #e1e1dd;
   --line-soft: #ececea;
+  --edge: #b9b9b4;
+  --disabled: #a3a3a8;
   --text: #1c1c1e;
   --muted: #66666c;
   --faint: #a3a3a8;
@@ -96,58 +102,66 @@
 }
 
 :root[data-theme="field-day"] {
-  --accent: #9c4a23;
-  --accent-strong: #84391a;
-  --accent-text: #8a3f1d;
+  /* Every text/background pair passes WCAG AA (4.5:1); icons, fills and control edges
+     pass 3:1. Measured ratios are in ADR 0018: re-measure when changing a value. */
+  --accent: #8f3f1b;
+  --accent-strong: #7e3514;
+  --accent-text: #7a3315;
   --on-accent: #fffaf0;
-  --ok: #4d6b2e;
-  --warn: #9a6a12;
-  --err: #b3361f;
+  --on-err: #fffaf0;
+  --ok: #3f5a22;
+  --warn: #6e4a05;
+  --err: #9e2c17;
 
   --bg: #efe8d6;
   --side: #e6dcc4;
   --raised: #f6f1e4;
-  --field: #f8f4e9;
-  --line: #c9bc9f;
-  --line-soft: #ddd2b9;
-  --text: #2a2419;
-  --muted: #6e634f;
-  --faint: #a1957a;
-  --hover: rgba(42, 36, 25, 0.045);
-  --tb-hover: rgba(42, 36, 25, 0.08);
-  --tb-press: rgba(42, 36, 25, 0.13);
-  --sel: rgba(156, 74, 35, 0.13);
-  --track: #dccfb2;
-  --done-fill: #a1957a;
-  --shadow: 0 10px 30px rgba(42, 36, 25, 0.2), 0 0 0 1px rgba(42, 36, 25, 0.25);
+  --field: #fbf8f0;
+  --line: #c3b595;
+  --line-soft: #d9cdb2;
+  --edge: #857759;
+  --text: #211c13;
+  --muted: #4f4535;
+  --faint: #5d5244;
+  --disabled: #7e725a; /* 3:1 floor: legible, clearly quieter than enabled ink */
+  --hover: rgba(42, 36, 25, 0.05);
+  --tb-hover: rgba(42, 36, 25, 0.09);
+  --tb-press: rgba(42, 36, 25, 0.15);
+  --sel: rgba(156, 74, 35, 0.14);
+  --track: #d6c8a8;
+  --done-fill: #766a54;
+  --shadow: 0 10px 30px rgba(42, 36, 25, 0.22), 0 0 0 1px rgba(42, 36, 25, 0.45);
   color-scheme: light;
 }
 
 :root[data-theme="field-night"] {
-  --accent: #d9875f;
-  --accent-strong: #c47450;
-  --accent-text: #e9a27e;
+  --accent: #e0906a;
+  --accent-strong: #d9875f;
+  --accent-text: #eca983;
   --on-accent: #1c1914;
-  --ok: #a9c27c;
-  --warn: #e3b45a;
-  --err: #f07a5f;
+  --on-err: #1c1914;
+  --ok: #b3cc85;
+  --warn: #e8bc66;
+  --err: #f4866c;
 
   --bg: #1c1914;
   --side: #221e18;
   --raised: #2a251d;
-  --field: #24201a;
-  --line: #3e372b;
-  --line-soft: #2e2921;
-  --text: #ebe2cc;
-  --muted: #a79b82;
-  --faint: #6f6654;
-  --hover: rgba(235, 226, 204, 0.04);
-  --tb-hover: rgba(235, 226, 204, 0.08);
-  --tb-press: rgba(235, 226, 204, 0.13);
-  --sel: rgba(217, 135, 95, 0.17);
-  --track: #342e24;
-  --done-fill: #6f6654;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(235, 226, 204, 0.08);
+  --field: #16130f;
+  --line: #4a4234;
+  --line-soft: #332d24;
+  --edge: #7d7360;
+  --text: #f1e9d5;
+  --muted: #c2b69c;
+  --faint: #aea288;
+  --disabled: #857a66;
+  --hover: rgba(235, 226, 204, 0.05);
+  --tb-hover: rgba(235, 226, 204, 0.09);
+  --tb-press: rgba(235, 226, 204, 0.15);
+  --sel: rgba(217, 135, 95, 0.18);
+  --track: #3a3328;
+  --done-fill: #968b74;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(235, 226, 204, 0.22);
   color-scheme: dark;
 }
 
@@ -187,9 +201,94 @@
   font-weight: 700;
 }
 
-/* Naskh needs a little more size than Latin at the same pixel height. */
+/* Naskh needs more size than Latin at the same pixel height, and its hairlines thin out
+   below ~13px: Arabic-script text is set a step larger and a touch heavier. */
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) body {
-  font-size: 14px;
+  font-size: 14.5px;
+  font-weight: 500;
+}
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur))
+  :is(.small, .count, .dl-table thead th, .progress-pct, .badge, .detail-props, .segmap-head,
+    .statusbar, .field > span, .field small, .btn.small, .toast-text span, .step-hint, .side-head) {
+  font-size: 13px;
+}
+:root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) .kind-badge {
+  font-size: 11.5px;
+}
+
+/* Contrast pass (ADR 0018): controls never blend into the paper. */
+/* inputs, the search box and plain buttons get a real ink edge (3:1 against the paper) */
+:root[data-theme^="field"] :is(
+    .field input:not([type="range"]):not([type="checkbox"]),
+    .field textarea,
+    .field select,
+    .search,
+    .day,
+    .step-address code
+  ),
+:root[data-theme^="field"] .btn:not(.primary):not(.danger):not(.ghost) {
+  border-color: var(--edge);
+}
+:root[data-theme^="field"] .btn:not(.primary):not(.danger):not(.ghost):hover:not(:disabled) {
+  border-color: var(--text);
+}
+:root[data-theme^="field"] :is(.search, .field) :is(input, textarea, select):focus,
+:root[data-theme^="field"] .search:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+/* disabled controls stay legible (3:1): quieter ink instead of a see-through fade */
+:root[data-theme^="field"] :is(.tb-btn, .btn, .ctx-item):disabled,
+:root[data-theme^="field"] :is(.tb-btn, .ctx-item):disabled :is(svg, .ctx-icon) {
+  opacity: 1;
+  color: var(--disabled);
+}
+:root[data-theme^="field"] .btn:disabled {
+  border-style: dashed;
+}
+:root[data-theme^="field"] .btn:is(.primary, .danger):disabled {
+  background: var(--raised);
+  border-color: var(--edge);
+}
+:root[data-theme^="field"] .day:has(input:disabled) {
+  opacity: 1;
+  color: var(--disabled);
+  border-style: dashed;
+}
+/* the selected row and the current sidebar item carry a rust rule on their leading edge */
+:root[data-theme^="field"] .dl-table tbody tr.selected td:first-child {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+:root[data-theme^="field"][dir="rtl"] .dl-table tbody tr.selected td:first-child {
+  box-shadow: inset -3px 0 0 var(--accent);
+}
+:root[data-theme^="field"] .side-item.active {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+:root[data-theme^="field"][dir="rtl"] .side-item.active {
+  box-shadow: inset -3px 0 0 var(--accent);
+}
+/* table headers read as headers: ink, not grey */
+:root[data-theme^="field"] .dl-table thead th {
+  color: var(--muted);
+  border-block-end-color: var(--edge);
+}
+/* progress bars a little taller so the fill reads against the track */
+:root[data-theme^="field"] .progress {
+  height: 5px;
+}
+:root[data-theme^="field"] .segmap {
+  border-color: var(--edge);
+}
+/* dialogs, menus and toasts sit on the page with an ink edge, not just a shadow */
+:root[data-theme^="field"] :is(.dialog, .ctx-menu, .toast) {
+  border: 1px solid var(--edge);
+}
+:root[data-theme^="field"] ::-webkit-scrollbar-thumb {
+  background-color: var(--done-fill);
+}
+:root[data-theme^="field"] ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted);
 }
 
 * {
@@ -959,7 +1058,7 @@ tr.selected .cat-icon {
 .btn.danger {
   background: var(--err);
   border-color: var(--err);
-  color: #fff;
+  color: var(--on-err);
   font-weight: 500;
 }
 .btn.danger:hover:not(:disabled) {
@@ -1039,7 +1138,7 @@ tr.selected .cat-icon {
 }
 .ctx-item.danger:hover:not(:disabled) {
   background: var(--err);
-  color: #fff;
+  color: var(--on-err);
 }
 .ctx-icon {
   display: inline-flex;
