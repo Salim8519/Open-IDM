@@ -94,7 +94,7 @@ ${alternates}
 <meta name="theme-color" content="#1c1914" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
 ${rtl ? '<link rel="preload" href="/fonts/NotoNaskhArabic-arabic.woff2" as="font" type="font/woff2" crossorigin>' : ""}
-<link rel="icon" href="/img/peregrine.svg" type="image/svg+xml">
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/img/icon-512.png">
 <meta property="og:type" content="website">
@@ -137,7 +137,7 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 
 .top{display:flex;align-items:center;gap:16px;min-height:56px;border-bottom:1px solid var(--rule);font-size:15px;color:var(--g)}
 .top .book{flex:1;min-width:0}
-.top .book a{text-decoration:none;color:var(--k);font-weight:700;display:inline-block;padding-block:10px}
+.top .book a{text-decoration:none;color:var(--k);font-weight:700;display:inline-flex;align-items:center;gap:8px;padding-block:10px;vertical-align:middle}
 .top nav{display:flex;gap:16px;align-items:center}
 .top nav a{text-decoration:none;padding-block:10px}
 .lang{border:1px solid var(--g);padding:3px 12px!important;color:var(--k);text-decoration:none;white-space:nowrap}
@@ -275,7 +275,7 @@ footer nav a{display:inline-block;padding:6px 8px}
 <a class="skip" href="#main">${t.nav.skip}</a>
 <div class="w">
 <header class="top">
-  <span class="book"><a href="${t.path}">Peregrine</a><span class="tag"> · ${t.nav.book} · ${t.nav.edition}${t.lang === "en" ? "" : " "}<span class="v">${version}</span></span></span>
+  <span class="book"><a class="brand" href="${t.path}"><img src="/img/favicon.svg" alt="" width="22" height="22">Peregrine</a><span class="tag"> · ${t.nav.book} · ${t.nav.edition}${t.lang === "en" ? "" : " "}<span class="v">${version}</span></span></span>
   <nav aria-label="Main"><a class="dlnav" href="#find">${t.nav.download}</a><a href="${GH}">GitHub</a>${langSwitch}</nav>
 </header>
 
