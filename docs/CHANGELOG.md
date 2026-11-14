@@ -4,6 +4,32 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.3.1] - 2026-11-14
+
+### Changed
+- **Windows:** the app uses about half the memory (~75 MB instead of ~130–150 MB, window
+  open or in the tray) and less CPU when idle. WebView2 now runs without a GPU process,
+  and the speed graph no longer redraws the window every second when nothing is
+  downloading.
+- **Windows:** in the tray with nothing downloading, Peregrine now gives unused memory
+  back to Windows after 30 seconds: ~31 MB instead of ~75 MB. Opening the window or a
+  captured download is just as fast.
+- Less CPU during big downloads. Only the rows that changed are redrawn, and the hidden
+  window no longer draws progress nobody sees. In tests with 4 fast downloads and 100
+  items, CPU dropped by about half with the window open, and almost to zero in the tray.
+- **Windows:** the installer is about half the size (~63 MB instead of 120 MB) thanks to
+  stronger compression. The installed files are the same.
+- The browser-extension helper (`peregrine-host`) is a third smaller (7 MB instead of
+  10.5 MB). It no longer includes the download engine.
+
+### Fixed
+- **Windows:** 0.3.0 would not start ("libstdc++-6.dll / libgcc_s_seh-1.dll was not
+  found"). The Windows app is built without cgo again, and the release now fails if the exe
+  needs MinGW DLLs.
+- **Windows:** updating while Peregrine was running in the tray (or the browser extension
+  was connected) could fail with "Error opening file for writing" or leave the old version
+  running. Setup and uninstall now close Peregrine first, after asking.
+
 ## [0.3.0] - 2026-11-14
 
 ### Added
