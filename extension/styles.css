@@ -56,10 +56,10 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 14px/1.45 "Noto Naskh Arabic", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
+  font: 15px/1.45 "Noto Naskh Arabic", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
 }
 /* Naskh needs a step more size and weight than Latin to stay crisp */
-:is(:lang(ar), :lang(fa), :lang(ur)) body { font-size: 15px; font-weight: 500; }
+:is(:lang(ar), :lang(fa), :lang(ur)) body { font-size: 16px; font-weight: 500; }
 button {
   font: inherit;
   border: 1px solid var(--edge);
@@ -82,7 +82,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visib
 a { color: var(--accent-text); text-underline-offset: 2px; }
 .brand { display: flex; align-items: center; gap: 8px; border-block-end: 1px solid var(--edge); padding-block-end: 8px; }
 .brand img { width: 28px; height: 28px; }
-.brand h1 { font-size: 17px; margin: 0; font-weight: 700; }
+.brand h1 { font-size: 18px; margin: 0; font-weight: 700; }
 .muted { color: var(--muted); }
 .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--muted); margin-inline-end: 6px; flex: none; }
 .dot.ok { background: var(--ok); }

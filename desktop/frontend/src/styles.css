@@ -26,7 +26,7 @@
   --radius-lg: 8px;
   --font: system-ui, -apple-system, "Segoe UI Variable Text", "Segoe UI", Roboto, "Noto Sans", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
   --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
-  --row-h: 32px;
+  --row-h: 36px;
 
   /* dark (default) */
   --bg: #161618;
@@ -46,6 +46,12 @@
   --sel: rgba(75, 131, 255, 0.16);
   --track: #2c2c31;
   --done-fill: #55555c;
+  --hue-clay: #f0896b;
+  --hue-plum: #d29be0;
+  --hue-sea: #5fbfc5;
+  --hue-ochre: #dfae4e;
+  --hue-indigo: #93a6ff;
+  --hue-moss: #9ccb6a;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(0, 0, 0, 0.3);
   color-scheme: dark;
 }
@@ -75,6 +81,12 @@
   --sel: rgba(47, 107, 255, 0.1);
   --track: #e6e6e2;
   --done-fill: #b9b9bd;
+  --hue-clay: #c2410c;
+  --hue-plum: #8e3f9e;
+  --hue-sea: #0f7880;
+  --hue-ochre: #946400;
+  --hue-indigo: #3f55c8;
+  --hue-moss: #4d7a10;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.06);
   color-scheme: light;
 }
@@ -195,15 +207,15 @@
 }
 :root[data-theme^="field"] .side-head {
   color: var(--accent-text);
-  font-size: 13px;
+  font-size: 14.5px;
   font-weight: 400;
 }
 :root[data-theme^="field"] :is(.detail-title h3, .dialog-head h2, .empty h2) {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16.5px;
 }
 :root[data-theme^="field"] .empty h2 {
-  font-size: 19px;
+  font-size: 21px;
   font-style: italic;
   font-weight: 400;
 }
@@ -224,16 +236,16 @@
 /* Naskh needs more size than Latin at the same pixel height, and its hairlines thin out
    below ~13px: Arabic-script text is set a step larger and a touch heavier. */
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) body {
-  font-size: 14.5px;
+  font-size: 16px;
   font-weight: 500;
 }
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur))
   :is(.small, .count, .dl-table thead th, .progress-pct, .badge, .detail-props, .segmap-head,
     .statusbar, .field > span, .field small, .btn.small, .toast-text span, .step-hint, .side-head) {
-  font-size: 13px;
+  font-size: 14.5px;
 }
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) .kind-badge {
-  font-size: 11.5px;
+  font-size: 12.5px;
 }
 
 /* Bolder, happier pass (ADR 0018, matches the website): labels and headings in bold ink,
@@ -255,12 +267,6 @@
 :root[data-theme^="field"] .f-downloading .count:not(:empty) {
   font-weight: 700;
 }
-:root[data-theme^="field"] .cat-Video { color: var(--hue-clay); }
-:root[data-theme^="field"] .cat-Music { color: var(--hue-plum); }
-:root[data-theme^="field"] .cat-Documents { color: var(--hue-sea); }
-:root[data-theme^="field"] .cat-Compressed { color: var(--hue-ochre); }
-:root[data-theme^="field"] .cat-Programs { color: var(--hue-indigo); }
-:root[data-theme^="field"] .cat-Images { color: var(--hue-moss); }
 :root[data-theme^="field"] .side-item.active .cat-icon { color: var(--on-sun); }
 /* Arabic script: body at 500 (as on the website), labels and headings at 700 */
 :root[data-theme^="field"]:is(:lang(ar), :lang(fa), :lang(ur)) :is(h1, h2, h3, h4, .detail-title h3, .dialog-head h2) {
@@ -356,7 +362,7 @@ body,
 body {
   background: var(--bg);
   color: var(--text);
-  font: 13px/1.4 var(--font);
+  font: 14.5px/1.4 var(--font);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
   user-select: none;
@@ -377,13 +383,13 @@ button {
 
 .mono {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 .muted {
   color: var(--muted);
 }
 .small {
-  font-size: 12px;
+  font-size: 13px;
 }
 .ok {
   color: var(--ok);
@@ -416,7 +422,7 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 44px;
+  height: 48px;
   padding-inline: 10px;
   background: var(--side);
   border-block-end: 1px solid var(--line);
@@ -437,7 +443,7 @@ button {
 }
 .brand-name {
   font-weight: 600;
-  font-size: 14px;
+  font-size: 15.5px;
   letter-spacing: -0.1px;
 }
 
@@ -458,7 +464,7 @@ button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  height: 28px;
+  height: 32px;
   padding-inline: 8px;
   border: 1px solid transparent;
   border-radius: var(--radius);
@@ -524,6 +530,12 @@ button {
   padding-inline: 6px;
 }
 
+/* with the larger type, the "all" actions drop their labels first (they keep their tooltips) */
+@media (max-width: 1400px) {
+  .toolbar :is([data-testid="tb-pause-all"], [data-testid="tb-resume-all"], [data-testid="tb-clear"]) span {
+    display: none;
+  }
+}
 @media (max-width: 1180px) {
   .toolbar .tb-btn:not(.primary) span {
     display: none;
@@ -535,7 +547,7 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 28px;
+  height: 31px;
   padding-inline: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -578,7 +590,7 @@ button {
 }
 .side-head {
   margin: 4px 10px 4px;
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: var(--faint);
   font-weight: 500;
 }
@@ -588,7 +600,7 @@ button {
   align-items: center;
   gap: 9px;
   width: 100%;
-  height: 28px;
+  height: 32px;
   padding-inline: 10px 8px;
   border: 0;
   border-radius: var(--radius);
@@ -608,8 +620,8 @@ button {
 .side-item svg {
   color: var(--faint);
   flex: none;
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 .side-item.active svg {
   color: var(--accent-text);
@@ -618,7 +630,7 @@ button {
   flex: 1;
 }
 .count {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--faint);
   text-align: end;
   font-variant-numeric: tabular-nums;
@@ -633,6 +645,11 @@ button {
 .f-error .count {
   color: var(--err);
 }
+/* status icons in the sidebar wear their status colour (contrast-tested like the text) */
+.side-item.f-downloading svg { color: var(--accent-text); }
+.side-item.f-paused svg { color: var(--warn); }
+.side-item.f-completed svg { color: var(--ok); }
+.side-item.f-error svg { color: var(--err); }
 
 /* ---------- main ---------- */
 .main {
@@ -660,11 +677,11 @@ button {
   background: var(--bg);
   border-block-end: 1px solid var(--line);
   font-weight: 500;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--faint);
   text-align: start;
   padding: 0;
-  height: 28px;
+  height: 31px;
 }
 .th-btn {
   display: flex;
@@ -689,19 +706,45 @@ th[aria-sort="descending"] .th-btn {
   width: auto;
 }
 .c-size {
-  width: 84px;
+  width: 92px;
 }
 .c-progress {
   width: 180px;
 }
 .c-speed {
-  width: 92px;
+  width: 106px;
 }
 .c-eta {
-  width: 76px;
+  width: 84px;
 }
 .c-status {
-  width: 112px;
+  width: 124px;
+}
+/* the bigger type needs the room back on narrow windows (minimum 820 px wide) */
+.dl-table thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@media (max-width: 1040px) {
+  .body {
+    grid-template-columns: 176px 1fr;
+  }
+  .c-size {
+    width: 78px;
+  }
+  .c-progress {
+    width: 120px;
+  }
+  .c-speed {
+    width: 96px;
+  }
+  .c-eta {
+    width: 72px;
+  }
+  .c-status {
+    width: 112px;
+  }
 }
 .dl-table td {
   height: var(--row-h);
@@ -737,16 +780,24 @@ th[aria-sort="descending"] .th-btn {
   min-width: 0;
 }
 
-/* File-type icons are monochrome: the name carries the meaning, not a rainbow. */
+/* File-type icons carry their category hue (sidebar, rows, detail pane, add dialog) in every
+   theme; "Other" and "Disk Images" stay neutral. Each hue clears 3:1 (Classic) or 4.5:1
+   (Field Guide) on the surfaces it sits on: theme-contrast.test.ts. */
 .cat-icon {
   flex: none;
   color: var(--faint);
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
 }
 tr.selected .cat-icon {
   color: var(--muted);
 }
+:root .cat-icon.cat-Video { color: var(--hue-clay); }
+:root .cat-icon.cat-Music { color: var(--hue-plum); }
+:root .cat-icon.cat-Documents { color: var(--hue-sea); }
+:root .cat-icon.cat-Compressed { color: var(--hue-ochre); }
+:root .cat-icon.cat-Programs { color: var(--hue-indigo); }
+:root .cat-icon.cat-Images { color: var(--hue-moss); }
 
 /* progress */
 .progress-cell {
@@ -823,7 +874,7 @@ tr.selected .cat-icon {
   width: 40px;
   text-align: end;
   font-variant-numeric: tabular-nums;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 
@@ -832,7 +883,7 @@ tr.selected .cat-icon {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--muted);
 }
 .badge.status-downloading {
@@ -875,7 +926,7 @@ tr.selected .cat-icon {
 }
 .empty h2 {
   margin: 8px 0 0;
-  font-size: 15px;
+  font-size: 16.5px;
   font-weight: 600;
   color: var(--text);
 }
@@ -902,7 +953,7 @@ tr.selected .cat-icon {
 }
 .detail-title h3 {
   margin: 0;
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 600;
   flex: 1;
   overflow: hidden;
@@ -936,7 +987,7 @@ tr.selected .cat-icon {
   gap: 3px 14px;
   margin: 0;
   align-content: start;
-  font-size: 12.5px;
+  font-size: 13.5px;
 }
 .detail-props dt {
   color: var(--faint);
@@ -958,7 +1009,7 @@ tr.selected .cat-icon {
   justify-content: space-between;
   gap: 8px;
   margin-block-end: 6px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .segmap-head .label {
   font-weight: 500;
@@ -1036,11 +1087,11 @@ tr.selected .cat-icon {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 24px;
+  height: 28px;
   padding-inline: 12px;
   background: var(--side);
   border-block-start: 1px solid var(--line);
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
@@ -1076,7 +1127,7 @@ tr.selected .cat-icon {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  height: 30px;
+  height: 33px;
   padding-inline: 12px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
@@ -1125,9 +1176,9 @@ tr.selected .cat-icon {
   border-color: transparent;
 }
 .btn.small {
-  height: 26px;
+  height: 29px;
   padding-inline: 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .icon-btn {
   display: inline-flex;
@@ -1162,7 +1213,7 @@ tr.selected .cat-icon {
   align-items: center;
   gap: 10px;
   width: 100%;
-  height: 28px;
+  height: 31px;
   padding-inline: 8px;
   border: 0;
   border-radius: var(--radius);
@@ -1255,7 +1306,7 @@ tr.selected .cat-icon {
 }
 .dialog-head h2 {
   margin: 0;
-  font-size: 14px;
+  font-size: 15.5px;
   font-weight: 600;
 }
 .dialog-body {
@@ -1283,14 +1334,14 @@ tr.selected .cat-icon {
   min-width: 0;
 }
 .field > span {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 .field input:not([type="range"]):not([type="checkbox"]),
 .field textarea,
 .field select {
   width: 100%;
-  height: 30px;
+  height: 33px;
   padding-inline: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1306,7 +1357,7 @@ tr.selected .cat-icon {
   padding-block: 6px;
   resize: vertical;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 .field input:focus,
 .field textarea:focus,
@@ -1318,7 +1369,7 @@ tr.selected .cat-icon {
   width: 100%;
 }
 .field small {
-  font-size: 11.5px;
+  font-size: 12.5px;
   color: var(--faint);
 }
 .row {
@@ -1357,7 +1408,7 @@ tr.selected .cat-icon {
   border-inline-start: 2px solid var(--accent);
   background: var(--sel);
   color: var(--text);
-  font-size: 12px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1421,7 +1472,7 @@ tr.selected .cat-icon {
   padding: 0;
   margin-block-end: 2px;
   font-weight: 600;
-  font-size: 12.5px;
+  font-size: 13.5px;
   color: var(--text);
   float: inline-start;
   width: 100%;
@@ -1471,7 +1522,7 @@ tr.selected .cat-icon {
 }
 .toast-text span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1544,9 +1595,9 @@ tr.selected .cat-icon {
   margin-block-end: 6px;
 }
 .btn.small {
-  height: 26px;
+  height: 29px;
   padding-inline: 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .btn.selected {
   border-color: var(--accent);
@@ -1560,7 +1611,7 @@ tr.selected .cat-icon {
 }
 .step-address code {
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
   padding: 3px 6px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -1574,7 +1625,7 @@ tr.selected .cat-icon {
 }
 .step-hint {
   margin: 4px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
 }
 .browser-status {
@@ -1637,7 +1688,7 @@ tr.selected .cat-icon {
   align-items: center;
   justify-content: center;
   min-width: 44px;
-  height: 28px;
+  height: 31px;
   padding-inline: 8px;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -1670,7 +1721,7 @@ tr.selected .cat-icon {
   padding: 0 6px;
   border-radius: 999px;
   border: 1px solid var(--line);
-  font-size: 10.5px;
+  font-size: 11.5px;
   font-weight: 500;
   line-height: 16px;
   color: var(--muted);

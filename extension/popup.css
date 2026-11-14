@@ -1,11 +1,11 @@
-body { width: 340px; padding: 12px; }
+body { width: 360px; padding: 12px; }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: 2px; padding: 10px; margin-top: 10px; }
 #status { display: flex; align-items: center; gap: 4px; }
 #status #statusText { flex: 1; }
 .toggles { display: grid; gap: 10px; }
 /* section labels set like a field guide's: small caps in rust */
 /* the section label is a sun-yellow sticker, as on the website */
-h2 { display: inline-block; font-size: 14px; font-variant: small-caps; letter-spacing: .05em; color: var(--on-sun); background: var(--sun); padding: 0 6px; margin: 0 0 8px; font-weight: 700; transform: rotate(-1.5deg); }
+h2 { display: inline-block; font-size: 15px; font-variant: small-caps; letter-spacing: .05em; color: var(--on-sun); background: var(--sun); padding: 0 6px; margin: 0 0 8px; font-weight: 700; transform: rotate(-1.5deg); }
 :is(:lang(ar), :lang(fa), :lang(ur)) h2 { font-variant: normal; letter-spacing: 0; font-weight: 700; }
 #mediaEmpty { margin: 0; }
 #mediaList { list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto; }
@@ -13,8 +13,8 @@ h2 { display: inline-block; font-size: 14px; font-variant: small-caps; letter-sp
 #mediaList li:first-child { border-top: 0; }
 .media-info { flex: 1; min-width: 0; }
 .media-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: start; unicode-bidi: plaintext; }
-.media-meta { font-size: 12px; color: var(--muted); }
-.tag { font-size: 11px; font-weight: 700; padding: 1px 5px; border-radius: 2px; background: var(--accent-strong); color: var(--on-accent); margin-inline-end: 4px; }
+.media-meta { font-size: 13px; color: var(--muted); }
+.tag { font-size: 12px; font-weight: 700; padding: 1px 5px; border-radius: 2px; background: var(--accent-strong); color: var(--on-accent); margin-inline-end: 4px; }
 footer { margin-top: 10px; text-align: end; }
 
 /* Full-width action inside a card (e.g. "Download the video on this page"). */

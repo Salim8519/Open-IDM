@@ -11,6 +11,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
   still meets WCAG AA contrast.
 - The app and extension icon use the website's exact paper, ink and rust colours. The
   extension's section labels are a sun-yellow sticker, as on the website.
+- File-type icons are coloured in every theme (Classic too): in the download list, the
+  sidebar, the details pane and the Add dialog. The sidebar's status icons use their status
+  colour (green for completed, red for errors, and so on).
+- All text is bigger: about 1.5 px larger everywhere (Arabic, Persian and Urdu too), with
+  taller rows and buttons to match. The extension popup is a little bigger as well.
 
 ## [0.4.0] - 2026-11-14
 

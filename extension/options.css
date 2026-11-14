@@ -1,5 +1,5 @@
 main { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
-.brand h1 { font-size: 20px; }
+.brand h1 { font-size: 21px; }
 form { margin-top: 16px; display: grid; gap: 18px; }
 .row { display: grid; gap: 6px; }
 .row > label:not(.switch) { font-weight: 700; }
@@ -12,10 +12,10 @@ input[type="number"], textarea {
   background: var(--field);
   color: var(--text);
 }
-textarea { font-family: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace; font-size: 13px; }
+textarea { font-family: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace; font-size: 14px; }
 input[type="number"]:focus, textarea:focus { border-color: var(--accent); }
 ::placeholder { color: var(--muted); opacity: 1; }
 input[type="number"] { max-width: 160px; }
-.hint { margin: 0; font-size: 13px; }
+.hint { margin: 0; font-size: 14px; }
 .actions { display: flex; gap: 8px; align-items: center; }
 .note { margin-top: 20px; padding: 10px; border-inline-start: 3px solid var(--accent); background: var(--surface); border-radius: 0; }

@@ -78,6 +78,21 @@ Surfaces checked: paper, sidebar, raised panel, input field, selected row, selec
 item, hovered row (status colours: paper, sidebar, raised, selected row). The extension uses
 the same values on paper and raised cards; its switch track edge is the `--edge` pair.
 
+## Update: coloured icons and larger type (after v0.4.0)
+User feedback after 0.4.0 asked for coloured icons and slightly bigger text.
+- The six category hues now colour file-type icons in **every** theme, including Classic,
+  which gets its own hue tokens (light and dark). Classic hues are held to 3:1 (icons are
+  non-text); Field Guide hues keep 4.5:1 because the sidebar puts them next to text. "Other"
+  and "Disk Images" stay neutral. Sidebar status icons use the status colours (downloading
+  = accent text, paused = warn, completed = ok, errors = err), tested at 3:1 on the sidebar.
+- Type scale: base text 13 → 14.5 px, Field Guide Arabic body 14.5 → 16 px, every other
+  size up by about 1.5 px. Rows 32 → 36 px, and buttons, inputs, the toolbar and the status
+  bar are a few pixels taller. Columns are a little wider; below 1040 px they narrow again
+  and the sidebar shrinks to 176 px, so the 820 × 520 minimum window still shows names.
+  Below 1400 px the Pause all / Resume all / Clear completed buttons drop their labels
+  (the tooltips stay).
+- Extension popup and options: about 1 px larger, and the popup is 360 px wide (was 340).
+
 ## Alternatives considered
 - Keep the website palette and only fix the worst pairs — the same faint greys are used
   for a dozen elements; a token-level fix is consistent and testable.
