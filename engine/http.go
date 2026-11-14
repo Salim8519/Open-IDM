@@ -17,7 +17,7 @@ import (
 var DefaultUserAgent = "Mozilla/5.0 (compatible; Peregrine/" + Version + "; +https://github.com/Salim8519/Peregrine)"
 
 // Version is the engine version, overridden at build time with -ldflags.
-var Version = "0.4.2"
+var Version = "0.4.3"
 
 // NewHTTPClient returns a client that uses the given proxy setting ("", "system" or a URL),
 // for the app's own small requests (the update check).

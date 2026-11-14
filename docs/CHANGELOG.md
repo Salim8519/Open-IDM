@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.4.3] - 2026-11-14
+
 ### Fixed
 - Time left now follows a lasting speed change within a few seconds. In 0.4.1, halving the
   speed (a slower server, a speed limit, fewer peers) left the time far too low: it showed
