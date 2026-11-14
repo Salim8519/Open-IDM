@@ -4,6 +4,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- Project website at https://peregrinedownloader.app with download links that always
+  point to the newest release (Windows, macOS, Linux CLI, browser extension).
+
 ## [0.3.1] - 2026-11-14
 
 ### Changed

@@ -35,6 +35,7 @@ whenever a change adds a new input, network listener, file write or dependency.
 | T12 | Logs | Tokens in URLs written to disk | Query strings and credentials redacted | `engine/manager.go` (`redact`), host logging | `TestRedact`, extension e2e log test |
 | T13 | Supply chain | Vulnerable or malicious dependency | Lockfiles; govulncheck, npm audit, CodeQL on every push + weekly; Dependabot PRs gated by CI | `.github/workflows/security.yml` | CI |
 | T14 | Release | Tampered binaries | Built only in GitHub Actions from tags; SHA-256 sums; signed provenance attestation | `.github/workflows/release.yml` | `gh attestation verify` |
+| T23 | Website → visitor | Download links sent somewhere else; injected script; visitor tracking | `/download/*` only redirects to assets of `Salim8519/Peregrine` releases on github.com (fixed repo, fixed file-name list, no user-supplied URL); strict CSP, HSTS, `X-Frame-Options: DENY`; no third-party requests or analytics; DNS-only records at Cloudflare so TLS ends at Vercel | `website/`, ADR 0016 | manual check after deploy |
 
 ## Out of scope (documented, not defended)
 - **Malware running as the same user.** It can already read the token file, the database
