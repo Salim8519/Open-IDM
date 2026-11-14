@@ -14,6 +14,25 @@ permissions:
 
 env:
   VERSION: ${{ github.event.inputs.version || github.ref_name }}
+  # Video-site downloads (ADR 0013): yt-dlp and ffmpeg ship next to the app. Pinned versions,
+  # official release URLs, SHA-256 checked before anything is packaged. To update: change
+  # the version and URL, and copy the new sums from the release's published checksums
+  # (yt-dlp: SHA2-256SUMS; gyan.dev: the GitHub release asset digest; martin-riedl.de:
+  # the .sha256 file next to each zip). A wrong or empty sum fails the build.
+  YTDLP_VERSION: "2026.10.26"
+  YTDLP_WIN_SHA256: "f5389d3698ecde4ef06f4e6b1ce0294fe9ac1396228c8990b8d3416d6d177a7d"   # yt-dlp.exe
+  YTDLP_MAC_SHA256: "0f922c15ccc0b83eefa1c8bc9104e434318c4bf16e408e1ee93b7745a6efe0aa"   # yt-dlp_macos (universal2)
+  # Windows: gyan.dev "essentials" build (GPLv3), mirrored on GitHub by GyanD/codexffmpeg.
+  FFMPEG_WIN_URL: "https://github.com/GyanD/codexffmpeg/releases/download/9.0.2/ffmpeg-9.0.2-essentials_build.zip"
+  FFMPEG_WIN_SHA256: "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba"
+  # macOS: martin-riedl.de static release builds (GPL), one per architecture, merged with lipo.
+  FFMPEG_MAC_BASE: "https://ffmpeg.martin-riedl.de/download/macos"
+  FFMPEG_MAC_AMD64: "amd64/1789931006_9.0.2"
+  FFMPEG_MAC_ARM64: "arm64/1789931890_9.0.2"
+  FFMPEG_MAC_AMD64_SHA256: "7c6b4125b191cbf773832dc51f424cf2b6bb7da43007d1e066f95909e47cacd4"
+  FFPROBE_MAC_AMD64_SHA256: "2322438ed2f6319a691291b247d09c69dcaa3a982460d1f269a7e1af335cfdfd"
+  FFMPEG_MAC_ARM64_SHA256: "c8ed4c4e6978a03c485edbfe4e0a5dc2380f8a30bba5150531b31b094492d924"
+  FFPROBE_MAC_ARM64_SHA256: "fcbe839537485eaee7a7a8bc5cbc0f90d53617e80943e8a5b2e31cb851197ea6"
 
 jobs:
   test:
@@ -72,6 +91,35 @@ jobs:
         run: |
           choco install nsis -y --no-progress
           Add-Content -Path $env:GITHUB_PATH -Value "${env:ProgramFiles(x86)}\NSIS"
+      - name: Fetch yt-dlp + ffmpeg (pinned, SHA-256 verified)
+        shell: bash
+        run: |
+          set -euo pipefail
+          fetch() { # url file sha256
+            [ "${#3}" -eq 64 ] || { echo "::error::no SHA-256 pinned for $1"; exit 1; }
+            curl -fsSL --retry 3 -o "$2" "$1"
+            echo "$3  $2" | sha256sum -c - || { echo "::error::checksum mismatch for $1"; exit 1; }
+          }
+          mkdir -p tools-dl desktop/build/bin
+          fetch "https://github.com/yt-dlp/yt-dlp/releases/download/${YTDLP_VERSION}/yt-dlp.exe" tools-dl/yt-dlp.exe "$YTDLP_WIN_SHA256"
+          fetch "$FFMPEG_WIN_URL" tools-dl/ffmpeg.zip "$FFMPEG_WIN_SHA256"
+          (cd tools-dl && 7z x -y ffmpeg.zip >/dev/null)
+          ff=$(dirname "$(find tools-dl -path '*/bin/ffmpeg.exe' | head -1)")
+          [ "$(tools-dl/yt-dlp.exe --version | tr -d '\r')" = "$YTDLP_VERSION" ] || { echo "::error::yt-dlp version mismatch"; exit 1; }
+          "$ff/ffmpeg.exe" -L | grep -qE "GNU (Lesser )?General Public License" || { echo "::error::ffmpeg is not an LGPL/GPL build"; exit 1; }
+          cp tools-dl/yt-dlp.exe "$ff/ffmpeg.exe" "$ff/ffprobe.exe" desktop/build/bin/
+          cp "$ff/../LICENSE" desktop/build/bin/ffmpeg-LICENSE.txt 2>/dev/null || "$ff/ffmpeg.exe" -L > desktop/build/bin/ffmpeg-LICENSE.txt
+          cat > desktop/build/bin/THIRD-PARTY-NOTICES.txt <<EOF
+          Peregrine bundles these separate programs, which it runs for video-site downloads:
+
+          yt-dlp ${YTDLP_VERSION} - The Unlicense (public domain)
+            https://github.com/yt-dlp/yt-dlp  (source: the ${YTDLP_VERSION} tag)
+
+          FFmpeg (ffmpeg.exe, ffprobe.exe) - GNU GPL, see ffmpeg-LICENSE.txt
+            Build: ${FFMPEG_WIN_URL}
+            Source: https://ffmpeg.org/download.html and https://www.gyan.dev/ffmpeg/builds/
+          EOF
+          ls -la desktop/build/bin
       - name: Build app + installer
         shell: bash
         working-directory: desktop
@@ -94,6 +142,8 @@ jobs:
           if [ -z "$installer" ]; then echo "::error::NSIS installer was not built"; exit 1; fi
           cp "$installer" "out/Peregrine-${V}-windows-x64-setup.exe"
           cp desktop/build/bin/Peregrine.exe desktop/build/bin/peregrine-host.exe LICENSE portable/Peregrine/
+          cp desktop/build/bin/yt-dlp.exe desktop/build/bin/ffmpeg.exe desktop/build/bin/ffprobe.exe \
+             desktop/build/bin/ffmpeg-LICENSE.txt desktop/build/bin/THIRD-PARTY-NOTICES.txt portable/Peregrine/
           cp -r desktop/build/bin/extension portable/Peregrine/extension
           (cd portable && 7z a -tzip "../out/Peregrine-${V}-windows-x64-portable.zip" Peregrine >/dev/null)
       - uses: actions/upload-artifact@v4
@@ -128,6 +178,42 @@ jobs:
           done
           lipo -create -output "$APP/Contents/MacOS/peregrine-host" /tmp/peregrine-host-amd64 /tmp/peregrine-host-arm64
           bash scripts/stage-extension.sh "$APP/Contents/Resources/extension"
+
+          # yt-dlp + ffmpeg/ffprobe for video sites (ADR 0013), next to the app binary.
+          set -euo pipefail
+          fetch() { # url file sha256
+            [ "${#3}" -eq 64 ] || { echo "::error::no SHA-256 pinned for $1"; exit 1; }
+            curl -fsSL --retry 3 -o "$2" "$1"
+            echo "$3  $2" | shasum -a 256 -c - || { echo "::error::checksum mismatch for $1"; exit 1; }
+          }
+          T=$(mktemp -d)
+          fetch "https://github.com/yt-dlp/yt-dlp/releases/download/${YTDLP_VERSION}/yt-dlp_macos" "$T/yt-dlp" "$YTDLP_MAC_SHA256"
+          fetch "$FFMPEG_MAC_BASE/$FFMPEG_MAC_AMD64/ffmpeg.zip"  "$T/ffmpeg-amd64.zip"  "$FFMPEG_MAC_AMD64_SHA256"
+          fetch "$FFMPEG_MAC_BASE/$FFMPEG_MAC_AMD64/ffprobe.zip" "$T/ffprobe-amd64.zip" "$FFPROBE_MAC_AMD64_SHA256"
+          fetch "$FFMPEG_MAC_BASE/$FFMPEG_MAC_ARM64/ffmpeg.zip"  "$T/ffmpeg-arm64.zip"  "$FFMPEG_MAC_ARM64_SHA256"
+          fetch "$FFMPEG_MAC_BASE/$FFMPEG_MAC_ARM64/ffprobe.zip" "$T/ffprobe-arm64.zip" "$FFPROBE_MAC_ARM64_SHA256"
+          for tool in ffmpeg ffprobe; do
+            for arch in amd64 arm64; do
+              mkdir -p "$T/$arch" && unzip -o -q "$T/$tool-$arch.zip" -d "$T/$arch"
+            done
+            lipo -create -output "$APP/Contents/MacOS/$tool" "$T/amd64/$tool" "$T/arm64/$tool"
+          done
+          install -m 0755 "$T/yt-dlp" "$APP/Contents/MacOS/yt-dlp"
+          chmod 0755 "$APP/Contents/MacOS/ffmpeg" "$APP/Contents/MacOS/ffprobe"
+          [ "$("$APP/Contents/MacOS/yt-dlp" --version)" = "$YTDLP_VERSION" ] || { echo "::error::yt-dlp version mismatch"; exit 1; }
+          "$APP/Contents/MacOS/ffmpeg" -L | grep -qE "GNU (Lesser )?General Public License" || { echo "::error::ffmpeg is not an LGPL/GPL build"; exit 1; }
+          "$APP/Contents/MacOS/ffmpeg" -L > "$APP/Contents/Resources/ffmpeg-LICENSE.txt"
+          cat > "$APP/Contents/Resources/THIRD-PARTY-NOTICES.txt" <<EOF
+          Peregrine bundles these separate programs, which it runs for video-site downloads:
+
+          yt-dlp ${YTDLP_VERSION} - The Unlicense (public domain)
+            https://github.com/yt-dlp/yt-dlp  (source: the ${YTDLP_VERSION} tag)
+
+          FFmpeg (ffmpeg, ffprobe) - GNU GPL, see ffmpeg-LICENSE.txt
+            Builds: ${FFMPEG_MAC_BASE}/${FFMPEG_MAC_AMD64}/ and ${FFMPEG_MAC_BASE}/${FFMPEG_MAC_ARM64}/
+            Source: https://ffmpeg.org/download.html and https://ffmpeg.martin-riedl.de/
+          EOF
+          rm -rf "$T"
           codesign --force --deep --sign - "$APP"
       - name: Make DMG
         run: |
