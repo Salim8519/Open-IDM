@@ -1,6 +1,6 @@
 # 0017 — Field Guide theme as the default look
 
-- Status: accepted
+- Status: accepted (colour values and contrast superseded by 0018)
 - Date: 2026-11-14
 
 ## Context

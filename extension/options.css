@@ -1,18 +1,21 @@
 main { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
-.brand h1 { font-size: 18px; }
+.brand h1 { font-size: 20px; }
 form { margin-top: 16px; display: grid; gap: 18px; }
 .row { display: grid; gap: 6px; }
-.row > label:not(.switch) { font-weight: 600; }
+.row > label:not(.switch) { font-weight: 700; }
 input[type="number"], textarea {
   font: inherit;
   width: 100%;
   padding: 6px 8px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: 2px;
+  background: var(--field);
   color: var(--text);
 }
+textarea { font-family: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace; font-size: 13px; }
+input[type="number"]:focus, textarea:focus { border-color: var(--accent); }
+::placeholder { color: var(--muted); opacity: 1; }
 input[type="number"] { max-width: 160px; }
-.hint { margin: 0; font-size: 12px; }
+.hint { margin: 0; font-size: 13px; }
 .actions { display: flex; gap: 8px; align-items: center; }
-.note { margin-top: 20px; padding: 10px; border-inline-start: 3px solid var(--cyan); background: var(--surface); border-radius: 4px; }
+.note { margin-top: 20px; padding: 10px; border-inline-start: 3px solid var(--accent); background: var(--surface); border-radius: 0; }

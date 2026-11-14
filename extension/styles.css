@@ -1,24 +1,50 @@
+/*
+ * Field Guide look, shared by the popup and the options page (ADR 0017, contrast in ADR 0018):
+ * warm paper and ink, a serif face, rust as the one accent, square corners. Day and night
+ * editions follow the browser's colour scheme. Text pairs pass WCAG AA (4.5:1); control
+ * edges, the switch track and the focus ring pass 3:1. Same tokens as the desktop app.
+ */
+@font-face {
+  font-family: "Noto Naskh Arabic";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("fonts/NotoNaskhArabic-arabic.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+FB50-FDFF, U+FE70-FEFC;
+}
 :root {
-  --primary: #2f6bff;
-  --cyan: #22d3ee;
-  --dark: #0b1020;
-  --bg: #ffffff;
-  --surface: #f4f6fb;
-  --text: #0b1020;
-  --muted: #5b6478;
-  --border: #dde2ee;
-  --ok: #16a34a;
-  --warn: #d97706;
-  --err: #dc2626;
+  --bg: #efe8d6;
+  --surface: #f6f1e4;
+  --field: #fbf8f0;
+  --text: #211c13;
+  --muted: #4f4535;
+  --line: #c3b595;
+  --edge: #857759;
+  --accent: #8f3f1b;
+  --accent-strong: #7e3514;
+  --accent-text: #7a3315;
+  --on-accent: #fffaf0;
+  --ok: #3f5a22;
+  --warn: #6e4a05;
+  --err: #9e2c17;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0b1020;
-    --surface: #141b31;
-    --text: #e8ecf6;
-    --muted: #98a2b8;
-    --border: #26304d;
+    --bg: #1c1914;
+    --surface: #2a251d;
+    --field: #16130f;
+    --text: #f1e9d5;
+    --muted: #c2b69c;
+    --line: #4a4234;
+    --edge: #7d7360;
+    --accent: #e0906a;
+    --accent-strong: #d9875f;
+    --accent-text: #eca983;
+    --on-accent: #1c1914;
+    --ok: #b3cc85;
+    --warn: #e8bc66;
+    --err: #f4866c;
   }
 }
 * { box-sizing: border-box; }
@@ -26,36 +52,45 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 13px/1.45 system-ui, "Segoe UI", "Noto Sans Arabic", Tahoma, sans-serif;
+  font: 14px/1.45 "Noto Naskh Arabic", Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Times New Roman", serif;
 }
+/* Naskh needs a step more size and weight than Latin to stay crisp */
+:is(:lang(ar), :lang(fa), :lang(ur)) body { font-size: 15px; font-weight: 500; }
 button {
   font: inherit;
-  border: 1px solid var(--border);
+  border: 1px solid var(--edge);
   background: var(--surface);
   color: var(--text);
-  border-radius: 6px;
-  padding: 4px 10px;
+  border-radius: 2px;
+  padding: 4px 12px;
   cursor: pointer;
 }
-button.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
-button:disabled { opacity: 0.55; cursor: default; }
+button:hover:not(:disabled) { border-color: var(--text); }
+button.primary { background: var(--accent-strong); border-color: var(--accent-strong); color: var(--on-accent); font-weight: 600; }
+button.primary:hover:not(:disabled) { background: var(--accent); border-color: var(--accent); }
+/* disabled stays legible: quieter ink, not a see-through fade */
+button:disabled { color: var(--muted); border-style: dashed; cursor: default; }
+button.primary:disabled { background: var(--surface); border-color: var(--edge); color: var(--muted); }
 button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
-a { color: var(--primary); }
-.brand { display: flex; align-items: center; gap: 8px; }
+a { color: var(--accent-text); text-underline-offset: 2px; }
+.brand { display: flex; align-items: center; gap: 8px; border-block-end: 1px solid var(--edge); padding-block-end: 8px; }
 .brand img { width: 28px; height: 28px; }
-.brand h1 { font-size: 15px; margin: 0; font-weight: 600; }
+.brand h1 { font-size: 17px; margin: 0; font-weight: 700; }
 .muted { color: var(--muted); }
-.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); margin-inline-end: 6px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--muted); margin-inline-end: 6px; flex: none; }
 .dot.ok { background: var(--ok); }
 .dot.warn { background: var(--warn); }
 .dot.err { background: var(--err); }
 
-/* switch */
+/* switch: the track has an ink edge so "off" is still visible on the paper */
 .switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; }
-.switch input { appearance: none; width: 34px; height: 20px; border-radius: 10px; background: var(--border); position: relative; flex: none; cursor: pointer; margin: 0; transition: background .15s; }
-.switch input::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: inset-inline-start .15s; }
-.switch input:checked { background: var(--primary); }
-.switch input:checked::after { inset-inline-start: 16px; }
+.switch input { appearance: none; width: 36px; height: 20px; border-radius: 10px; background: var(--field); border: 1.5px solid var(--edge); position: relative; flex: none; cursor: pointer; margin: 0; transition: background .15s; }
+.switch input::after { content: ""; position: absolute; top: 2px; inset-inline-start: 2px; width: 13px; height: 13px; border-radius: 50%; background: var(--edge); transition: inset-inline-start .15s; }
+.switch input:checked { background: var(--accent-strong); border-color: var(--accent-strong); }
+.switch input:checked::after { inset-inline-start: 18px; background: var(--on-accent); }
+@media (prefers-reduced-motion: reduce) {
+  .switch input, .switch input::after { transition: none; }
+}

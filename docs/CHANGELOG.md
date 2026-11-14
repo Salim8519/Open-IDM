@@ -9,7 +9,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
   night edition that follow your system. Arabic, Persian and Urdu use the Noto Naskh Arabic
   font, bundled with the app. The previous look is still available as **Classic** in
   Settings → Theme. If you never changed the theme, you get Field Guide after updating; if
-  you picked light or dark, nothing changes.
+  you picked light or dark, nothing changes. Text, buttons, icons and input edges stand out
+  clearly from the paper in both editions (every pair meets WCAG AA contrast); disabled
+  buttons stay legible, just quieter.
+- New icon in the same style: the diving falcon in ink on paper with a rust tray, for the
+  app, the tray, the installer, .torrent files and the browser extension. Redrawn for 16 px
+  so it stays readable in the taskbar and the browser toolbar.
+- The browser extension's popup and settings page use the Field Guide look too (day and
+  night follow your browser), in all 16 languages, right-to-left included.
 - Project website at https://peregrinedownloader.app with download links that always
   point to the newest release (Windows, macOS, Linux CLI, browser extension), in English
   and Arabic.

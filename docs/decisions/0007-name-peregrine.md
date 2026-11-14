@@ -1,6 +1,6 @@
 # 0007 — Product name: Peregrine
 
-- Status: accepted
+- Status: accepted (logo colours superseded by 0018: ink on paper with a rust tray)
 - Date: 2026-11-13
 
 ## Context
