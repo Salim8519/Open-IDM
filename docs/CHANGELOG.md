@@ -4,6 +4,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Changed
+- Field Guide is warmer and bolder, with the same colours as the website: bold labels and
+  headings (Arabic body text a little heavier too), a sun-yellow highlight on the current
+  sidebar item and the selected download, and file types in their own colours. Every pair
+  still meets WCAG AA contrast.
+- The app and extension icon use the website's exact paper, ink and rust colours. The
+  extension's section labels are a sun-yellow sticker, as on the website.
+
 ## [0.4.0] - 2026-11-14
 
 ### Added
@@ -13,8 +21,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
   Settings → Theme. If you never changed the theme, you get Field Guide after updating; if
   you picked light or dark, nothing changes. Text, buttons, icons and input edges stand out
   clearly from the paper in both editions (every pair meets WCAG AA contrast); disabled
-  buttons stay legible, just quieter. Same warm colours as the website, bold labels and
-  headings, a sun-yellow highlight on the current item, and file types in their own colours.
+  buttons stay legible, just quieter.
 - New icon in the same style: the diving falcon in ink on paper with a rust tray, for the
   app, the tray, the installer, .torrent files and the browser extension. Redrawn for 16 px
   so it stays readable in the taskbar and the browser toolbar.
