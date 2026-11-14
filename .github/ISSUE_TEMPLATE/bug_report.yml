@@ -1,0 +1,95 @@
+name: Bug report
+description: Something doesn't work as it should.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Security problems go to the private form in SECURITY.md, not here.**
+        Please remove passwords, tokens, cookies and private links (anything after `?` in a URL) before posting.
+  - type: input
+    id: version
+    attributes:
+      label: Peregrine version
+      description: The release you downloaded, or the output of `peregrine version`.
+      placeholder: "0.3.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows 11
+        - Windows 10
+        - macOS (Apple silicon)
+        - macOS (Intel)
+        - Linux (unofficial)
+    validations:
+      required: true
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      multiple: true
+      options:
+        - Desktop app
+        - Browser extension
+        - CLI
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version (if the extension is involved)
+      placeholder: "Chrome 142, Edge 142, Brave 1.85"
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Download type
+      multiple: true
+      options:
+        - Normal HTTP/HTTPS file
+        - Video site (YouTube etc.)
+        - Stream (HLS / DASH)
+        - BitTorrent / magnet
+        - FTP / FTPS
+        - Not about a download
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include any error message exactly as shown.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: If a public test link shows the problem, include it (without tokens).
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or anything else
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and this isn't a duplicate.
+          required: true
+        - label: I removed passwords, tokens, cookies and private links from this report.
+          required: true

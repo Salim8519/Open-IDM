@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest an idea or improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [roadmap](https://github.com/Salim8519/Peregrine/blob/main/docs/ROADMAP.md) and
+        [spec](https://github.com/Salim8519/Peregrine/blob/main/docs/SPEC.md) first, it may already be planned or out of scope.
+        Peregrine will never add telemetry, ads or accounts.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe what you're trying to do and what gets in the way.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives or workarounds you've tried
+  - type: dropdown
+    id: part
+    attributes:
+      label: Which part?
+      multiple: true
+      options:
+        - Desktop app
+        - Browser extension
+        - CLI
+        - Engine / protocols
+        - Not sure
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to work on this myself (please agree on the approach in this issue first).

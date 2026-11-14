@@ -92,6 +92,11 @@ cd desktop && wails build           # desktop app -> desktop/build/bin
 See [docs/](docs/) for the [spec](docs/SPEC.md), [roadmap](docs/ROADMAP.md),
 [API](docs/API.md) and [design decisions](docs/decisions/).
 
+## Contributing
+
+Bug reports and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first, and
+please follow the [Code of Conduct](CODE_OF_CONDUCT.md).
+
 ## How it is built
 
 | Part | Tech |
