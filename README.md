@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Salim8519/Peregrine/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/Salim8519/Peregrine?include_prereleases&label=download&color=2F6BFF"></a>
+  <a href="https://peregrinedownloader.app/#download"><img alt="Release" src="https://img.shields.io/github/v/release/Salim8519/Peregrine?include_prereleases&label=download&color=2F6BFF"></a>
   <a href="https://github.com/Salim8519/Peregrine/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Salim8519/Peregrine/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-22D3EE"></a>
 </p>
@@ -50,7 +50,7 @@ loses progress — not on a dropped connection, not on a crash, not on a power c
 
 ## Install
 
-Download from the [latest release](https://github.com/Salim8519/Peregrine/releases/latest):
+Download from [peregrinedownloader.app](https://peregrinedownloader.app/#download) or the [releases page](https://github.com/Salim8519/Peregrine/releases):
 
 | Platform | File |
 |---|---|

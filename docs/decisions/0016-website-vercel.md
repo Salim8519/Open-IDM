@@ -20,7 +20,10 @@ at Cloudflare. All releases so far are GitHub pre-releases, so GitHub's
   Responses are CDN-cached for 10 minutes; if GitHub is unreachable it falls back to the
   last known tag written in the file.
 - DNS stays at Cloudflare with records set to "DNS only" so Vercel issues the TLS
-  certificate.
+  certificate: `@` and `www` are CNAMEs to the project's `*.vercel-dns-017.com` host
+  (Cloudflare flattens the apex). `www` 308-redirects to the apex, which is canonical.
+- Vercel project: `peregrine-website` (Hobby team `salim-8196`), production alias
+  `peregrine-website-sigma.vercel.app`.
 
 ## Alternatives considered
 - GitHub Pages — free too, but no server-side redirect for "newest pre-release" links.
