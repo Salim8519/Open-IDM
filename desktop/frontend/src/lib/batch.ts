@@ -59,11 +59,12 @@ export function isMagnet(s: string): boolean {
     .some((x) => /^urn:bt(ih|mh):/i.test(x));
 }
 
-/** Links Peregrine can download: http(s), ftp(s) and magnet links. */
+/** Links Peregrine can download: http(s), ftp(s), magnet links and local .torrent files. */
 export function isDownloadURL(s: string): boolean {
   if (isMagnet(s)) return true;
   try {
     const u = new URL(s);
+    if (u.protocol === "file:") return !u.host && /\.torrent$/i.test(u.pathname);
     return ["http:", "https:", "ftp:", "ftps:"].includes(u.protocol) && !!u.host;
   } catch {
     return false;

@@ -57,6 +57,8 @@ describe("new link types", () => {
     expect(isDownloadURL("magnet:?xt=urn:btih:0123456789abcdef0123456789abcdef01234567&dn=x")).toBe(true);
     expect(isDownloadURL("magnet:?dn=no-hash")).toBe(false);
     expect(isDownloadURL("file:///etc/passwd")).toBe(false);
+    expect(isDownloadURL("file:///C:/Users/me/Downloads/a%20b.torrent")).toBe(true); // opened from disk
+    expect(isDownloadURL("file://server/share/a.torrent")).toBe(false);
     expect(isDownloadURL("javascript:alert(1)")).toBe(false);
   });
   it("parseBatch keeps magnet and ftp lines", () => {

@@ -45,11 +45,14 @@ func main() {
 			OnSecondInstanceLaunch: app.onSecondInstance,
 		},
 		Bind: []any{app},
+		// Dropping .torrent files onto the window adds them (links still drop as text).
+		DragAndDrop: &options.DragAndDrop{EnableFileDrop: true},
 		Windows: &windows.Options{
 			Theme: windows.SystemDefault,
 		},
 		Mac: &mac.Options{
-			OnUrlOpen: app.onURLOpen, // magnet: links (registered in wails.json "protocols")
+			OnUrlOpen:  app.onURLOpen,  // magnet: links (registered in wails.json "protocols")
+			OnFileOpen: app.onFileOpen, // .torrent files (wails.json "fileAssociations")
 			About: &mac.AboutInfo{
 				Title:   "Peregrine",
 				Message: "Free, open-source download manager",

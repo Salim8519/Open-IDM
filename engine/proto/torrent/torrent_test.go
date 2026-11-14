@@ -205,13 +205,16 @@ func TestMatch(t *testing.T) {
 		"MAGNET:?dn=x&xt=urn:btih:0123456789abcdef0123456789abcdef01234567",
 		"https://example.com/a/b.torrent",
 		"http://example.com/b.TORRENT?passkey=1",
+		"file:///C:/Users/me/Downloads/x.torrent", // a .torrent opened from disk
+		FileURL(filepath.Join(os.TempDir(), "a b.torrent")),
 	}
 	no := []string{
 		"magnet:?xt=urn:ed2k:abc",
 		"https://example.com/b.torrent.html",
 		"https://example.com/file.zip",
 		"ftp://example.com/x.torrent",
-		"file:///C:/x.torrent",
+		"file:///C:/x.txt",
+		"file://server/share/x.torrent", // remote (UNC) files are not opened
 	}
 	for _, u := range yes {
 		if !p.Match(u) {
@@ -450,5 +453,47 @@ func TestBadSources(t *testing.T) {
 	failed := waitStatus(t, m, d.ID, engine.StatusError, 10*time.Second)
 	if strings.Contains(failed.Error, "secret") {
 		t.Fatalf("error leaks the passkey: %s", failed.Error)
+	}
+}
+
+// A .torrent file opened from disk (double-click, drag and drop) downloads like a URL.
+func TestLocalTorrentFile(t *testing.T) {
+	src := t.TempDir()
+	data := writeRandom(t, filepath.Join(src, "movie.mkv"), 200_000)
+	mi := buildTorrent(t, filepath.Join(src, "movie.mkv"), nil)
+	sd := startSeeder(t, mi, src, 0, nil)
+	p := newProto(t, sd.addr)
+	m, dir := newManager(t, p)
+
+	tf := filepath.Join(t.TempDir(), "my release.torrent")
+	f, err := os.Create(tf)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := mi.Write(f); err != nil {
+		t.Fatal(err)
+	}
+	f.Close()
+
+	d, err := m.Add(engine.Request{URL: FileURL(tf)})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if d.Kind != Kind {
+		t.Fatalf("kind = %q", d.Kind)
+	}
+	done := waitStatus(t, m, d.ID, engine.StatusCompleted, 30*time.Second)
+	if done.Filename != "movie.mkv" {
+		t.Fatalf("completed: %+v", done)
+	}
+	assertFile(t, filepath.Join(dir, "movie.mkv"), data)
+
+	// A missing or oversized local file fails cleanly.
+	bad, err := m.Add(engine.Request{URL: FileURL(filepath.Join(t.TempDir(), "gone.torrent"))})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := waitStatus(t, m, bad.ID, engine.StatusError, 10*time.Second); got.Error == "" {
+		t.Fatal("no error for a missing .torrent file")
 	}
 }

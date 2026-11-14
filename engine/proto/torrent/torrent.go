@@ -86,13 +86,18 @@ func New(cfg Config) *Protocol {
 // Kind implements engine.Protocol.
 func (*Protocol) Kind() string { return Kind }
 
-// Match implements engine.Protocol: magnet links with a BitTorrent v1 info hash, and
-// http(s) URLs whose path ends in .torrent.
+// Match implements engine.Protocol: magnet links with a BitTorrent v1 info hash,
+// http(s) URLs whose path ends in .torrent, and local .torrent files (file:// URLs, see
+// FileURL).
 func (*Protocol) Match(rawURL string) bool {
 	s := strings.TrimSpace(rawURL)
 	low := strings.ToLower(s)
 	if strings.HasPrefix(low, "magnet:?") {
 		return strings.Contains(low, "xt=urn:btih:")
+	}
+	if strings.HasPrefix(low, "file:") {
+		_, ok := localPath(s)
+		return ok
 	}
 	if !strings.HasPrefix(low, "http://") && !strings.HasPrefix(low, "https://") {
 		return false
@@ -327,6 +332,9 @@ func (p *Protocol) spec(ctx context.Context, j *engine.Job) (*at.TorrentSpec, er
 		}
 		return spec, nil
 	}
+	if path, ok := localPath(j.URL); ok {
+		return readTorrentFile(path)
+	}
 	mi, err := p.fetchTorrentFile(ctx, j)
 	if err != nil {
 		return nil, err
@@ -343,6 +351,56 @@ func specFromMetaInfo(mi *metainfo.MetaInfo) (*at.TorrentSpec, error) {
 		return nil, errors.New("invalid torrent file: no info hash")
 	}
 	return spec, nil
+}
+
+// FileURL turns a local .torrent path into the file:// URL the protocol accepts.
+func FileURL(path string) string {
+	if abs, err := filepath.Abs(path); err == nil {
+		path = abs
+	}
+	p := filepath.ToSlash(path)
+	if !strings.HasPrefix(p, "/") {
+		p = "/" + p // Windows: C:/x -> /C:/x
+	}
+	return (&url.URL{Scheme: "file", Path: p}).String()
+}
+
+// localPath returns the local path of a file:// URL naming a .torrent file. Remote
+// (host) file URLs are refused so a link can never make us open a network share.
+func localPath(raw string) (string, bool) {
+	u, err := url.Parse(strings.TrimSpace(raw))
+	if err != nil || !strings.EqualFold(u.Scheme, "file") || (u.Host != "" && !strings.EqualFold(u.Host, "localhost")) {
+		return "", false
+	}
+	p := u.Path
+	if len(p) >= 3 && p[0] == '/' && p[2] == ':' { // /C:/x -> C:/x
+		p = p[1:]
+	}
+	if p == "" || !strings.HasSuffix(strings.ToLower(p), ".torrent") || strings.HasPrefix(p, "//") {
+		return "", false
+	}
+	return filepath.FromSlash(p), true
+}
+
+// readTorrentFile loads a .torrent file from disk, with the same size cap as over HTTP.
+func readTorrentFile(path string) (*at.TorrentSpec, error) {
+	f, err := os.Open(path)
+	if err != nil {
+		return nil, fmt.Errorf("open .torrent file: %w", err)
+	}
+	defer f.Close()
+	b, err := io.ReadAll(io.LimitReader(f, MaxTorrentFileSize+1))
+	if err != nil {
+		return nil, fmt.Errorf("read .torrent file: %w", err)
+	}
+	if len(b) > MaxTorrentFileSize {
+		return nil, errors.New("torrent file too large")
+	}
+	mi, err := metainfo.Load(bytes.NewReader(b))
+	if err != nil {
+		return nil, fmt.Errorf("invalid torrent file: %w", err)
+	}
+	return specFromMetaInfo(mi)
 }
 
 // fetchTorrentFile downloads and parses a .torrent file with the engine's HTTP client.

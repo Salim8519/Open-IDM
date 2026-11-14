@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Salim8519/Peregrine/engine"
+	ptorrent "github.com/Salim8519/Peregrine/engine/proto/torrent"
 	"github.com/Salim8519/Peregrine/internal/api"
 	"github.com/Salim8519/Peregrine/internal/protocols"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -40,6 +41,7 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	wruntime.OnFileDrop(ctx, a.onFileDrop)
 	if err := a.initEngine(); err != nil {
 		a.initErr = err
 		log.Printf("peregrine: %v", err)
@@ -210,7 +212,8 @@ func (a *App) captureURL(u string) {
 }
 
 // urlArg returns the first downloadable link among args: http(s), ftp(s) or a magnet link
-// (the OS passes magnet links here once Peregrine is their handler).
+// (the OS passes magnet links here once Peregrine is their handler), or an existing
+// .torrent file (double-clicked once Peregrine opens .torrent files) as a file:// URL.
 func urlArg(args []string) string {
 	for _, s := range args {
 		l := strings.ToLower(s)
@@ -219,8 +222,39 @@ func urlArg(args []string) string {
 				return s
 			}
 		}
+		if u := torrentFileURL(s); u != "" {
+			return u
+		}
 	}
 	return ""
+}
+
+// torrentFileURL returns the file:// URL of path if it is an existing .torrent file.
+func torrentFileURL(path string) string {
+	if !strings.HasSuffix(strings.ToLower(path), ".torrent") {
+		return ""
+	}
+	if info, err := os.Stat(path); err != nil || !info.Mode().IsRegular() {
+		return ""
+	}
+	return ptorrent.FileURL(path)
+}
+
+// onFileOpen handles .torrent files macOS hands to the app (double-click in Finder).
+func (a *App) onFileOpen(path string) {
+	a.showWindow()
+	if u := torrentFileURL(path); u != "" {
+		a.captureURL(u)
+	}
+}
+
+// onFileDrop adds .torrent files dropped onto the window.
+func (a *App) onFileDrop(_, _ int, paths []string) {
+	for _, p := range paths {
+		if u := torrentFileURL(p); u != "" {
+			a.captureURL(u)
+		}
+	}
 }
 
 // onURLOpen handles links macOS hands to the app (magnet: links).

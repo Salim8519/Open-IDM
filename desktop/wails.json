@@ -15,6 +15,15 @@
     "productVersion": "0.2.1",
     "copyright": "Peregrine contributors, open source",
     "comments": "Free, open-source download manager",
+    "fileAssociations": [
+      {
+        "ext": "torrent",
+        "name": "BitTorrent file",
+        "description": "BitTorrent file",
+        "iconName": "torrentfile",
+        "role": "Viewer"
+      }
+    ],
     "protocols": [
       {
         "scheme": "magnet",
