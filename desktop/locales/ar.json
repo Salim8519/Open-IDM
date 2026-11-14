@@ -13,5 +13,7 @@
   "powerIn": "{action} خلال {secs} ثانية. افتح Peregrine للإلغاء.",
   "action.quit": "سيُغلق Peregrine",
   "action.sleep": "سيدخل الجهاز في وضع السكون",
-  "action.shutdown": "سيُطفأ الجهاز"
+  "action.shutdown": "سيُطفأ الجهاز",
+  "updateAvailable": "الإصدار {version} من Peregrine متوفر",
+  "updateBody": "افتح Peregrine لتنزيل الإصدار الجديد."
 }

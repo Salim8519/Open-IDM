@@ -42,6 +42,9 @@ One method-based API (`internal/api.Service.Call`) used by every client:
 | `extensionHello` | – | same as `browserStatus`; called by the native host when the extension checks in (not callable by the extension) |
 | `openExtensionsPage` | `{browser: "chrome"\|"edge"\|"brave"}` | `true` (desktop only) |
 | `showExtensionFolder` | – | `true`; opens the bundled extension folder (desktop only) |
+| `checkUpdate` | – | `{current, latest, newer, url, checkedAt}`; asks GitHub for the latest release and sends an `update` event (ADR 0020) |
+| `updateStatus` | – | the last `checkUpdate` result, or `null` |
+| `openUpdatePage` | – | `true`; opens the release page of the newer version from the last check (desktop only) |
 
 `Request`: `{url, kind?, dir?, filename?, connections?, headers?, checksum?, speedLimit?, paused?}` —
 `headers` may carry `Cookie`, `Referer`, `User-Agent` from the browser. Headers are never
@@ -57,7 +60,7 @@ password is never returned, nor a downloader's internal resume state.
 Status: `queued | downloading | paused | error | completed`.
 
 ## Events
-JSON objects: `{type, download?, downloads?, id?, settings?, schedule?, capture?, browser?}`
+JSON objects: `{type, download?, downloads?, id?, settings?, schedule?, capture?, browser?, update?}`
 - `added`, `updated` → `download`
 - `progress` → `downloads` (batch of active downloads, every 500 ms)
 - `removed` → `id`
@@ -70,10 +73,11 @@ JSON objects: `{type, download?, downloads?, id?, settings?, schedule?, capture?
 empty = every day), whenDone: "none" | "quit" | "sleep" | "shutdown"}`. Outside the window
 queued downloads wait; at the stop time running downloads go back to the queue with their
 progress. Without a stop time the window lasts 24 hours. Desktop-only settings stored by the
-engine: `closeToTray`, `launchAtLogin`, `notify`.
+engine: `closeToTray`, `launchAtLogin`, `notify`, `updateCheck` (daily update check, ADR 0020).
 
 Desktop-only (Wails, not RPC): bindings `App.SetFocused(bool)` and `App.CancelPowerAction()`;
 event `peregrine:power` `{action, seconds}` (a when-done countdown started; `action: ""` =
 cancelled or done).
 - `capture` → `capture` (extension offered a download; UI shows the add dialog)
 - `browser` → `browser` (the extension checked in; closes the "Connect your browser" guide)
+- `update` → `update` (an update check finished; same shape as `checkUpdate`'s result)

@@ -4,7 +4,7 @@ import { Dialog } from "./Dialog";
 import { LANGUAGES, useI18n } from "../i18n";
 import { Client } from "../lib/api";
 import { formatBytes, parseSize } from "../lib/format";
-import { Schedule, Settings, WhenDone } from "../lib/types";
+import { Schedule, Settings, UpdateInfo, WhenDone } from "../lib/types";
 import { platform } from "../lib/desktop";
 import logo from "../logo.svg";
 
@@ -12,6 +12,7 @@ interface Props {
   client: Client;
   settings: Settings;
   version: string;
+  update?: UpdateInfo | null;
   onClose: () => void;
   onConnectBrowser?: () => void;
   onSaved: (s: Settings) => void;
@@ -25,11 +26,14 @@ function dayName(lang: string, day: number): string {
   return new Intl.DateTimeFormat(lang, { weekday: "short" }).format(new Date(2026, 10, 8 + day));
 }
 
+/** Keeps a version number left-to-right inside Arabic, Persian or Urdu text. */
+const ltr = (s: string) => String.fromCharCode(0x2066) + s + String.fromCharCode(0x2069);
+
 function sizeText(n: number): string {
   return n > 0 ? formatBytes(n).replace(" ", "").replace(/B$/, "") : "";
 }
 
-export function SettingsDialog({ client, settings, version, onClose, onSaved, onConnectBrowser }: Props) {
+export function SettingsDialog({ client, settings, version, update, onClose, onSaved, onConnectBrowser }: Props) {
   const { t, lang } = useI18n();
   const [s, setS] = useState<Settings>(settings);
   const [os, setOS] = useState("");
@@ -48,6 +52,34 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const set = <K extends keyof Settings>(k: K, v: Settings[K]) => setS((o) => ({ ...o, [k]: v }));
+
+  // Update check (ADR 0020): the last result, or a manual "Check now".
+  const [upd, setUpd] = useState<UpdateInfo | null>(update ?? null);
+  const [checking, setChecking] = useState(false);
+  const [updFailed, setUpdFailed] = useState(false);
+  useEffect(() => {
+    if (update) setUpd(update);
+  }, [update]);
+  const checkNow = async () => {
+    setChecking(true);
+    setUpdFailed(false);
+    try {
+      setUpd(await client.checkUpdate());
+    } catch {
+      setUpdFailed(true);
+    } finally {
+      setChecking(false);
+    }
+  };
+  const updText = checking
+    ? t("update.checking")
+    : updFailed
+      ? t("update.failed")
+      : upd
+        ? upd.newer
+          ? t("update.available", { v: ltr(upd.latest) })
+          : t("update.upToDate")
+        : "";
 
   const browse = async () => {
     try {
@@ -320,6 +352,33 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
             />
             {t("settings.notify")}
           </label>
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={s.updateCheck}
+              onChange={(e) => set("updateCheck", e.target.checked)}
+              data-testid="set-updateCheck"
+            />
+            {t("settings.updateCheck")}
+          </label>
+          <div className="update-row">
+            <button type="button" className="btn small" onClick={checkNow} disabled={checking} data-testid="update-check-now">
+              {t("update.checkNow")}
+            </button>
+            <span className={updFailed ? "warn" : "muted"} role="status" data-testid="update-status">
+              {updText}
+            </span>
+            {upd?.newer && !checking && (
+              <button
+                type="button"
+                className="btn small primary"
+                onClick={() => void client.openUpdatePage().catch(() => setUpdFailed(true))}
+                data-testid="update-download"
+              >
+                {t("update.download")}
+              </button>
+            )}
+          </div>
         </fieldset>
 
         <fieldset>

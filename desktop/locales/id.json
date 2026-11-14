@@ -13,5 +13,7 @@
   "powerIn": "{action} dalam {secs} detik. Buka Peregrine untuk membatalkan.",
   "action.quit": "Menutup Peregrine",
   "action.sleep": "Masuk mode tidur",
-  "action.shutdown": "Mematikan komputer"
+  "action.shutdown": "Mematikan komputer",
+  "updateAvailable": "Peregrine {version} tersedia",
+  "updateBody": "Buka Peregrine untuk mengunduh versi baru."
 }

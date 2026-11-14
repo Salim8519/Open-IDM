@@ -116,6 +116,7 @@ type Settings struct {
 	CloseToTray   bool `json:"closeToTray"`   // closing the window keeps the app in the tray
 	LaunchAtLogin bool `json:"launchAtLogin"` // start (hidden) when the user signs in
 	Notify        bool `json:"notify"`        // system notifications for finished/failed downloads
+	UpdateCheck   bool `json:"updateCheck"`   // check GitHub for a newer release (ADR 0020)
 
 	// UIVersion records which one-time settings migrations have run (see migrateSettings).
 	UIVersion int `json:"uiVersion"`
@@ -152,6 +153,7 @@ func DefaultSettings() Settings {
 		Schedule:    defaultSchedule(),
 		CloseToTray: true,
 		Notify:      true,
+		UpdateCheck: true,
 	}
 }
 

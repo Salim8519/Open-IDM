@@ -4,6 +4,12 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- Update check: Peregrine asks GitHub once a day whether a newer version is out and shows it
+  in the status bar (and as a system notification when the window is hidden). Click it to
+  open the release page. Settings has "Check now" and a switch to turn the check off. It
+  sends nothing about you and installs nothing by itself.
+
 ### Changed
 - Browser extension: sizes read like the app ("1 MB" instead of "1.0 MB").
 

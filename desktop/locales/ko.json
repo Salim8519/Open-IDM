@@ -13,5 +13,7 @@
   "powerIn": "{secs}초 후 {action}. 취소하려면 Peregrine을 여세요.",
   "action.quit": "Peregrine 종료",
   "action.sleep": "절전 모드로 전환",
-  "action.shutdown": "시스템 종료"
+  "action.shutdown": "시스템 종료",
+  "updateAvailable": "Peregrine {version} 사용 가능",
+  "updateBody": "Peregrine을 열어 새 버전을 다운로드하세요."
 }

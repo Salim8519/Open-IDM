@@ -43,6 +43,8 @@ v0.2.0 released 2026-11-14: scheduler, tray, notifications, start at sign-in, 16
 - [x] i18n: 16 languages, RTL for Arabic/Persian/Urdu
 - [x] Windows installer (NSIS) + portable zip + macOS DMG (universal) — built by the release workflow
 - [ ] Signed auto-update
+  - [x] Step 1: update check + "new version" notice, user can turn it off (ADR 0020)
+  - [ ] Step 2: signed download and install (Windows first; own ADR)
 - [ ] Code signing: SignPath (Windows), Apple notarization (macOS)
 - [ ] **v1.0 beta release**
 

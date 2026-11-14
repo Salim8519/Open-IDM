@@ -13,5 +13,7 @@
   "powerIn": "{secs} 秒后{action}。打开 Peregrine 可取消。",
   "action.quit": "退出 Peregrine",
   "action.sleep": "进入睡眠",
-  "action.shutdown": "关机"
+  "action.shutdown": "关机",
+  "updateAvailable": "Peregrine {version} 已发布",
+  "updateBody": "打开 Peregrine 下载新版本。"
 }

@@ -13,5 +13,7 @@
   "powerIn": "{action} in {secs} seconds. Open Peregrine to cancel.",
   "action.quit": "Quitting Peregrine",
   "action.sleep": "Going to sleep",
-  "action.shutdown": "Shutting down"
+  "action.shutdown": "Shutting down",
+  "updateAvailable": "Peregrine {version} is available",
+  "updateBody": "Open Peregrine to download the new version."
 }

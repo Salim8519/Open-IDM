@@ -77,6 +77,7 @@ export interface Settings {
   closeToTray: boolean;
   launchAtLogin: boolean;
   notify: boolean;
+  updateCheck: boolean;
 }
 
 export type WhenDone = "none" | "quit" | "sleep" | "shutdown";
@@ -105,7 +106,7 @@ export interface Capture extends AddRequest {
 }
 
 export interface PeregrineEvent {
-  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture" | "browser" | "schedule" | "queueDone";
+  type: "added" | "updated" | "progress" | "removed" | "settings" | "capture" | "browser" | "schedule" | "queueDone" | "update";
   download?: Download;
   downloads?: Download[];
   id?: string;
@@ -113,6 +114,16 @@ export interface PeregrineEvent {
   schedule?: ScheduleStatus;
   capture?: Capture;
   browser?: BrowserStatus;
+  update?: UpdateInfo;
+}
+
+/** Result of an update check (docs/API.md: checkUpdate, ADR 0020). */
+export interface UpdateInfo {
+  current: string;
+  latest: string;
+  newer: boolean;
+  url: string;
+  checkedAt: string;
 }
 
 /** Whether the browser extension has reached the app (docs/API.md: browserStatus). */

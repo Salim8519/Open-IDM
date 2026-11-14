@@ -50,6 +50,17 @@ func main() {
 	}
 	go func() { _ = http.Serve(fln, h) }()
 
+	// A fake GitHub release API for the update check: always one version ahead.
+	rln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		log.Fatal(err)
+	}
+	go func() {
+		_ = http.Serve(rln, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			_, _ = fmt.Fprint(w, `{"tag_name":"v99.0.0","draft":false,"prerelease":false}`)
+		}))
+	}()
+
 	store, err := engine.OpenStore(filepath.Join(home, "peregrine.db"))
 	if err != nil {
 		log.Fatal(err)
@@ -76,8 +87,10 @@ func main() {
 		// so tests can check which file the app asked the OS to show.
 		OpenPath:   func(p string) error { return appendLine(filepath.Join(home, "os-hooks.log"), "open "+p) },
 		RevealPath: func(p string) error { return appendLine(filepath.Join(home, "os-hooks.log"), "reveal "+p) },
+		OpenURL:    func(u string) error { return appendLine(filepath.Join(home, "os-hooks.log"), "url "+u) },
 	})
 	svc.SetBrowserStateFile(filepath.Join(home, "browser.json"))
+	svc.SetUpdateURL("http://" + rln.Addr().String() + "/repos/Salim8519/Peregrine/releases/latest")
 	token := api.NewToken()
 	srv, err := api.Listen(svc, 0, token, os.DirFS(*dist))
 	if err != nil {

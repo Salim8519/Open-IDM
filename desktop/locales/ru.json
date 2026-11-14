@@ -13,5 +13,7 @@
   "powerIn": "{action} через {secs} с. Откройте Peregrine, чтобы отменить.",
   "action.quit": "Закрытие Peregrine",
   "action.sleep": "Переход в спящий режим",
-  "action.shutdown": "Выключение компьютера"
+  "action.shutdown": "Выключение компьютера",
+  "updateAvailable": "Доступна версия Peregrine {version}",
+  "updateBody": "Откройте Peregrine, чтобы скачать новую версию."
 }

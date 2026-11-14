@@ -1,5 +1,5 @@
 import { pickTransport, Transport } from "./transport";
-import { AddRequest, BrowserKey, BrowserStatus, Capture, Download, PeregrineEvent, ProbeInfo, ScheduleStatus, Settings } from "./types";
+import { AddRequest, BrowserKey, BrowserStatus, Capture, Download, PeregrineEvent, ProbeInfo, ScheduleStatus, Settings, UpdateInfo } from "./types";
 
 /** Typed client for docs/API.md. All UI code goes through this. */
 export function createClient(t: Transport) {
@@ -31,6 +31,9 @@ export function createClient(t: Transport) {
     browserStatus: () => t.call<BrowserStatus>("browserStatus"),
     openExtensionsPage: (browser: BrowserKey) => t.call<boolean>("openExtensionsPage", { browser }),
     showExtensionFolder: () => t.call<boolean>("showExtensionFolder"),
+    checkUpdate: () => t.call<UpdateInfo>("checkUpdate"),
+    updateStatus: () => t.call<UpdateInfo | null>("updateStatus"),
+    openUpdatePage: () => t.call<boolean>("openUpdatePage"),
     readClipboard: () => t.call<{ text: string }>("readClipboard"),
     subscribe: (fn: (e: PeregrineEvent) => void) => t.subscribe(fn),
   };

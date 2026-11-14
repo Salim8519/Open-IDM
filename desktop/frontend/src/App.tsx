@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowDown,
   ArrowUp,
+  CircleArrowUp,
   CirclePause,
   CirclePlay,
   Copy,
@@ -109,7 +110,7 @@ export default function App() {
     },
     [push],
   );
-  const { downloads, settings, setSettings, schedule, version, connected, refresh } = useEngine(api, { onCapture, onTransition });
+  const { downloads, settings, setSettings, schedule, version, update, connected, refresh } = useEngine(api, { onCapture, onTransition });
 
   // System notifications are only shown while the window is not focused (desktop).
   useEffect(() => {
@@ -572,6 +573,17 @@ export default function App() {
               onTurnOff={() => void run(async () => setSettings(await api.updateSettings({ schedule: { ...settings.schedule, enabled: false } })))}
             />
           )}
+          {update?.newer && (
+            <button
+              className="update-pill"
+              onClick={() => void run(() => api.openUpdatePage())}
+              title={t("update.download")}
+              data-testid="update-pill"
+            >
+              <CircleArrowUp size={14} aria-hidden="true" />
+              {t("update.available", { v: isolateLTR(update.latest) })}
+            </button>
+          )}
           <span className="muted">
             {t("app.name")} {version}
           </span>
@@ -608,6 +620,7 @@ export default function App() {
             client={api}
             settings={settings}
             version={version}
+            update={update}
             onClose={() => setModal(null)}
             onSaved={(s: Settings) => {
               setSettings(s);

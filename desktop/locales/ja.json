@@ -13,5 +13,7 @@
   "powerIn": "{secs} 秒後に{action}。キャンセルするには Peregrine を開いてください。",
   "action.quit": "Peregrine を終了します",
   "action.sleep": "スリープします",
-  "action.shutdown": "シャットダウンします"
+  "action.shutdown": "シャットダウンします",
+  "updateAvailable": "Peregrine {version} が利用可能です",
+  "updateBody": "Peregrine を開いて新しいバージョンをダウンロードしてください。"
 }

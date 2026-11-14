@@ -30,7 +30,8 @@ The full threat model is in [docs/SECURITY-MODEL.md](docs/SECURITY-MODEL.md). In
 
 - **No backdoor surface:** no telemetry, no accounts, no remote configuration, no plugin
   system and (for now) no auto-updater. Peregrine only connects to the servers of the
-  downloads you start.
+  downloads you start, plus one small daily request to GitHub to see whether a newer
+  version exists (it sends nothing about you; turn it off in Settings).
 - **Local API is locked down:** it listens on `127.0.0.1` only, requires a random 256-bit token
   stored in your user profile, rejects other websites (Origin check) and DNS-rebinding
   attacks (Host check).

@@ -45,6 +45,7 @@ type life struct {
 	powerAction  string
 	autostartSet bool
 	autostartOn  bool
+	updateSeen   string // newest version already announced this run
 
 	// Engine events are queued and handled on one goroutine, in order. The engine calls
 	// subscribers while holding its lock, so handling them inline must never call back into
@@ -125,6 +126,7 @@ func (l *life) start(ctx context.Context) {
 
 	l.tray.start(st.Language)
 	go l.trimLoop()
+	go l.updateLoop(ctx)
 	l.syncAutostart(st.LaunchAtLogin)
 
 	if err := wruntime.InitializeNotifications(ctx); err == nil && wruntime.IsNotificationAvailable(ctx) {
@@ -195,6 +197,10 @@ func (l *life) handle(e api.Event) {
 		}
 	case engine.EventQueueDone:
 		go l.queueDone()
+	case "update":
+		if e.Update != nil && e.Update.Newer {
+			l.updateFound(e.Update.Latest)
+		}
 	}
 }
 

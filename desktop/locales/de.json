@@ -13,5 +13,7 @@
   "powerIn": "{action} in {secs} Sekunden. Öffnen Sie Peregrine, um abzubrechen.",
   "action.quit": "Peregrine wird beendet",
   "action.sleep": "Ruhezustand wird aktiviert",
-  "action.shutdown": "Computer wird heruntergefahren"
+  "action.shutdown": "Computer wird heruntergefahren",
+  "updateAvailable": "Peregrine {version} ist verfügbar",
+  "updateBody": "Öffne Peregrine, um die neue Version herunterzuladen."
 }

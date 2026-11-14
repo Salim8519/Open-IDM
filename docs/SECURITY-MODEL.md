@@ -37,6 +37,8 @@ whenever a change adds a new input, network listener, file write or dependency.
 | T14 | Release | Tampered binaries | Built only in GitHub Actions from tags; SHA-256 sums; signed provenance attestation | `.github/workflows/release.yml` | `gh attestation verify` |
 | T23 | Website → visitor | Download links sent somewhere else; injected script; visitor tracking | `/download/*` only redirects to assets of `Salim8519/Peregrine` releases on github.com (fixed repo, fixed file-name list, no user-supplied URL); strict CSP, HSTS, `X-Frame-Options: DENY`; no third-party requests or analytics; DNS-only records at Cloudflare so TLS ends at Vercel | `website/`, ADR 0016 | manual check after deploy |
 
+| T24 | GitHub release API → app | Fake "update" sending the user to a malicious page; tracking through the check | Only `tag_name` read (1 MiB cap); strict `vX.Y.Z` pattern; the release-page URL is built from the version and points at the fixed repo, nothing from the response is opened; drafts/prereleases ignored; fixed User-Agent, no cookies/IDs; user can turn it off; nothing is downloaded or installed; `checkUpdate`/`updateStatus`/`openUpdatePage` not on the host allowlist | `internal/update`, `internal/api/update.go`, ADR 0020 | `internal/update` tests, `TestCheckUpdateFlow`, `TestMethodAllowlist`, `e2e/update.spec.ts` |
+
 ## Out of scope (documented, not defended)
 - **Malware running as the same user.** It can already read the token file, the database
   and the browser's own cookies; no local app can defend against that.

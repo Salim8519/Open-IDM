@@ -82,6 +82,10 @@ func (a *App) initEngine() error {
 		Clipboard:       func() (string, error) { return wruntime.ClipboardGetText(a.ctx) },
 		ExtensionDir:    bundledExtensionDir,
 		OpenBrowserPage: openBrowserPage,
+		OpenURL: func(u string) error {
+			wruntime.BrowserOpenURL(a.ctx, u)
+			return nil
+		},
 	})
 	a.svc.SetBrowserStateFile(filepath.Join(dir, "browser.json"))
 	a.unsub = a.svc.Subscribe(func(e api.Event) {

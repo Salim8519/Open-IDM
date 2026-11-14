@@ -13,5 +13,7 @@
   "powerIn": "{action} tra {secs} secondi. Apri Peregrine per annullare.",
   "action.quit": "Chiusura di Peregrine",
   "action.sleep": "Passaggio alla modalità stop",
-  "action.shutdown": "Spegnimento in corso"
+  "action.shutdown": "Spegnimento in corso",
+  "updateAvailable": "Peregrine {version} è disponibile",
+  "updateBody": "Apri Peregrine per scaricare la nuova versione."
 }

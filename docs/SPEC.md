@@ -98,7 +98,9 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
   Classic (light/dark/system), chosen in Settings; RTL support (Arabic, Persian, Urdu); 16 UI languages
   (`desktop/frontend/src/i18n`, tray/notification text in `desktop/locales`).
 - Settings: connections, speed limits, folders, proxy, scheduler, updates, extension pairing.
-- Signed auto-update (user can disable).
+- Update check (ADR 0020): asks GitHub for the latest release at start and once a day, shows
+  a "new version" notice with a link to the release page; on by default, can be turned off,
+  "Check now" in Settings. Signed auto-install is the next step (user can disable).
 
 ## 6. Browser extension (Phase 3)
 The extension is the only secure, reliable way to send clicked browser downloads to the app

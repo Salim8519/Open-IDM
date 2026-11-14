@@ -13,5 +13,7 @@
   "powerIn": "{action}: {secs} saniye kaldı. İptal etmek için Peregrine'i açın.",
   "action.quit": "Peregrine kapatılıyor",
   "action.sleep": "Uyku moduna geçiliyor",
-  "action.shutdown": "Bilgisayar kapatılıyor"
+  "action.shutdown": "Bilgisayar kapatılıyor",
+  "updateAvailable": "Peregrine {version} kullanılabilir",
+  "updateBody": "Yeni sürümü indirmek için Peregrine'i açın."
 }

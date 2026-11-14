@@ -137,7 +137,7 @@ func errCode(m map[string]any) string {
 func TestMethodAllowlist(t *testing.T) {
 	app := &fakeApp{}
 	h, _ := newTestHost(app, true)
-	for _, m := range []string{"remove", "updateSettings", "openFile", "showInFolder", "pickFolder", "readClipboard", "pauseAll", "extensionHello", "browserStatus", "openExtensionsPage", "showExtensionFolder", "", "PING", "__proto__"} {
+	for _, m := range []string{"remove", "updateSettings", "openFile", "showInFolder", "pickFolder", "readClipboard", "pauseAll", "extensionHello", "browserStatus", "openExtensionsPage", "showExtensionFolder", "checkUpdate", "updateStatus", "openUpdatePage", "", "PING", "__proto__"} {
 		out := call(t, h, `{"id":7,"method":"`+m+`"}`)
 		if errCode(out) != codeForbidden {
 			t.Errorf("%q: want %s, got %v", m, codeForbidden, out)

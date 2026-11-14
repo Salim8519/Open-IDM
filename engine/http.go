@@ -19,6 +19,10 @@ var DefaultUserAgent = "Mozilla/5.0 (compatible; Peregrine/" + Version + "; +htt
 // Version is the engine version, overridden at build time with -ldflags.
 var Version = "0.4.1"
 
+// NewHTTPClient returns a client that uses the given proxy setting ("", "system" or a URL),
+// for the app's own small requests (the update check).
+func NewHTTPClient(proxy string) (*http.Client, error) { return newClient(proxy) }
+
 // newClient builds an HTTP client for segmented downloads.
 //
 // HTTP/2 is deliberately disabled: it multiplexes every segment over one TCP connection,

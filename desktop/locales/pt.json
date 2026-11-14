@@ -13,5 +13,7 @@
   "powerIn": "{action} em {secs} segundos. Abra o Peregrine para cancelar.",
   "action.quit": "Fechando o Peregrine",
   "action.sleep": "Entrando em suspensão",
-  "action.shutdown": "Desligando"
+  "action.shutdown": "Desligando",
+  "updateAvailable": "Peregrine {version} está disponível",
+  "updateBody": "Abra o Peregrine para baixar a nova versão."
 }

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Client } from "./api";
-import { Capture, Download, PeregrineEvent, ScheduleStatus, Settings } from "./types";
+import { Capture, Download, PeregrineEvent, ScheduleStatus, Settings, UpdateInfo } from "./types";
 
 export interface Transition {
   download: Download;
@@ -21,6 +21,7 @@ export function useEngine(client: Client, handlers: Handlers) {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [schedule, setSchedule] = useState<ScheduleStatus | null>(null);
   const [version, setVersion] = useState("");
+  const [update, setUpdate] = useState<UpdateInfo | null>(null);
   const [connected, setConnected] = useState(true);
   const h = useRef(handlers);
   h.current = handlers;
@@ -79,14 +80,18 @@ export function useEngine(client: Client, handlers: Handlers) {
         case "capture":
           if (e.capture) h.current.onCapture?.(e.capture);
           break;
+        case "update":
+          if (e.update) setUpdate(e.update);
+          break;
       }
     });
     void refresh();
     client.getSettings().then(setSettings, () => setConnected(false));
     client.scheduleStatus().then(setSchedule, () => undefined);
     client.version().then((v) => setVersion(v.version), () => undefined);
+    client.updateStatus().then((u) => u && setUpdate(u), () => undefined);
     return off;
   }, [client, refresh, upsert]);
 
-  return { downloads, settings, setSettings, schedule, version, connected, refresh };
+  return { downloads, settings, setSettings, schedule, version, update, connected, refresh };
 }

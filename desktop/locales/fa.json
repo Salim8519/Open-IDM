@@ -13,5 +13,7 @@
   "powerIn": "{action} تا {secs} ثانیهٔ دیگر. برای لغو، Peregrine را باز کنید.",
   "action.quit": "بسته شدن Peregrine",
   "action.sleep": "رفتن به حالت خواب",
-  "action.shutdown": "خاموش شدن رایانه"
+  "action.shutdown": "خاموش شدن رایانه",
+  "updateAvailable": "نسخهٔ {version} از Peregrine در دسترس است",
+  "updateBody": "برای دانلود نسخهٔ جدید، Peregrine را باز کنید."
 }

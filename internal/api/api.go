@@ -16,6 +16,7 @@ import (
 
 	"github.com/Salim8519/Peregrine/engine"
 	"github.com/Salim8519/Peregrine/internal/ipc"
+	"github.com/Salim8519/Peregrine/internal/update"
 )
 
 // Hooks lets the host app provide platform actions. Any field may be nil.
@@ -29,6 +30,8 @@ type Hooks struct {
 	ExtensionDir func() string
 	// OpenBrowserPage opens page (an extensions page) in the given browser key.
 	OpenBrowserPage func(browser, page string) error
+	// OpenURL opens a web page in the default browser (the update's release page).
+	OpenURL func(url string) error
 }
 
 // Capture is a download offered by the browser extension (or clipboard).
@@ -45,6 +48,7 @@ type Event struct {
 	engine.Event
 	Capture *Capture       `json:"capture,omitempty"`
 	Browser *BrowserStatus `json:"browser,omitempty"`
+	Update  *update.Result `json:"update,omitempty"`
 }
 
 // Service dispatches RPC calls to the manager.
@@ -57,6 +61,7 @@ type Service struct {
 	nextSub int
 	unsub   func()
 	browser browserState
+	upd     updateState
 }
 
 // SetBrowserStateFile makes the extension check-in time survive restarts. Call before use.
@@ -218,6 +223,12 @@ func (s *Service) Call(ctx context.Context, method string, params json.RawMessag
 		return s.openExtensionsPage(q.Browser)
 	case "showExtensionFolder":
 		return s.showExtensionFolder()
+	case "checkUpdate":
+		return s.CheckUpdate(ctx)
+	case "updateStatus":
+		return s.updateStatus(), nil
+	case "openUpdatePage":
+		return s.openUpdatePage()
 	case "readClipboard":
 		if s.Hooks.Clipboard == nil {
 			return nil, errUnsupported

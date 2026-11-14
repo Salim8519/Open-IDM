@@ -1664,6 +1664,38 @@ tr.selected .cat-icon {
   .browser-status .status-dot { animation: none; }
 }
 
+/* ---------- update available (statusbar) ---------- */
+.update-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+  padding-inline: 9px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.update-pill:hover {
+  filter: brightness(1.08);
+}
+:root[data-theme^="field"] .update-pill {
+  background: var(--sun);
+  color: var(--on-sun);
+  font-weight: 700;
+}
+
+.update-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-block-start: 4px;
+}
+
 /* ---------- schedule ---------- */
 .schedule-badge {
   display: inline-flex;

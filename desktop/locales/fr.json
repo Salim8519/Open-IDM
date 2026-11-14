@@ -13,5 +13,7 @@
   "powerIn": "{action} dans {secs} secondes. Ouvrez Peregrine pour annuler.",
   "action.quit": "Fermeture de Peregrine",
   "action.sleep": "Mise en veille",
-  "action.shutdown": "Arrêt de l’ordinateur"
+  "action.shutdown": "Arrêt de l’ordinateur",
+  "updateAvailable": "Peregrine {version} est disponible",
+  "updateBody": "Ouvrez Peregrine pour télécharger la nouvelle version."
 }

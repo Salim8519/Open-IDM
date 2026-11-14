@@ -13,5 +13,7 @@
   "powerIn": "{action} — {secs} सेकंड में। रद्द करने के लिए Peregrine खोलें।",
   "action.quit": "Peregrine बंद हो रहा है",
   "action.sleep": "स्लीप मोड",
-  "action.shutdown": "कंप्यूटर शट डाउन हो रहा है"
+  "action.shutdown": "कंप्यूटर शट डाउन हो रहा है",
+  "updateAvailable": "Peregrine {version} उपलब्ध है",
+  "updateBody": "नया संस्करण डाउनलोड करने के लिए Peregrine खोलें।"
 }
