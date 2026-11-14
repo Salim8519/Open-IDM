@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Peregrine",
   "description": "__MSG_extDescription__",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "default_locale": "en",
   "minimum_chrome_version": "116",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtpOOs4OYFx5u7AI/rc3xRXA+fM2Ecx9tdQkunDoMQLfhh9M8mj3RISugztpCxYZp1IZCwOeByLx76eWpr6slofGFAdzDikPISkxtUi2VET7lfoGLBauZTDO5hJqQo6MGE1VDqwaX+41CHruQF3Gokm579kfBmV7w9cop6EsDyABBEYjDGYFirkKB8VDH6i9iUvrfF63umQEFZLpKyAyQlFb6LvWinul/l3ExOUn11VXK/iiuUOfRSeF/IqHbXNg/auUI+z732ypWjinNQ67qwpRh6iCqtLUoUvYguj2EpRTlMOb/J8B7H95gkMBcB2Wtq1s6opKNafvu2Fu1+BLinQIDAQAB",

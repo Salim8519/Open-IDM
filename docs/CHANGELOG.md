@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.4.2] - 2026-11-14
+
 ### Added
 - Update check: Peregrine asks GitHub once a day whether a newer version is out and shows it
   in the status bar (and as a system notification when the window is hidden). Click it to
