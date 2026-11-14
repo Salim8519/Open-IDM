@@ -8,6 +8,7 @@ import (
 	"github.com/Salim8519/Peregrine/engine/proto/ftp"
 	"github.com/Salim8519/Peregrine/engine/proto/stream"
 	ptorrent "github.com/Salim8519/Peregrine/engine/proto/torrent"
+	"github.com/Salim8519/Peregrine/engine/proto/video"
 )
 
 // Options configures the downloaders that need outside tools or ports.
@@ -24,6 +25,8 @@ func Register(m *engine.Manager, opts Options) (closeAll func()) {
 	so := stream.Options{FFmpeg: opts.FFmpeg}
 	m.RegisterProtocol(stream.NewHLS(so))
 	m.RegisterProtocol(stream.NewDASH(so))
+	// Video sites (YouTube etc.) through the bundled yt-dlp; only for kind "video".
+	m.RegisterProtocol(video.New(video.Options{FFmpegPath: opts.FFmpeg}))
 	// BitTorrent: one shared client, started on the first torrent (not at app launch).
 	tp := ptorrent.New(ptorrent.Config{ListenPort: opts.TorrentPort})
 	m.RegisterProtocol(tp)

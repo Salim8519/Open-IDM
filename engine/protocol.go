@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 )
@@ -290,6 +291,10 @@ type protoFields struct {
 
 // removePart deletes an unfinished part file or folder.
 func removePart(d *Download) error {
+	// Scratch folders some downloaders keep beside the part file: stream segments
+	// (<name>.peregrine.tmp) and video pieces (<part>.d).
+	_ = os.RemoveAll(strings.TrimSuffix(d.PartPath(), PartSuffix) + ".peregrine.tmp")
+	_ = os.RemoveAll(d.PartPath() + ".d")
 	if d.IsDir {
 		return os.RemoveAll(d.PartPath())
 	}

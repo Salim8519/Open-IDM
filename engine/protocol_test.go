@@ -167,3 +167,30 @@ func TestKindSelection(t *testing.T) {
 		t.Fatalf("Kinds() = %v", got)
 	}
 }
+
+// Removing a download must also delete the scratch folders downloaders keep next to the
+// part file (stream segments in <name>.peregrine.tmp, video pieces in <part>.d).
+func TestRemovePartDeletesWorkFolders(t *testing.T) {
+	dir := t.TempDir()
+	d := &Download{Dir: dir, Filename: "clip.mp4"}
+	work := []string{
+		strings.TrimSuffix(d.PartPath(), PartSuffix) + ".peregrine.tmp",
+		d.PartPath() + ".d",
+	}
+	if err := os.WriteFile(d.PartPath(), []byte("x"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	for _, w := range work {
+		if err := os.MkdirAll(filepath.Join(w, "sub"), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := removePart(d); err != nil {
+		t.Fatal(err)
+	}
+	for _, p := range append(work, d.PartPath()) {
+		if exists(p) {
+			t.Fatalf("%s left behind", p)
+		}
+	}
+}
