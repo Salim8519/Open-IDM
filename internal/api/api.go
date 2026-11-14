@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/Salim8519/Peregrine/engine"
+	"github.com/Salim8519/Peregrine/internal/ipc"
 )
 
 // Hooks lets the host app provide platform actions. Any field may be nil.
@@ -93,13 +94,8 @@ func (s *Service) emit(e Event) {
 	}
 }
 
-// RPCError is returned to clients as {"error": {"code","message"}}.
-type RPCError struct {
-	Code    string `json:"code"`
-	Message string `json:"message"`
-}
-
-func (e *RPCError) Error() string { return e.Message }
+// RPCError is returned to clients as {"error": {"code","message"}} (defined in internal/ipc).
+type RPCError = ipc.RPCError
 
 func toRPCError(err error) *RPCError {
 	code := "error"

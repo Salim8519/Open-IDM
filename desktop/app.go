@@ -85,7 +85,9 @@ func (a *App) initEngine() error {
 	})
 	a.svc.SetBrowserStateFile(filepath.Join(dir, "browser.json"))
 	a.unsub = a.svc.Subscribe(func(e api.Event) {
-		wruntime.EventsEmit(a.ctx, "peregrine:event", e)
+		if forwardToUI(e, a.life.uiHidden.Load()) {
+			wruntime.EventsEmit(a.ctx, "peregrine:event", e)
+		}
 		a.life.event(e)
 	})
 	a.life.start(a.ctx)
@@ -179,7 +181,7 @@ func (a *App) showWindow() {
 		return
 	}
 	a.life.mu.Lock()
-	a.life.hidden = false
+	a.life.setHiddenLocked(false)
 	a.life.mu.Unlock()
 	wruntime.WindowUnminimise(a.ctx)
 	wruntime.WindowShow(a.ctx)

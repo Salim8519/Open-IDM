@@ -77,7 +77,9 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
 
 ### 4.5 Performance targets
 - Saturate a 1 Gbps link on a single large file from a capable server.
-- Idle CPU < 1%; RAM < 80 MB for the desktop app with 100 queued items.
+- Idle CPU < 1%; RAM < 80 MB for the desktop app with 100 queued items. RAM counts the app
+  and its WebView processes (private working set). Measure with `scripts/footprint.ps1`
+  (Windows); see ADR 0015 for the latest numbers.
 - Startup to usable window < 1 s on a modern machine.
 
 ## 5. Desktop app (Phase 2)

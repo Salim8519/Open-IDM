@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatBytes, formatETA, formatPercent, formatSpeed, parseSize, percent } from "./format";
+import { formatBytes, formatETA, formatPercent, formatSpeed, nextSpeedHistory, parseSize, percent } from "./format";
 
 describe("formatBytes", () => {
   it("formats binary units", () => {
@@ -53,5 +53,29 @@ describe("parseSize", () => {
     expect(parseSize("1.5 MB")).toBe(1.5 * 1024 * 1024);
     expect(parseSize("2m/s")).toBe(2 * 1024 * 1024);
     expect(parseSize("abc")).toBeNull();
+  });
+});
+
+describe("nextSpeedHistory", () => {
+  it("returns the same array when idle, so React skips the re-render", () => {
+    const empty: number[] = [];
+    expect(nextSpeedHistory(empty, 0)).toBe(empty);
+    const zeros = [0, 0, 0];
+    expect(nextSpeedHistory(zeros, 0)).toBe(zeros);
+  });
+  it("keeps scrolling while recent speeds are still on the graph", () => {
+    expect(nextSpeedHistory([5, 0], 0)).toEqual([5, 0, 0]);
+    expect(nextSpeedHistory([], 7)).toEqual([7]);
+  });
+  it("skips the sample when the speed is stale (window hidden, no progress arriving)", () => {
+    const h = [5, 6];
+    expect(nextSpeedHistory(h, 6, true)).toBe(h);
+  });
+  it("keeps the last 60 samples", () => {
+    const full = Array.from({ length: 60 }, (_, i) => i + 1);
+    const next = nextSpeedHistory(full, 99);
+    expect(next).toHaveLength(60);
+    expect(next[0]).toBe(2);
+    expect(next[59]).toBe(99);
   });
 });

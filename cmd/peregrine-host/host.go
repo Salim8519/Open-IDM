@@ -10,14 +10,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Salim8519/Peregrine/engine"
-	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/ipc"
 )
 
 // hostVersion is the native messaging host version (set with -ldflags at release time).
 var hostVersion = "0.1.0"
 
-// caller is the part of api.Client the host uses (an interface so tests can fake it).
+// caller is the part of ipc.Client the host uses (an interface so tests can fake it).
 type caller interface {
 	Call(method string, params any) (json.RawMessage, error)
 }
@@ -42,7 +41,7 @@ type request struct {
 type response struct {
 	ID     json.RawMessage `json:"id"`
 	Result any             `json:"result,omitempty"`
-	Error  *api.RPCError   `json:"error,omitempty"`
+	Error  *ipc.RPCError   `json:"error,omitempty"`
 }
 
 // Error codes returned to the extension (in addition to the app's own codes).
@@ -54,8 +53,8 @@ const (
 	codeTooLarge       = "too_large"
 )
 
-func rpcErr(code, format string, a ...any) *api.RPCError {
-	return &api.RPCError{Code: code, Message: fmt.Sprintf(format, a...)}
+func rpcErr(code, format string, a ...any) *ipc.RPCError {
+	return &ipc.RPCError{Code: code, Message: fmt.Sprintf(format, a...)}
 }
 
 // allowedMethods is the complete list of methods the extension may call. Everything else
@@ -155,7 +154,7 @@ func truncate(s string, n int) string {
 	return s
 }
 
-func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCError) {
+func (h *host) dispatch(method string, params json.RawMessage) (any, *ipc.RPCError) {
 	if method == "ping" {
 		out := map[string]any{"host": hostVersion, "app": false}
 		if c, err := h.dial(); err == nil {
@@ -200,7 +199,7 @@ func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCErr
 	}
 	raw, err := c.Call(method, fwd)
 	if err != nil {
-		var re *api.RPCError
+		var re *ipc.RPCError
 		if errors.As(err, &re) {
 			return nil, re
 		}
@@ -221,7 +220,7 @@ func (h *host) dispatch(method string, params json.RawMessage) (any, *api.RPCErr
 func (h *host) hello(c caller) { _, _ = c.Call("extensionHello", nil) }
 
 // app returns a client for the running app, starting it first when allowed.
-func (h *host) app(launch bool) (caller, *api.RPCError) {
+func (h *host) app(launch bool) (caller, *ipc.RPCError) {
 	c, err := h.dial()
 	if err == nil {
 		return c, nil
@@ -302,7 +301,7 @@ func cleanHeaders(in map[string]string) map[string]string {
 	return out
 }
 
-// allowedKinds are the download types the extension may ask for (engine.Request.Kind).
+// allowedKinds are the download types the extension may ask for (wireRequest.Kind).
 var allowedKinds = map[string]bool{"": true, "http": true, "ftp": true, "hls": true, "dash": true, "video": true, "torrent": true}
 
 func checkKind(k string) error {
@@ -324,19 +323,19 @@ func cleanPageURL(raw string) string {
 
 // sanitizeCapture keeps only fields the extension is allowed to set. The download folder
 // is never taken from the browser; the app (or the user in the add dialog) chooses it.
-func sanitizeCapture(params json.RawMessage) (api.Capture, error) {
-	var in api.Capture
+func sanitizeCapture(params json.RawMessage) (wireCapture, error) {
+	var in wireCapture
 	if len(params) == 0 || json.Unmarshal(params, &in) != nil {
-		return api.Capture{}, errors.New("params must be an object")
+		return wireCapture{}, errors.New("params must be an object")
 	}
 	if err := checkURL(in.URL); err != nil {
-		return api.Capture{}, err
+		return wireCapture{}, err
 	}
 	if err := checkKind(in.Kind); err != nil {
-		return api.Capture{}, err
+		return wireCapture{}, err
 	}
-	out := api.Capture{
-		Request: engine.Request{
+	out := wireCapture{
+		wireRequest: wireRequest{
 			URL:      in.URL,
 			Filename: truncate(in.Filename, 255),
 			Headers:  cleanHeaders(in.Headers),
@@ -352,18 +351,18 @@ func sanitizeCapture(params json.RawMessage) (api.Capture, error) {
 	return out, nil
 }
 
-func sanitizeRequest(params json.RawMessage) (engine.Request, error) {
-	var in engine.Request
+func sanitizeRequest(params json.RawMessage) (wireRequest, error) {
+	var in wireRequest
 	if len(params) == 0 || json.Unmarshal(params, &in) != nil {
-		return engine.Request{}, errors.New("params must be an object")
+		return wireRequest{}, errors.New("params must be an object")
 	}
 	if err := checkURL(in.URL); err != nil {
-		return engine.Request{}, err
+		return wireRequest{}, err
 	}
 	if err := checkKind(in.Kind); err != nil {
-		return engine.Request{}, err
+		return wireRequest{}, err
 	}
-	return engine.Request{
+	return wireRequest{
 		URL:      in.URL,
 		Filename: truncate(in.Filename, 255),
 		Headers:  cleanHeaders(in.Headers),
@@ -375,7 +374,11 @@ func sanitizeRequest(params json.RawMessage) (engine.Request, error) {
 // filterSettings returns only what the extension needs; download folders, proxy URLs
 // (which may embed credentials) and the like never leave the app.
 func filterSettings(raw json.RawMessage) any {
-	var s engine.Settings
+	var s struct {
+		MinExtSize   int64  `json:"minExtSize"`
+		AutoStartExt bool   `json:"autoStartExt"`
+		Language     string `json:"language"`
+	}
 	_ = json.Unmarshal(raw, &s)
 	return map[string]any{
 		"minExtSize":   s.MinExtSize,

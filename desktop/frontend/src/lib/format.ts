@@ -59,3 +59,14 @@ export function parseSize(input: string): number | null {
   const mult = { "": 1, K: 1024, M: 1024 ** 2, G: 1024 ** 3, T: 1024 ** 4 }[m[2] as "" | "K" | "M" | "G" | "T"];
   return Math.round(parseFloat(m[1]) * mult);
 }
+
+/**
+ * Adds one speed sample to the status-bar graph (last 60 s). When idle and the graph is
+ * already flat it returns the same array, so the once-a-second tick costs no re-render.
+ * `stale` (no progress arriving, e.g. while the window is hidden in the tray) skips the
+ * sample, so the graph does not repeat an old speed as a flat line.
+ */
+export function nextSpeedHistory(h: number[], speed: number, stale = false): number[] {
+  if (stale || (speed === 0 && h.every((v) => v === 0))) return h;
+  return [...h.slice(-59), speed];
+}

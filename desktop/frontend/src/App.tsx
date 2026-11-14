@@ -36,7 +36,7 @@ import {
   StatusFilter,
 } from "./lib/download";
 import { looksDownloadable, parseBatch } from "./lib/batch";
-import { formatSpeed } from "./lib/format";
+import { formatSpeed, nextSpeedHistory } from "./lib/format";
 import { cancelPowerAction, onPower, PowerEvent, setFocused } from "./lib/desktop";
 import { PowerDialog, ScheduleBadge } from "./components/Schedule";
 
@@ -386,9 +386,16 @@ export default function App() {
   // Last 60 s of total speed for the status-bar graph.
   const speedRef = useRef(0);
   speedRef.current = totalSpeed;
+  // When the downloads last changed. While hidden in the tray the desktop app stops sending
+  // progress (ADR 0015), so a non-zero speed with no recent update is stale.
+  const updatedAt = useRef(Date.now());
+  useEffect(() => {
+    updatedAt.current = Date.now();
+  }, [downloads]);
   const [speedHistory, setSpeedHistory] = useState<number[]>([]);
   useEffect(() => {
-    const id = window.setInterval(() => setSpeedHistory((h) => [...h.slice(-59), speedRef.current]), 1000);
+    // Returning the same array when idle skips the re-render, so an idle app does no work.
+    const id = window.setInterval(() => setSpeedHistory((h) => nextSpeedHistory(h, speedRef.current, speedRef.current > 0 && Date.now() - updatedAt.current > 1500)), 1000);
     return () => window.clearInterval(id);
   }, []);
   const activeCount = statusCounts.downloading;

@@ -7,6 +7,7 @@ import (
 	"runtime"
 	"slices"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Salim8519/Peregrine/desktop/autostart"
@@ -29,10 +30,14 @@ type life struct {
 	app  *App
 	tray *tray
 
-	mu           sync.Mutex
-	status       map[string]engine.Status // last known status, to notify on transitions
-	focused      bool
-	hidden       bool
+	mu          sync.Mutex
+	status      map[string]engine.Status // last known status, to notify on transitions
+	focused     bool
+	hidden      bool
+	hiddenSince time.Time // when hidden last became true (memory trimming)
+	// uiHidden mirrors hidden without l.mu, for the engine event path: engine subscribers run
+	// under the engine lock, and l.mu is sometimes held while calling the engine.
+	uiHidden     atomic.Bool
 	toldHidden   bool // "still running in the tray" shown once per run
 	quitting     bool
 	notifyOK     bool
@@ -115,10 +120,11 @@ func (l *life) start(ctx context.Context) {
 	for _, d := range l.app.m.List() {
 		l.status[d.ID] = d.Status
 	}
-	l.hidden = launchedHidden()
+	l.setHiddenLocked(launchedHidden())
 	l.mu.Unlock()
 
 	l.tray.start(st.Language)
+	go l.trimLoop()
 	l.syncAutostart(st.LaunchAtLogin)
 
 	if err := wruntime.InitializeNotifications(ctx); err == nil && wruntime.IsNotificationAvailable(ctx) {
@@ -150,6 +156,15 @@ func (l *life) start(ctx context.Context) {
 }
 
 func (l *life) setNotifyOK(ok bool) { l.mu.Lock(); l.notifyOK = ok; l.mu.Unlock() }
+
+// setHiddenLocked records whether the window is hidden; l.mu must be held.
+func (l *life) setHiddenLocked(hidden bool) {
+	if hidden && !l.hidden {
+		l.hiddenSince = time.Now()
+	}
+	l.hidden = hidden
+	l.uiHidden.Store(hidden)
+}
 
 func (l *life) stop() {
 	l.stopEvents()
@@ -229,7 +244,7 @@ func (a *App) SetFocused(focused bool) {
 	a.life.mu.Lock()
 	a.life.focused = focused
 	if focused {
-		a.life.hidden = false
+		a.life.setHiddenLocked(false)
 	}
 	a.life.mu.Unlock()
 }
@@ -249,7 +264,7 @@ func (l *life) beforeClose(ctx context.Context) bool {
 	}
 	wruntime.WindowHide(ctx)
 	l.mu.Lock()
-	l.hidden = true
+	l.setHiddenLocked(true)
 	first := !l.toldHidden
 	l.toldHidden = true
 	notifyOK := l.notifyOK

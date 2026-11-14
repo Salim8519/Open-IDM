@@ -49,6 +49,9 @@ func main() {
 		DragAndDrop: &options.DragAndDrop{EnableFileDrop: true},
 		Windows: &windows.Options{
 			Theme: windows.SystemDefault,
+			// No WebView2 GPU process: it cost ~45 MB at idle, and our flat list UI renders
+			// fine in software (ADR 0015).
+			WebviewGpuIsDisabled: true,
 		},
 		Mac: &mac.Options{
 			OnUrlOpen:  app.onURLOpen,  // magnet: links (registered in wails.json "protocols")

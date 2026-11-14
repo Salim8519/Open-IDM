@@ -19,7 +19,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/Salim8519/Peregrine/internal/api"
+	"github.com/Salim8519/Peregrine/internal/ipc"
 )
 
 func main() {
@@ -44,7 +44,7 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 
 // runNative is the browser-launched mode. Nothing but protocol frames goes to stdout.
 func runNative(args []string, stdin io.Reader, stdout io.Writer) int {
-	cfg, _ := api.ConfigDir()
+	cfg, _ := ipc.ConfigDir()
 	logger, closeLog := openLog(cfg)
 	defer closeLog()
 
@@ -55,7 +55,7 @@ func runNative(args []string, stdin io.Reader, stdout io.Writer) int {
 	}
 	h := &host{
 		log:        logger,
-		dial:       func() (caller, error) { return api.Dial() },
+		dial:       func() (caller, error) { return ipc.Dial() },
 		launch:     launchApp,
 		launchWait: 15 * time.Second,
 		pollEvery:  250 * time.Millisecond,
@@ -101,7 +101,7 @@ func runInstall(cmd string, args []string, stderr io.Writer) int {
 		fmt.Fprintln(stderr, err)
 		return 2
 	}
-	cfg, err := api.ConfigDir()
+	cfg, err := ipc.ConfigDir()
 	if err != nil {
 		fmt.Fprintln(stderr, "config dir:", err)
 		return 1

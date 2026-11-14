@@ -1,3 +1,4 @@
+import { memo, useRef } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { KindBadge } from "./KindBadge";
 import { Download } from "../lib/types";
@@ -29,6 +30,15 @@ const COLS: { key: SortKey; label: StringKey; cls: string }[] = [
 
 export function DownloadTable({ rows, selected, sortKey, sortDir, onSort, onRowClick, onRowContext, onRowOpen }: Props) {
   const { t } = useI18n();
+  // Rows get one stable handler object that calls the latest props, so a progress tick only
+  // redraws the rows whose download changed (DownloadRow is memoized; ADR 0015).
+  const latest = useRef({ onRowClick, onRowContext, onRowOpen });
+  latest.current = { onRowClick, onRowContext, onRowOpen };
+  const h = useRef<RowHandlers>({
+    click: (e, id) => latest.current.onRowClick(e, id),
+    context: (e, id) => latest.current.onRowContext(e, id),
+    open: (d) => latest.current.onRowOpen(d),
+  }).current;
   return (
     <table className="dl-table" aria-label={t("table.label")} aria-multiselectable="true" data-testid="downloads">
       <thead>
@@ -52,50 +62,62 @@ export function DownloadTable({ rows, selected, sortKey, sortDir, onSort, onRowC
         </tr>
       </thead>
       <tbody>
-        {rows.map((d) => {
-          const sel = selected.has(d.id);
-          const expired = isExpired(d);
-          return (
-            <tr
-              key={d.id}
-              className={`${sel ? "selected" : ""} st-${d.status}`}
-              aria-selected={sel}
-              data-id={d.id}
-              data-status={d.status}
-              data-testid="download-row"
-              tabIndex={-1}
-              onMouseDown={(e) => {
-                if (e.button === 0) onRowClick(e, d.id);
-              }}
-              onContextMenu={(e) => onRowContext(e, d.id)}
-              onDoubleClick={() => onRowOpen(d)}
-            >
-              <td className="c-name">
-                <div className="name-cell">
-                  <CategoryIcon category={d.category} />
-                  <span className="ellipsis" title={d.filename} data-testid="row-name">
-                    {d.filename}
-                  </span>
-                  <KindBadge kind={d.kind} />
-                </div>
-              </td>
-              <td className="c-size num" data-testid="row-size">
-                <bdi>{d.size >= 0 ? formatBytes(d.size) : d.downloaded > 0 ? formatBytes(d.downloaded) : "—"}</bdi>
-              </td>
-              <td className="c-progress">
-                <ProgressBar d={d} />
-              </td>
-              <td className="c-speed num"><bdi>{d.status === "downloading" ? formatSpeed(d.speed) : ""}</bdi></td>
-              <td className="c-eta num"><bdi>{d.status === "downloading" ? formatETA(d.eta) : ""}</bdi></td>
-              <td className="c-status">
-                <span className={`badge status-${d.status}${expired ? " expired" : ""}`} data-testid="row-status">
-                  {expired ? t("status.expired") : t(`status.${d.status}`)}
-                </span>
-              </td>
-            </tr>
-          );
-        })}
+        {rows.map((d) => (
+          <DownloadRow key={d.id} d={d} sel={selected.has(d.id)} h={h} />
+        ))}
       </tbody>
     </table>
   );
 }
+
+interface RowHandlers {
+  click: (e: React.MouseEvent, id: string) => void;
+  context: (e: React.MouseEvent, id: string) => void;
+  open: (d: Download) => void;
+}
+
+// Download objects keep their identity until the engine reports a change, so memo skips
+// every row that did not change.
+const DownloadRow = memo(function DownloadRow({ d, sel, h }: { d: Download; sel: boolean; h: RowHandlers }) {
+  const { t } = useI18n();
+  const expired = isExpired(d);
+  return (
+    <tr
+          key={d.id}
+          className={`${sel ? "selected" : ""} st-${d.status}`}
+          aria-selected={sel}
+          data-id={d.id}
+          data-status={d.status}
+          data-testid="download-row"
+          tabIndex={-1}
+          onMouseDown={(e) => {
+            if (e.button === 0) h.click(e, d.id);
+          }}
+          onContextMenu={(e) => h.context(e, d.id)}
+          onDoubleClick={() => h.open(d)}
+        >
+          <td className="c-name">
+            <div className="name-cell">
+              <CategoryIcon category={d.category} />
+              <span className="ellipsis" title={d.filename} data-testid="row-name">
+                {d.filename}
+              </span>
+              <KindBadge kind={d.kind} />
+            </div>
+          </td>
+          <td className="c-size num" data-testid="row-size">
+            <bdi>{d.size >= 0 ? formatBytes(d.size) : d.downloaded > 0 ? formatBytes(d.downloaded) : "—"}</bdi>
+          </td>
+          <td className="c-progress">
+            <ProgressBar d={d} />
+          </td>
+          <td className="c-speed num"><bdi>{d.status === "downloading" ? formatSpeed(d.speed) : ""}</bdi></td>
+          <td className="c-eta num"><bdi>{d.status === "downloading" ? formatETA(d.eta) : ""}</bdi></td>
+          <td className="c-status">
+            <span className={`badge status-${d.status}${expired ? " expired" : ""}`} data-testid="row-status">
+              {expired ? t("status.expired") : t(`status.${d.status}`)}
+            </span>
+          </td>
+        </tr>
+  );
+});
