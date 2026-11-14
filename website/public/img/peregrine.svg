@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Peregrine">
   <!-- Field Guide edition (ADR 0018): the diving falcon drawn in ink on paper, landing on a
        rust tray, inside a plate rule. Sizes up to 32 px use peregrine-small.svg. -->
-  <rect x="12" y="12" width="488" height="488" rx="96" fill="#efe8d6" stroke="#2a2419" stroke-width="20"/>
-  <rect x="50" y="50" width="412" height="412" rx="62" fill="none" stroke="#2a2419" stroke-width="5" opacity=".55"/>
-  <g fill="#2a2419">
+  <rect x="12" y="12" width="488" height="488" rx="96" fill="#f5eddb" stroke="#211b12" stroke-width="20"/>
+  <rect x="50" y="50" width="412" height="412" rx="62" fill="none" stroke="#211b12" stroke-width="5" opacity=".55"/>
+  <g fill="#211b12">
     <!-- body: rounded at the top (back), sharp at the bottom (beak) -->
     <path d="M256 92c29 0 48 23 48 52 0 68-29 146-48 226-19-80-48-158-48-226 0-29 19-52 48-52z"/>
     <!-- wings folded back into a chevron that meets the beak -->
@@ -11,5 +11,5 @@
     <path d="M428 138c-76 10-132 54-165 124l-7 108c58-80 112-156 172-232z"/>
   </g>
   <!-- landing tray -->
-  <rect x="160" y="400" width="192" height="34" rx="4" fill="#9c4a23"/>
+  <rect x="160" y="400" width="192" height="34" rx="4" fill="#a8481a"/>
 </svg>
