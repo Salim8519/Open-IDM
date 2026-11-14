@@ -12,7 +12,7 @@ body:
     attributes:
       label: Peregrine version
       description: The release you downloaded, or the output of `peregrine version`.
-      placeholder: "0.3.1"
+      placeholder: "0.4.0"
     validations:
       required: true
   - type: dropdown

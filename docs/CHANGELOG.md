@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.4.0] - 2026-11-14
+
 ### Added
 - New default look, **Field Guide**: warm paper and ink with a serif face, in a day and a
   night edition that follow your system. Arabic, Persian and Urdu use the Noto Naskh Arabic
