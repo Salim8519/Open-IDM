@@ -16,11 +16,13 @@ One speed and one time on screen, answering two different questions (`engine/eta
 - **Speed = now.** A short exponential average (time constant 2 s): it reacts within a
   couple of seconds, as people expect from a live speed.
 - **Remaining time = when it will finish.** Based on a long average (time constant 20 s).
-  If the live speed stays more than 50% above or below that average for 8 s, it is a real
-  change (new peers, server slowed down) and the long average catches up with a 4 s
-  constant.
+  If the live speed stays more than 25% above or below that average for 4 s, it is a real
+  change (new peers, server slowed down): until the long average is within 5% of the live
+  speed it catches up with a 4 s constant, and the estimate uses the live speed meanwhile.
+  (0.4.1 needed a 50% gap for 8 s and stopped catching up at the threshold, so halving the
+  speed left the time far too low; `TestETAFollowsAHalvedSpeed`.)
 - The time is shown as a **countdown**: it loses one second per second. Only when the new
-  estimate stays more than 15% (and 3 s) away for 4 s does it glide toward it (8 s
+  estimate stays more than 15% (and 3 s) away for 4 s does it glide toward it (4 s
   constant). No jumps.
 - The first 5 s of data use the raw estimate (nothing better exists yet).
 - **Waiting:** with no new bytes for 5 s (also before the first byte, e.g. a magnet link

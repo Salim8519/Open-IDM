@@ -23,11 +23,12 @@ const (
 	etaOffRatio = 0.15 // the estimate must differ by more than this fraction...
 	etaOffMin   = 3.0  // ...and by more than this many seconds...
 	etaOffHold  = 4.0  // ...for this long before the countdown corrects itself
-	etaSlewTau  = 8.0  // seconds: how fast a correction glides to the new estimate
+	etaSlewTau  = 4.0  // seconds: how fast a correction glides to the new estimate
 	stallAfter  = 5.0  // seconds without new bytes before the time says "waiting"
-	shiftRatio  = 0.5  // the live speed staying this far above or below the long average...
-	shiftHold   = 8.0  // ...for this long is a real change (new peers, server slowed down)
-	shiftTau    = 4.0  // seconds: the long average then catches up this fast
+	shiftRatio  = 0.25 // the live speed staying this far above or below the long average...
+	shiftHold   = 4.0  // ...for this long is a real change (new peers, server slowed down)
+	shiftTau    = 4.0  // seconds: the long average then catches up this fast...
+	shiftDone   = 0.05 // ...until it is this close to the live speed
 )
 
 // ETA values besides a number of seconds.
@@ -47,6 +48,7 @@ type speedMeter struct {
 	runTime  float64 // seconds since the first byte of this run
 	shift    float64 // how long the live speed has stayed far from the long average
 	shiftDir int     // +1 above, -1 below, 0 close
+	catching bool    // a lasting change was seen: the long average is catching up
 	idle     float64 // seconds since the last new byte
 	eta      float64 // shown remaining time in seconds, -1 = none yet
 	off      float64 // how long the estimate has been clearly different from eta
@@ -66,7 +68,7 @@ func (s *speedMeter) sample(cur, size int64, dt float64) {
 	got := cur - s.last
 	if got < 0 { // counter went back (restart without range support): start over
 		got = 0
-		s.started, s.runTime, s.eta, s.off = false, 0, -1, 0
+		s.started, s.runTime, s.eta, s.off, s.catching = false, 0, -1, 0, false
 	}
 	s.last = cur
 	inst := float64(got) / dt
@@ -85,9 +87,12 @@ func (s *speedMeter) sample(cur, size int64, dt float64) {
 	}
 	s.runTime += dt
 	s.speed = ewma(s.speed, inst, dt, speedTau)
-	// A burst or dip lasting a few seconds is noise; one that lasts is a new normal.
+	// A burst or dip lasting a few seconds is noise; one that lasts is a new normal. Once
+	// seen, the long average catches up quickly until it is close to the live speed
+	// (stopping at the detection threshold would leave the time ~25% off).
+	gap := math.Abs(s.speed - s.avg)
 	dir := 0
-	if math.Abs(s.speed-s.avg) > shiftRatio*s.avg {
+	if gap > shiftRatio*s.avg {
 		dir = 1
 		if s.speed < s.avg {
 			dir = -1
@@ -95,11 +100,17 @@ func (s *speedMeter) sample(cur, size int64, dt float64) {
 	}
 	if dir != 0 && dir == s.shiftDir {
 		s.shift += dt
-	} else {
+	} else if dir != 0 || !s.catching {
 		s.shift, s.shiftDir = 0, dir
 	}
-	tau := etaTau
 	if s.shift >= shiftHold {
+		s.catching = true
+	}
+	if s.catching && gap < shiftDone*s.avg {
+		s.catching, s.shift, s.shiftDir = false, 0, 0
+	}
+	tau := etaTau
+	if s.catching {
 		tau = shiftTau
 	}
 	s.avg = ewma(s.avg, inst, dt, tau)
@@ -112,10 +123,14 @@ func (s *speedMeter) sample(cur, size int64, dt float64) {
 		s.off = 0 // keep the last estimate; it is not counted down while nothing arrives
 		return
 	}
-	if s.avg <= 0 {
+	basis := s.avg
+	if s.catching {
+		basis = s.speed // during a confirmed change the live speed is the better guess
+	}
+	if basis <= 0 {
 		return
 	}
-	raw := float64(size-cur) / s.avg
+	raw := float64(size-cur) / basis
 
 	if s.eta < 0 || s.runTime < etaWarmup {
 		s.eta, s.off = raw, 0

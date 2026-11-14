@@ -206,3 +206,23 @@ func TestSpeedMeterCounterReset(t *testing.T) {
 		t.Fatalf("eta right after a counter reset = %d, want unknown", e)
 	}
 }
+
+// Seen in the real app (0.4.1): halving the speed limit mid-download left the time far too
+// low (2 s shown with ~6 s left) because a 50% drop was not treated as a real change.
+func TestETAFollowsAHalvedSpeed(t *testing.T) {
+	const mb = 1 << 20
+	speeds := make([]float64, 0, 400)
+	for i := 0; i < 60; i++ { // 30 s at 2 MB/s
+		speeds = append(speeds, 2*mb)
+	}
+	for i := 0; i < 300; i++ { // then 1 MB/s until done
+		speeds = append(speeds, mb)
+	}
+	shown, truth := feed(t, 120*mb, speeds)
+	for _, after := range []int{20, 30, 40} { // 10, 15 and 20 s after the change
+		i := 60 + after
+		if err := math.Abs(float64(shown[i])-truth[i]) / truth[i]; err > 0.25 {
+			t.Errorf("%d s after the speed halved: shown %d s, true %.0f s", after/2, shown[i], truth[i])
+		}
+	}
+}
