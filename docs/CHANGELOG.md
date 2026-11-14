@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.3.0] - 2026-11-14
+
 ### Added
 - **BitTorrent:** magnet links, `.torrent` links and `.torrent` files from your computer
   (double-click once Peregrine is the handler, or drag onto the window). Pause and resume

@@ -17,7 +17,7 @@ import (
 var DefaultUserAgent = "Mozilla/5.0 (compatible; Peregrine/" + Version + "; +https://github.com/Salim8519/Peregrine)"
 
 // Version is the engine version, overridden at build time with -ldflags.
-var Version = "0.2.1"
+var Version = "0.3.0"
 
 // newClient builds an HTTP client for segmented downloads.
 //
