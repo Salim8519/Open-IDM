@@ -132,7 +132,7 @@ a{color:inherit;text-underline-offset:3px;text-decoration-thickness:1px}
 :lang(ar) .sc{font-variant:normal;letter-spacing:0}
 
 .top{display:flex;align-items:center;gap:16px;min-height:56px;border-bottom:1px solid var(--rule);font-size:15px;color:var(--g)}
-.top .book{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .book{flex:1;min-width:0}
 .top .book a{text-decoration:none;color:var(--k);font-weight:700;display:inline-block;padding-block:10px}
 .top nav{display:flex;gap:16px;align-items:center}
 .top nav a{text-decoration:none;padding-block:10px}
@@ -141,7 +141,7 @@ details.lang{position:relative;padding:0}
 details.lang summary{cursor:pointer;list-style:none;padding:3px 12px}
 details.lang ul{position:absolute;inset-inline-end:0;top:100%;margin:4px 0 0;padding:4px;list-style:none;background:var(--p2);border:1px solid var(--rule);z-index:5}
 details.lang a{display:block;padding:6px 12px;text-decoration:none}
-@media (max-width:560px){.top .ed{display:none}.top nav .dlnav{display:none}}
+@media (max-width:560px){.top .tag{display:none}.top nav .dlnav{display:none}}
 
 .entry{text-align:center;padding-block:30px 8px}
 .no{font-size:15px;color:var(--rust);margin:0}
@@ -183,7 +183,7 @@ h2{font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.3;margin:0 0 10p
 
 .sim{margin:0;border:1px solid var(--rule);background:var(--p2);padding:16px;direction:ltr;font-variant-numeric:tabular-nums}
 .sim-top{display:flex;justify-content:space-between;align-items:baseline;gap:14px}
-.sim-file{color:var(--g);font:14px var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-file{color:var(--g);font:14px var(--mono);overflow-wrap:anywhere;min-width:0}
 .sim-pct{font:700 40px/1 Georgia,serif}
 .sim-sub{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--g);font-size:15px;margin:6px 0 12px}
 .sim-sub b{color:var(--k)}
@@ -269,7 +269,7 @@ footer nav a{display:inline-block;padding:6px 8px}
 <a class="skip" href="#main">${t.nav.skip}</a>
 <div class="w">
 <header class="top">
-  <span class="book"><a href="${t.path}">Peregrine</a> · ${t.nav.book}<span class="ed"> · ${t.nav.edition}${t.lang === "en" ? "" : " "}<span class="v">${version}</span></span></span>
+  <span class="book"><a href="${t.path}">Peregrine</a><span class="tag"> · ${t.nav.book} · ${t.nav.edition}${t.lang === "en" ? "" : " "}<span class="v">${version}</span></span></span>
   <nav aria-label="Main"><a class="dlnav" href="#find">${t.nav.download}</a><a href="${GH}">GitHub</a>${langSwitch}</nav>
 </header>
 
