@@ -386,9 +386,10 @@ func TestHLSPauseResume(t *testing.T) {
 		t.Fatal(err)
 	}
 	paused := waitFor(t, m, d.ID, engine.StatusPaused, 5*time.Second)
+	raw, _ := m.ResumeState(d.ID) // resume state is internal (not in snapshots)
 	var st state
-	if err := json.Unmarshal(paused.ProtoState, &st); err != nil {
-		t.Fatalf("state %q: %v", paused.ProtoState, err)
+	if err := json.Unmarshal(raw, &st); err != nil {
+		t.Fatalf("state %q: %v", raw, err)
 	}
 	if len(st.Tracks) != 1 || st.Tracks[0].Next < 5 || st.Tracks[0].Bytes != st.Tracks[0].Next*20_000 || st.Complete {
 		t.Fatalf("saved state = %+v", st)
@@ -470,9 +471,10 @@ func TestHLSLivePauseEndsRecording(t *testing.T) {
 	if err := m.Pause(d.ID); err != nil {
 		t.Fatal(err)
 	}
-	paused := waitFor(t, m, d.ID, engine.StatusPaused, 5*time.Second)
+	waitFor(t, m, d.ID, engine.StatusPaused, 5*time.Second)
+	raw, _ := m.ResumeState(d.ID)
 	var st state
-	_ = json.Unmarshal(paused.ProtoState, &st)
+	_ = json.Unmarshal(raw, &st)
 	if !st.Live || !st.Stopped {
 		t.Fatalf("state = %+v", st)
 	}

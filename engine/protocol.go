@@ -313,3 +313,16 @@ func markTree(path, url, referrer string) {
 		return nil
 	})
 }
+
+// ResumeState returns a download's protocol resume state. It is for tests and diagnostics
+// in Go only: snapshots, events and the RPC API never include it (it may hold tracker
+// passkeys or signed URLs).
+func (m *Manager) ResumeState(id string) (json.RawMessage, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	d, ok := m.downloads[id]
+	if !ok {
+		return nil, ErrNotFound
+	}
+	return append(json.RawMessage(nil), d.ProtoState...), nil
+}
