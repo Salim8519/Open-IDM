@@ -41,6 +41,8 @@ export const id: Strings = {
   "col.progress": "Progres",
   "col.speed": "Kecepatan",
   "col.eta": "Sisa waktu",
+  "eta.waiting": "Menunggu…",
+  "eta.waitingHint": "Tidak ada data beberapa detik — menyambung ulang atau mencari peer",
   "col.status": "Status",
   "table.label": "Unduhan",
 
@@ -59,6 +61,8 @@ export const id: Strings = {
   "detail.checksum": "Checksum yang diharapkan",
   "detail.connections": "Koneksi",
   "detail.connectionsValue": "{active} aktif dari {total}",
+  "detail.peers": "Peer",
+  "detail.peersHint": "Peer: {n}",
   "detail.segments": "Peta segmen",
   "detail.segmentsHint": "Segmen: {n}",
   "detail.resumable": "Dapat dilanjutkan",

@@ -41,6 +41,8 @@ export const ja: Strings = {
   "col.progress": "進行状況",
   "col.speed": "速度",
   "col.eta": "残り時間",
+  "eta.waiting": "待機中…",
+  "eta.waitingHint": "数秒間データがありません — 再接続中またはピアを検索中",
   "col.status": "状態",
   "table.label": "ダウンロード",
 
@@ -59,6 +61,8 @@ export const ja: Strings = {
   "detail.checksum": "期待されるチェックサム",
   "detail.connections": "接続数",
   "detail.connectionsValue": "{total} 中 {active} が稼働中",
+  "detail.peers": "ピア",
+  "detail.peersHint": "ピア: {n}",
   "detail.segments": "セグメントマップ",
   "detail.segmentsHint": "セグメント数：{n}",
   "detail.resumable": "レジューム",

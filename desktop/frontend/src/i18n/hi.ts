@@ -40,6 +40,8 @@ export const hi: Strings = {
   "col.progress": "प्रगति",
   "col.speed": "गति",
   "col.eta": "शेष समय",
+  "eta.waiting": "प्रतीक्षा…",
+  "eta.waitingHint": "कुछ सेकंड से कोई डेटा नहीं — फिर से जुड़ रहा है या पीयर खोज रहा है",
   "col.status": "स्थिति",
   "table.label": "डाउनलोड",
 
@@ -58,6 +60,8 @@ export const hi: Strings = {
   "detail.checksum": "अपेक्षित चेकसम",
   "detail.connections": "कनेक्शन",
   "detail.connectionsValue": "{total} में से {active} सक्रिय",
+  "detail.peers": "पीयर",
+  "detail.peersHint": "पीयर: {n}",
   "detail.segments": "सेगमेंट मैप",
   "detail.segmentsHint": "सेगमेंट: {n}",
   "detail.resumable": "जारी रखा जा सकता है",

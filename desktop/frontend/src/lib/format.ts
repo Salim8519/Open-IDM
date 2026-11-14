@@ -26,11 +26,22 @@ export function formatSpeed(bps: number): string {
   return `${formatBytes(bps)}/s`;
 }
 
-/** formatETA(3725) -> "1h 02m"; 185 -> "3m 05s"; 42 -> "42s"; <0 -> "". */
+/** ETA value the engine sends when no data has arrived for a few seconds (ADR 0019). */
+export const ETA_WAITING = -2;
+
+/**
+ * Remaining time, rounded so it reads calmly: seconds under a minute, 10 s steps under
+ * 10 minutes, whole minutes under an hour, 5-minute steps above.
+ * 42 -> "42s"; 185 -> "3m 10s"; 1234 -> "21m"; 5000 -> "1h 25m"; <0 -> "".
+ */
 export function formatETA(sec: number): string {
   if (!Number.isFinite(sec) || sec < 0) return "";
   sec = Math.round(sec);
+  if (sec >= 3600) sec = Math.round(sec / 300) * 300;
+  else if (sec >= 600) sec = Math.round(sec / 60) * 60;
+  else if (sec >= 60) sec = Math.round(sec / 10) * 10;
   if (sec < 60) return `${sec}s`;
+  if (sec >= 600 && sec < 3600) return `${Math.floor(sec / 60)}m`;
   const pad = (x: number) => String(x).padStart(2, "0");
   if (sec < 3600) return `${Math.floor(sec / 60)}m ${pad(sec % 60)}s`;
   if (sec < 86400) return `${Math.floor(sec / 3600)}h ${pad(Math.floor((sec % 3600) / 60))}m`;

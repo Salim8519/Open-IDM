@@ -41,6 +41,8 @@ export const fr: Strings = {
   "col.progress": "Progression",
   "col.speed": "Vitesse",
   "col.eta": "Temps restant",
+  "eta.waiting": "En attente…",
+  "eta.waitingHint": "Aucune donnée depuis quelques secondes — reconnexion ou recherche de pairs",
   "col.status": "État",
   "table.label": "Téléchargements",
 
@@ -59,6 +61,8 @@ export const fr: Strings = {
   "detail.checksum": "Somme de contrôle attendue",
   "detail.connections": "Connexions",
   "detail.connectionsValue": "{active} actives sur {total}",
+  "detail.peers": "Pairs",
+  "detail.peersHint": "Pairs : {n}",
   "detail.segments": "Carte des segments",
   "detail.segmentsHint": "Segments : {n}",
   "detail.resumable": "Reprise possible",

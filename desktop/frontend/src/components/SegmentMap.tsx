@@ -24,9 +24,14 @@ export function SegmentMap({ d }: { d: Download }) {
     <div className="segmap-wrap">
       <div className="segmap-head">
         <span className="label">{t("detail.segments")}</span>
-        <span className="muted">
-          {segs.length > 0 ? t("detail.segmentsHint", { n: segs.length }) : t("detail.unknown")}
-          {running && d.connections > 0 ? ` · ${t("detail.connectionsValue", { active: d.active, total: d.connections })}` : ""}
+        <span className="muted" data-testid="segmap-hint">
+          {d.kind === "torrent"
+            ? // A torrent has pieces from many peers, not byte-range connections.
+              running
+              ? t("detail.peersHint", { n: d.active })
+              : ""
+            : (segs.length > 0 ? t("detail.segmentsHint", { n: segs.length }) : t("detail.unknown")) +
+              (running && d.connections > 0 ? ` · ${t("detail.connectionsValue", { active: d.active, total: d.connections })}` : "")}
         </span>
       </div>
       <div

@@ -23,3 +23,13 @@ func revealPath(path string) error {
 	}
 	return startHidden(exec.Command("xdg-open", filepath.Dir(path)))
 }
+
+// startHidden starts a helper (open, xdg-open, a browser) without waiting for it.
+func startHidden(cmd *exec.Cmd) error {
+	hideWindow(cmd)
+	if err := cmd.Start(); err != nil {
+		return err
+	}
+	go func() { _ = cmd.Wait() }()
+	return nil
+}

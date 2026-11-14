@@ -715,7 +715,13 @@ th[aria-sort="descending"] .th-btn {
   width: 106px;
 }
 .c-eta {
-  width: 84px;
+  width: 92px;
+}
+/* No data for a few seconds (ADR 0019): a calm word instead of a wrong time. */
+.eta-waiting {
+  color: var(--muted);
+  font-style: italic;
+  white-space: nowrap;
 }
 .c-status {
   width: 124px;

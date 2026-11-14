@@ -3,7 +3,7 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 import { KindBadge } from "./KindBadge";
 import { Download } from "../lib/types";
 import { useI18n, StringKey } from "../i18n";
-import { formatBytes, formatETA, formatSpeed } from "../lib/format";
+import { ETA_WAITING, formatBytes, formatETA, formatSpeed } from "../lib/format";
 import { isExpired, SortKey } from "../lib/download";
 import { CategoryIcon } from "./FileIcon";
 import { ProgressBar } from "./ProgressBar";
@@ -112,7 +112,13 @@ const DownloadRow = memo(function DownloadRow({ d, sel, h }: { d: Download; sel:
             <ProgressBar d={d} />
           </td>
           <td className="c-speed num"><bdi>{d.status === "downloading" ? formatSpeed(d.speed) : ""}</bdi></td>
-          <td className="c-eta num"><bdi>{d.status === "downloading" ? formatETA(d.eta) : ""}</bdi></td>
+          <td className="c-eta num">
+            {d.status === "downloading" && d.eta === ETA_WAITING ? (
+              <span className="eta-waiting" title={t("eta.waitingHint")}>{t("eta.waiting")}</span>
+            ) : (
+              <bdi>{d.status === "downloading" ? formatETA(d.eta) : ""}</bdi>
+            )}
+          </td>
           <td className="c-status">
             <span className={`badge status-${d.status}${expired ? " expired" : ""}`} data-testid="row-status">
               {expired ? t("status.expired") : t(`status.${d.status}`)}

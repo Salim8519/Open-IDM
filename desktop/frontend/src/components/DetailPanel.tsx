@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Check, Copy, RefreshCw, X } from "lucide-react";
 import { Download } from "../lib/types";
 import { useI18n } from "../i18n";
-import { formatBytes, formatETA, formatSpeed } from "../lib/format";
+import { ETA_WAITING, formatBytes, formatETA, formatSpeed } from "../lib/format";
 import { isExpired } from "../lib/download";
 import { SegmentMap } from "./SegmentMap";
 import { CategoryIcon } from "./FileIcon";
@@ -49,6 +49,11 @@ export function DetailPanel({ d, onRefreshLink, onClose }: Props) {
               <bdi>{formatBytes(d.downloaded)}</bdi> / <bdi>{d.size >= 0 ? formatBytes(d.size) : t("detail.unknown")}</bdi>
               {d.speed > 0 ? <> · <bdi>{formatSpeed(d.speed)}</bdi></> : ""}
               {d.eta >= 0 && d.status === "downloading" ? <> · <bdi>{formatETA(d.eta)}</bdi></> : ""}
+              {d.eta === ETA_WAITING && d.status === "downloading" ? (
+                <> · <span className="eta-waiting" title={t("eta.waitingHint")}>{t("eta.waiting")}</span></>
+              ) : (
+                ""
+              )}
             </span>
           </div>
 
@@ -82,8 +87,17 @@ export function DetailPanel({ d, onRefreshLink, onClose }: Props) {
           </dd>
           <dt>{t("detail.resumable")}</dt>
           <dd>{d.resumable ? t("detail.yes") : d.size < 0 ? t("detail.unknown") : t("detail.no")}</dd>
-          <dt>{t("detail.connections")}</dt>
-          <dd>{d.connections}</dd>
+          {d.kind === "torrent" ? (
+            <>
+              <dt>{t("detail.peers")}</dt>
+              <dd>{d.status === "downloading" ? d.active : "—"}</dd>
+            </>
+          ) : (
+            <>
+              <dt>{t("detail.connections")}</dt>
+              <dd>{d.connections}</dd>
+            </>
+          )}
           <dt>{t("detail.speedLimit")}</dt>
           <dd><bdi>{d.speedLimit ? formatSpeed(d.speedLimit) : t("detail.unlimited")}</bdi></dd>
           {d.checksum && (

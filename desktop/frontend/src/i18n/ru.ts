@@ -41,6 +41,8 @@ export const ru: Strings = {
   "col.progress": "Прогресс",
   "col.speed": "Скорость",
   "col.eta": "Осталось",
+  "eta.waiting": "Ожидание…",
+  "eta.waitingHint": "Несколько секунд нет данных — переподключение или поиск пиров",
   "col.status": "Состояние",
   "table.label": "Загрузки",
 
@@ -59,6 +61,8 @@ export const ru: Strings = {
   "detail.checksum": "Ожидаемая контрольная сумма",
   "detail.connections": "Соединения",
   "detail.connectionsValue": "{active} активно из {total}",
+  "detail.peers": "Пиры",
+  "detail.peersHint": "Пиры: {n}",
   "detail.segments": "Карта сегментов",
   "detail.segmentsHint": "Сегментов: {n}",
   "detail.resumable": "Поддержка докачки",

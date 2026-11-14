@@ -41,6 +41,8 @@ export const ko: Strings = {
   "col.progress": "진행률",
   "col.speed": "속도",
   "col.eta": "남은 시간",
+  "eta.waiting": "대기 중…",
+  "eta.waitingHint": "몇 초 동안 데이터 없음 — 다시 연결하거나 피어를 찾는 중",
   "col.status": "상태",
   "table.label": "다운로드",
 
@@ -59,6 +61,8 @@ export const ko: Strings = {
   "detail.checksum": "예상 체크섬",
   "detail.connections": "연결",
   "detail.connectionsValue": "{total}개 중 {active}개 활성",
+  "detail.peers": "피어",
+  "detail.peersHint": "피어: {n}",
   "detail.segments": "세그먼트 맵",
   "detail.segmentsHint": "세그먼트: {n}",
   "detail.resumable": "이어받기 가능",

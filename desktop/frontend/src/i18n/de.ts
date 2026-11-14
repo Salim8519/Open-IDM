@@ -41,6 +41,8 @@ export const de: Strings = {
   "col.progress": "Fortschritt",
   "col.speed": "Geschwindigkeit",
   "col.eta": "Restzeit",
+  "eta.waiting": "Wartet…",
+  "eta.waitingHint": "Seit einigen Sekunden keine Daten – verbindet neu oder sucht Peers",
   "col.status": "Status",
   "table.label": "Downloads",
 
@@ -59,6 +61,8 @@ export const de: Strings = {
   "detail.checksum": "Erwartete Prüfsumme",
   "detail.connections": "Verbindungen",
   "detail.connectionsValue": "{active} von {total} aktiv",
+  "detail.peers": "Peers",
+  "detail.peersHint": "Peers: {n}",
   "detail.segments": "Segmentübersicht",
   "detail.segmentsHint": "Segmente: {n}",
   "detail.resumable": "Fortsetzbar",

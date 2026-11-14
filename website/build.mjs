@@ -10,7 +10,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, "dist");
 const SITE = "https://peregrinedownloader.app";
 // Shown until /api/dl?p=info answers; keep roughly current.
-const VERSION = "0.4.0";
+const VERSION = "0.4.1";
 
 const langs = readdirSync(join(here, "src/i18n"))
   .filter((f) => f.endsWith(".json"))

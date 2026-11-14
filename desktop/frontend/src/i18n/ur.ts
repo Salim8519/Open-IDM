@@ -40,6 +40,8 @@ export const ur: Strings = {
   "col.progress": "پیش رفت",
   "col.speed": "رفتار",
   "col.eta": "باقی وقت",
+  "eta.waiting": "انتظار…",
+  "eta.waitingHint": "چند سیکنڈ سے کوئی ڈیٹا نہیں — دوبارہ جڑ رہا ہے یا ہم منصب تلاش کر رہا ہے",
   "col.status": "حالت",
   "table.label": "ڈاؤن لوڈز",
 
@@ -58,6 +60,8 @@ export const ur: Strings = {
   "detail.checksum": "متوقع چیک سم",
   "detail.connections": "کنکشنز",
   "detail.connectionsValue": "{total} میں سے {active} فعال",
+  "detail.peers": "ہم منصب",
+  "detail.peersHint": "ہم منصب: {n}",
   "detail.segments": "حصوں کا نقشہ",
   "detail.segmentsHint": "حصے: {n}",
   "detail.resumable": "جاری رکھا جا سکتا ہے",

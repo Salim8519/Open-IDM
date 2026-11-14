@@ -39,6 +39,8 @@ export const en = {
   "col.progress": "Progress",
   "col.speed": "Speed",
   "col.eta": "Time left",
+  "eta.waiting": "Waiting…",
+  "eta.waitingHint": "No data for a few seconds — reconnecting or looking for peers",
   "col.status": "Status",
   "table.label": "Downloads",
 
@@ -57,6 +59,8 @@ export const en = {
   "detail.checksum": "Expected checksum",
   "detail.connections": "Connections",
   "detail.connectionsValue": "{active} active of {total}",
+  "detail.peers": "Peers",
+  "detail.peersHint": "Peers: {n}",
   "detail.segments": "Segment map",
   "detail.segmentsHint": "Segments: {n}",
   "detail.resumable": "Resumable",

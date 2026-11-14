@@ -41,6 +41,8 @@ export const ar: Strings = {
   "col.progress": "التقدم",
   "col.speed": "السرعة",
   "col.eta": "المتبقي",
+  "eta.waiting": "ينتظر…",
+  "eta.waitingHint": "لا بيانات منذ ثوانٍ — يعيد الاتصال أو يبحث عن نظراء",
   "col.status": "الحالة",
   "table.label": "التنزيلات",
 
@@ -59,6 +61,8 @@ export const ar: Strings = {
   "detail.checksum": "المجموع الاختباري المتوقع",
   "detail.connections": "الاتصالات",
   "detail.connectionsValue": "{active} نشطة من {total}",
+  "detail.peers": "النظراء",
+  "detail.peersHint": "النظراء: {n}",
   "detail.segments": "خريطة الأجزاء",
   "detail.segmentsHint": "الأجزاء: {n}",
   "detail.resumable": "قابل للاستئناف",

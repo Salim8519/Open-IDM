@@ -72,7 +72,10 @@ func main() {
 		// The "Connect your browser" guide: a display-only folder and no real browser launch.
 		ExtensionDir:    func() string { return filepath.Join(home, "Peregrine", "extension") },
 		OpenBrowserPage: func(browser, page string) error { log.Printf("e2e: open %s %s", browser, page); return nil },
-		OpenPath:        func(string) error { return nil },
+		// Open file / Show in folder: record the path instead of launching Explorer/Finder,
+		// so tests can check which file the app asked the OS to show.
+		OpenPath:   func(p string) error { return appendLine(filepath.Join(home, "os-hooks.log"), "open "+p) },
+		RevealPath: func(p string) error { return appendLine(filepath.Join(home, "os-hooks.log"), "reveal "+p) },
 	})
 	svc.SetBrowserStateFile(filepath.Join(home, "browser.json"))
 	token := api.NewToken()
@@ -100,4 +103,14 @@ func main() {
 	_ = srv.Close()
 	svc.Close()
 	_ = m.Close()
+}
+
+func appendLine(file, line string) error {
+	f, err := os.OpenFile(file, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o600)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	_, err = fmt.Fprintln(f, line)
+	return err
 }

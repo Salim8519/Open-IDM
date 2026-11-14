@@ -4,6 +4,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+## [0.4.1] - 2026-11-14
+
 ### Changed
 - Field Guide is warmer and bolder, with the same colours as the website: bold labels and
   headings (Arabic body text a little heavier too), a sun-yellow highlight on the current
@@ -16,6 +18,20 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
   colour (green for completed, red for errors, and so on).
 - All text is bigger: about 1.5 px larger everywhere (Arabic, Persian and Urdu too), with
   taller rows and buttons to match. The extension popup is a little bigger as well.
+- **Steadier time left.** The speed still shows what is happening right now, but the time
+  left is based on a longer average and counts down like a clock; it only corrects itself
+  when the speed really changes for a few seconds, so it no longer jumps between, say,
+  3 and 5 minutes with every burst. It is rounded to read calmly (10 s steps under 10
+  minutes, whole minutes under an hour, 5-minute steps above).
+- When no data arrives for a few seconds, the time left says **"Waiting…"** (reconnecting,
+  or a torrent looking for peers) instead of going blank or showing a huge number.
+- Torrents show their number of **peers** in the details instead of a misleading
+  "1 segment · 4 active of 8".
+
+### Fixed
+- **Windows: "Show in folder" did nothing.** It opened an invisible Explorer window (one per
+  click); the folder now opens in front with the file selected. "Open" had the same flag
+  removed.
 
 ## [0.4.0] - 2026-11-14
 

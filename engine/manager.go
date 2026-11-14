@@ -67,12 +67,6 @@ type Manager struct {
 	completed bool             // a download completed since the queue was last empty
 }
 
-type speedMeter struct {
-	last  int64
-	at    time.Time
-	speed float64
-}
-
 // NewManager loads state from store and starts any queued downloads.
 func NewManager(store *Store) (*Manager, error) {
 	return newManager(store, time.Now)
@@ -112,7 +106,7 @@ func newManager(store *Store, now func() time.Time) (*Manager, error) {
 		if d.Status == StatusDownloading {
 			d.Status = StatusQueued // was interrupted (crash or quit): resume automatically
 		}
-		d.Speed, d.Active, d.ETA = 0, 0, -1
+		d.Speed, d.Active, d.ETA = 0, 0, ETAUnknown
 		m.downloads[d.ID] = d
 		if d.Order >= m.nextOrder {
 			m.nextOrder = d.Order + 1
@@ -210,14 +204,9 @@ func (m *Manager) snapshotLocked(d *Download) Download {
 		c.Downloaded = t.downloaded.Load()
 		c.Active = int(t.active.Load())
 	}
+	c.Speed, c.ETA = 0, ETAUnknown
 	if sm, ok := m.speeds[d.ID]; ok && c.Status == StatusDownloading {
-		c.Speed = int64(sm.speed)
-	} else {
-		c.Speed = 0
-	}
-	c.ETA = -1
-	if c.Speed > 0 && c.Size > 0 {
-		c.ETA = (c.Size - c.Downloaded) / c.Speed
+		c.Speed, c.ETA = sm.shownSpeed(), sm.shownETA()
 	}
 	c.Segments = append([]Segment(nil), d.Segments...)
 	return c
@@ -557,7 +546,7 @@ func (m *Manager) startLocked(d *Download) {
 	t := &task{m: m, id: d.ID, ctx: ctx, cancel: cancel, done: make(chan struct{}), limiter: newLimiter(d.SpeedLimit)}
 	t.downloaded.Store(d.Downloaded)
 	m.tasks[d.ID] = t
-	m.speeds[d.ID] = &speedMeter{last: d.Downloaded, at: time.Now()}
+	m.speeds[d.ID] = newSpeedMeter(d.Downloaded, time.Now())
 	d.Status = StatusDownloading
 	d.Error = ""
 	_ = m.store.SaveDownload(d)
@@ -906,20 +895,12 @@ func (m *Manager) ticker() {
 			var batch []Download
 			for id, t := range m.tasks {
 				sm := m.speeds[id]
-				cur := t.downloaded.Load()
-				dt := now.Sub(sm.at).Seconds()
-				if dt > 0 {
-					inst := float64(cur-sm.last) / dt
-					if inst < 0 {
-						inst = 0
-					}
-					if sm.speed == 0 {
-						sm.speed = inst
-					} else {
-						sm.speed = 0.7*sm.speed + 0.3*inst
-					}
+				var size int64
+				if d, ok := m.downloads[id]; ok {
+					size = d.Size
 				}
-				sm.last, sm.at = cur, now
+				sm.sample(t.downloaded.Load(), size, now.Sub(sm.at).Seconds())
+				sm.at = now
 				if d, ok := m.downloads[id]; ok {
 					batch = append(batch, m.snapshotLocked(d))
 				}

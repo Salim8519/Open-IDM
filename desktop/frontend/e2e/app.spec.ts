@@ -1,4 +1,4 @@
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 import { addViaDialog, expect, pct, row, rpc, test } from "./fixtures";
 
@@ -354,4 +354,85 @@ test("schedule holds the queue until turned off", async ({ app, info }) => {
   await expect(r).toHaveAttribute("data-status", "completed", { timeout: 30_000 });
   const s = await rpc<{ schedule: { enabled: boolean } }>(app, "getSettings");
   expect(s.schedule.enabled).toBe(false);
+});
+
+test("row menu: pause, resume, copy link, restart, move down; Ctrl+A and Escape", async ({ app, info, context }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"], { origin: new URL(info.ui).origin });
+  const a = "e2e-menu-a.bin";
+  const b = "e2e-menu-b.bin";
+  const urlA = `${info.files}/file?size=${8 * MB}&throttle=200000&name=${a}`;
+  await addViaDialog(app, urlA, { expectName: a, connections: 2 });
+  await addViaDialog(app, `${info.files}/file?size=${8 * MB}&name=${b}`, { expectName: b, paused: true });
+  const ra = row(app, a);
+  await expect(ra).toHaveAttribute("data-status", "downloading");
+
+  // Pause and Resume from the menu
+  await ra.click({ button: "right" });
+  await app.getByTestId("ctx-pause").click();
+  await expect(ra).toHaveAttribute("data-status", "paused");
+  await ra.click({ button: "right" });
+  await expect(app.getByTestId("ctx-pause")).toBeDisabled();
+  await app.getByTestId("ctx-resume").click();
+  await expect(ra).toHaveAttribute("data-status", "downloading");
+
+  // Copy link puts the download's address on the clipboard
+  await ra.click({ button: "right" });
+  await app.getByTestId("ctx-copy").click();
+  await expect.poll(() => app.evaluate(() => navigator.clipboard.readText())).toBe(urlA);
+
+  // The details panel's copy button does the same
+  await app.evaluate(() => navigator.clipboard.writeText(""));
+  await ra.click();
+  await app.getByTestId("detail-panel").getByRole("button", { name: "Copy" }).click();
+  await expect.poll(() => app.evaluate(() => navigator.clipboard.readText())).toBe(urlA);
+
+  // Restart starts over from zero
+  await expect.poll(() => pct(ra), { timeout: 20_000 }).toBeGreaterThan(3);
+  const before = await pct(ra);
+  await ra.click({ button: "right" });
+  await app.getByTestId("ctx-restart").click();
+  await expect.poll(() => pct(ra)).toBeLessThan(before);
+
+  // Move down swaps it with the next row
+  const rows = app.getByTestId("download-row");
+  const names = () => rows.getByTestId("row-name").allTextContents();
+  const order = await names();
+  expect(order.indexOf(a)).toBeLessThan(order.indexOf(b));
+  await ra.click({ button: "right" });
+  await app.getByTestId("ctx-down").click();
+  await expect.poll(async () => (await names()).indexOf(a)).toBe(order.indexOf(a) + 1);
+
+  // Ctrl+A selects every row, Escape clears the selection
+  await app.locator("body").press("Control+a");
+  await expect(rows.and(app.locator('[aria-selected="true"]'))).toHaveCount(await rows.count());
+  await app.locator("body").press("Escape");
+  await expect(rows.and(app.locator('[aria-selected="true"]'))).toHaveCount(0);
+
+  // Pause all stops the running download
+  await expect(ra).toHaveAttribute("data-status", "downloading");
+  await app.getByTestId("tb-pause-all").click();
+  await expect(ra).toHaveAttribute("data-status", "paused");
+
+  // clean up: remove both and their files
+  await rpc(app, "remove", { id: await ra.getAttribute("data-id"), deleteFile: true });
+  await rpc(app, "remove", { id: await row(app, b).getAttribute("data-id"), deleteFile: true });
+});
+
+test("Open file and Show in folder ask the OS for the right file", async ({ app, info }) => {
+  const name = "e2e-reveal.bin";
+  await addViaDialog(app, `${info.files}/file?size=100000&name=${name}`, { expectName: name });
+  const r = row(app, name);
+  await expect(r).toHaveAttribute("data-status", "completed");
+  const id = await r.getAttribute("data-id");
+  // The browser-mode UI has no OS access, so both menu items are disabled there…
+  await r.click({ button: "right" });
+  await expect(app.getByTestId("ctx-open")).toBeDisabled();
+  await expect(app.getByTestId("ctx-folder")).toBeDisabled();
+  await app.keyboard.press("Escape");
+  // …and the desktop app calls these API methods; the e2e server records the path.
+  expect(await rpc(app, "showInFolder", { id })).toBe(true);
+  expect(await rpc(app, "openFile", { id })).toBe(true);
+  const log = readFileSync(path.join(info.home, "os-hooks.log"), "utf8").trim().split(/\r?\n/);
+  const file = path.join(info.downloads, name);
+  expect(log.slice(-2)).toEqual([`reveal ${file}`, `open ${file}`]);
 });

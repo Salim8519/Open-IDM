@@ -28,8 +28,13 @@ describe("formatETA", () => {
   it("formats durations", () => {
     expect(formatETA(-1)).toBe("");
     expect(formatETA(42)).toBe("42s");
-    expect(formatETA(185)).toBe("3m 05s");
-    expect(formatETA(3725)).toBe("1h 02m");
+    expect(formatETA(185)).toBe("3m 10s");
+    expect(formatETA(599)).toBe("10m");
+    expect(formatETA(1234)).toBe("21m");
+    expect(formatETA(3599)).toBe("1h 00m");
+    expect(formatETA(3725)).toBe("1h 00m");
+    expect(formatETA(5000)).toBe("1h 25m");
+    expect(formatETA(-2)).toBe("");
     expect(formatETA(90000)).toBe("1d 1h");
   });
 });

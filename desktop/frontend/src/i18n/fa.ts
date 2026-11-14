@@ -40,6 +40,8 @@ export const fa: Strings = {
   "col.progress": "پیشرفت",
   "col.speed": "سرعت",
   "col.eta": "زمان باقی‌مانده",
+  "eta.waiting": "در انتظار…",
+  "eta.waitingHint": "چند ثانیه است داده‌ای نرسیده — در حال اتصال دوباره یا یافتن همتا",
   "col.status": "وضعیت",
   "table.label": "دانلودها",
 
@@ -58,6 +60,8 @@ export const fa: Strings = {
   "detail.checksum": "چک‌سام مورد انتظار",
   "detail.connections": "اتصال‌ها",
   "detail.connectionsValue": "{active} فعال از {total}",
+  "detail.peers": "همتاها",
+  "detail.peersHint": "همتاها: {n}",
   "detail.segments": "نقشهٔ بخش‌ها",
   "detail.segmentsHint": "بخش‌ها: {n}",
   "detail.resumable": "قابل ادامه",

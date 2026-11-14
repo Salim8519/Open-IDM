@@ -83,7 +83,7 @@ open source (GPL-3.0), no ads, no telemetry, no nagging. Desktop-first: Windows 
 - Startup to usable window < 1 s on a modern machine.
 
 ## 5. Desktop app (Phase 2)
-- Main list: name, size, progress, speed, ETA, status; filter by category/status; search.
+- Main list: name, size, progress, speed (live), time left (steady countdown, "Waiting…" when no data arrives; ADR 0019), status; filter by category/status; search.
 - Add dialog: URL(s), folder, filename, connections, checksum, start now / add to queue.
 - Batch add: paste many links; pattern links (`file[001-100].zip`).
 - Clipboard monitor (opt-in): a copied downloadable link opens the add dialog. This is the

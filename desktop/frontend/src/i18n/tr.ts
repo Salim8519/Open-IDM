@@ -41,6 +41,8 @@ export const tr: Strings = {
   "col.progress": "İlerleme",
   "col.speed": "Hız",
   "col.eta": "Kalan süre",
+  "eta.waiting": "Bekleniyor…",
+  "eta.waitingHint": "Birkaç saniyedir veri yok — yeniden bağlanıyor veya eş arıyor",
   "col.status": "Durum",
   "table.label": "İndirmeler",
 
@@ -59,6 +61,8 @@ export const tr: Strings = {
   "detail.checksum": "Beklenen sağlama toplamı",
   "detail.connections": "Bağlantılar",
   "detail.connectionsValue": "{total} bağlantıdan {active} etkin",
+  "detail.peers": "Eşler",
+  "detail.peersHint": "Eşler: {n}",
   "detail.segments": "Parça haritası",
   "detail.segmentsHint": "Parça sayısı: {n}",
   "detail.resumable": "Sürdürülebilir",

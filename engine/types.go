@@ -64,7 +64,7 @@ type Download struct {
 	Connections int               `json:"connections"`
 	Active      int               `json:"active"` // live connections right now
 	Speed       int64             `json:"speed"`  // bytes/s (smoothed)
-	ETA         int64             `json:"eta"`    // seconds, -1 if unknown
+	ETA         int64             `json:"eta"`    // seconds; -1 unknown, -2 waiting for data (ADR 0019)
 	Headers     map[string]string `json:"headers,omitempty"`
 	ETag        string            `json:"etag,omitempty"`
 	LastMod     string            `json:"lastModified,omitempty"`
@@ -106,9 +106,9 @@ type Settings struct {
 	AutoStartExt   bool   `json:"autoStartExt"` // start extension downloads without asking
 	// Theme: "field" (Field Guide, follows the system day/night; the default),
 	// "field-day", "field-night", or Classic: "system", "light", "dark".
-	Theme          string `json:"theme"`
-	Language       string `json:"language"`     // UI language code, e.g. "en", "ar", "zh"
-	MinExtSize     int64  `json:"minExtSize"`   // extension: only capture files >= this size
+	Theme      string `json:"theme"`
+	Language   string `json:"language"`   // UI language code, e.g. "en", "ar", "zh"
+	MinExtSize int64  `json:"minExtSize"` // extension: only capture files >= this size
 
 	Schedule Schedule `json:"schedule"` // when the queue may run (Q3)
 

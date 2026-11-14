@@ -285,12 +285,3 @@ func (a *App) Call(method string, params string) (string, error) {
 	}
 	return string(b), nil
 }
-
-func startHidden(cmd *exec.Cmd) error {
-	hideWindow(cmd)
-	if err := cmd.Start(); err != nil {
-		return err
-	}
-	go func() { _ = cmd.Wait() }()
-	return nil
-}

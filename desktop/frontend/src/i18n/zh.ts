@@ -41,6 +41,8 @@ export const zh: Strings = {
   "col.progress": "进度",
   "col.speed": "速度",
   "col.eta": "剩余时间",
+  "eta.waiting": "等待中…",
+  "eta.waitingHint": "几秒内没有数据 — 正在重新连接或寻找节点",
   "col.status": "状态",
   "table.label": "下载列表",
 
@@ -59,6 +61,8 @@ export const zh: Strings = {
   "detail.checksum": "预期校验值",
   "detail.connections": "连接数",
   "detail.connectionsValue": "{active} 个活动 / 共 {total} 个",
+  "detail.peers": "节点",
+  "detail.peersHint": "节点：{n}",
   "detail.segments": "分段图",
   "detail.segmentsHint": "分段：{n}",
   "detail.resumable": "支持断点续传",
