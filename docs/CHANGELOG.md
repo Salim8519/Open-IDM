@@ -4,6 +4,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Changed
+- Browser extension: sizes read like the app ("1 MB" instead of "1.0 MB").
+
 ## [0.4.1] - 2026-11-14
 
 ### Changed

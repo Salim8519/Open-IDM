@@ -123,7 +123,7 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
             </div>
           </label>
           <label className="check">
-            <input type="checkbox" checked={s.useCategories} onChange={(e) => set("useCategories", e.target.checked)} />
+            <input type="checkbox" checked={s.useCategories} onChange={(e) => set("useCategories", e.target.checked)} data-testid="set-categories" />
             {t("settings.useCategories")}
           </label>
           <div className="field-row">
@@ -157,6 +157,7 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
                 max={100}
                 value={s.maxRetries}
                 onChange={(e) => set("maxRetries", Number(e.target.value))}
+                data-testid="set-retries"
               />
             </label>
           </div>
@@ -178,6 +179,7 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
             <input
               value={s.proxy}
               onChange={(e) => set("proxy", e.target.value)}
+              data-testid="set-proxy"
               placeholder={t("settings.proxyHint")}
               spellCheck={false}
             />
@@ -214,12 +216,12 @@ export function SettingsDialog({ client, settings, version, onClose, onSaved, on
             {t("settings.clipboardWatch")}
           </label>
           <label className="check">
-            <input type="checkbox" checked={s.autoStartExt} onChange={(e) => set("autoStartExt", e.target.checked)} />
+            <input type="checkbox" checked={s.autoStartExt} onChange={(e) => set("autoStartExt", e.target.checked)} data-testid="set-autoStartExt" />
             {t("settings.autoStartExt")}
           </label>
           <label className="field">
             <span>{t("settings.minExtSize")}</span>
-            <input value={minExt} onChange={(e) => setMinExt(e.target.value)} placeholder="1M" />
+            <input value={minExt} onChange={(e) => setMinExt(e.target.value)} placeholder="1M" data-testid="set-minExt" />
           </label>
         </fieldset>
 

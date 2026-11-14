@@ -19,7 +19,8 @@ export function formatSize(bytes) {
     n /= 1024;
     i++;
   }
-  return `${n >= 10 || i === 0 ? Math.round(n) : n.toFixed(1)} ${units[i]}`;
+  // Same style as the app: "1 MB", "1.5 MB", "12 MB" (no trailing ".0").
+  return `${n >= 10 || i === 0 ? Math.round(n) : +n.toFixed(1)} ${units[i]}`;
 }
 
 export const send = (msg) => chrome.runtime.sendMessage(msg);

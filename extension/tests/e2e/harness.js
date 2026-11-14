@@ -107,6 +107,9 @@ const PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>Peregrine 
 <p><a id="zip" href="/files/test.zip">test.zip</a></p>
 <p><a id="fallback" href="/files/fallback.zip">fallback.zip</a></p>
 <p><a id="page" href="/other.html">not a download</a></p>
+<p><a id="small" href="/data/small.dat?size=204800">small.dat (200 KB)</a></p>
+<p><a id="big" href="/data/big.dat?size=3145728">big.dat (3 MB)</a></p>
+<p><a id="mid" href="/data/mid.dat?size=2097152">mid.dat (2 MB)</a></p>
 </body></html>`;
 
 const MEDIA_PAGE = `<!doctype html><html><head><meta charset="utf-8"><title>media</title></head><body>
@@ -148,6 +151,17 @@ export async function startSite() {
       }, 100);
       req.on('close', () => clearInterval(timer));
       return;
+    }
+    if (u.pathname.startsWith('/data/')) {
+      // A file whose type is not on the capture list, of any size (?size=bytes).
+      const name = u.pathname.split('/').pop();
+      const size = Number(u.searchParams.get('size') || 1024);
+      res.writeHead(200, {
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': `attachment; filename="${name}"`,
+        'Content-Length': String(size),
+      });
+      return res.end(Buffer.alloc(size, 3));
     }
     if (u.pathname === '/media/clip.mp4') {
       const body = Buffer.alloc(400 * 1024, 1);

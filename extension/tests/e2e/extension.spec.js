@@ -139,6 +139,85 @@ test('a captured download never shows up as a browser download first', async () 
   await page.close();
 });
 
+// Size rules (defaults: the app's minExtSize, 1 MB from the fake app). Listed file types
+// are captured at any size; other files only from the minimum size up.
+const captured = () => app.calls().filter((c) => c.method === 'capture').map((c) => c.params.url);
+
+test("options page shows the app's minimum size", async () => {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${EXTENSION_ID}/options.html`);
+  await expect(page.locator('#minSize')).toHaveValue('');
+  await expect(page.locator('#minSize')).toHaveAttribute('placeholder', '1');
+  await expect(page.locator('#minSizeHint')).toContainText('1 MB');
+  await page.close();
+});
+
+test('unlisted files: below the minimum size stay in the browser, above it go to Peregrine', async () => {
+  const page = await context.newPage();
+  const cdp = await context.newCDPSession(page);
+  await cdp.send('Browser.setDownloadBehavior', { behavior: 'default' });
+  await page.goto(site.base + '/');
+  await page.click('#small');
+  await expect
+    .poll(async () => (await searchDownloads('small[.]dat')).map((d) => d.state).join(','), { timeout: 20_000 })
+    .toBe('complete');
+  expect(captured().some((u) => u.includes('small.dat'))).toBe(false);
+
+  await page.click('#big');
+  await expect.poll(() => captured().some((u) => u.includes('big.dat')), { timeout: 20_000 }).toBe(true);
+  await expect.poll(async () => (await searchDownloads('big[.]dat')).length, { timeout: 10_000 }).toBe(0);
+  await page.close();
+});
+
+test("a minimum size set in the options overrides the app's", async () => {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${EXTENSION_ID}/options.html`);
+  await page.fill('#minSize', '2.5');
+  await page.click('button[type=submit]');
+  await expect(page.locator('#saved')).toHaveText('Saved');
+  const stored = await sw.evaluate(() => chrome.storage.local.get('settings'));
+  expect(stored.settings.minSizeMB).toBe(2.5);
+
+  const cdp = await context.newCDPSession(page);
+  await cdp.send('Browser.setDownloadBehavior', { behavior: 'default' });
+  await page.goto(site.base + '/');
+  await page.click('#mid'); // 2 MB < 2.5 MB: the browser keeps it
+  await expect
+    .poll(async () => (await searchDownloads('mid[.]dat')).map((d) => d.state).join(','), { timeout: 20_000 })
+    .toBe('complete');
+  expect(captured().some((u) => u.includes('mid.dat'))).toBe(false);
+
+  // Clearing the field goes back to the app's size.
+  await page.goto(`chrome-extension://${EXTENSION_ID}/options.html`);
+  await page.fill('#minSize', '');
+  await page.click('button[type=submit]');
+  await expect(page.locator('#saved')).toHaveText('Saved');
+  const back = await sw.evaluate(() => chrome.storage.local.get('settings'));
+  expect(back.settings.minSizeMB).toBeNull();
+  await page.close();
+});
+
+test('the on/off switch in the popup stops capturing', async () => {
+  const page = await context.newPage();
+  await page.goto(`chrome-extension://${EXTENSION_ID}/popup.html`);
+  await page.locator('#enabled').uncheck();
+  await expect.poll(async () => (await sw.evaluate(() => chrome.storage.local.get('settings'))).settings.enabled).toBe(false);
+  const before = captured().length;
+  const site2 = await context.newPage();
+  const cdp = await context.newCDPSession(site2);
+  await cdp.send('Browser.setDownloadBehavior', { behavior: 'default' });
+  await site2.goto(site.base + '/');
+  await site2.click('#big'); // would be captured if enabled
+  await expect
+    .poll(async () => (await searchDownloads('big[.]dat')).map((d) => d.state).join(','), { timeout: 20_000 })
+    .toContain('complete');
+  expect(captured().length).toBe(before);
+  await page.locator('#enabled').check();
+  await expect.poll(async () => (await sw.evaluate(() => chrome.storage.local.get('settings'))).settings.enabled).toBe(true);
+  await site2.close();
+  await page.close();
+});
+
 test('media responses are listed per tab, streams flagged', async () => {
   const page = await context.newPage();
   await page.goto(site.base + '/media.html');

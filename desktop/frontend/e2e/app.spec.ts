@@ -436,3 +436,97 @@ test("Open file and Show in folder ask the OS for the right file", async ({ app,
   const file = path.join(info.downloads, name);
   expect(log.slice(-2)).toEqual([`reveal ${file}`, `open ${file}`]);
 });
+
+test("every setting is saved, shown again and takes effect", async ({ app, info }) => {
+  for (const d of await rpc<{ id: string }[]>(app, "list")) await rpc(app, "remove", { id: d.id, deleteFile: true });
+  const picked = path.join(info.downloads, "picked");
+  const dlg = app.getByTestId("settings-dialog");
+
+  // A bad size is refused with a message, and nothing is saved.
+  await app.getByTestId("tb-settings").click();
+  await dlg.getByTestId("set-minExt").fill("lots");
+  await dlg.getByTestId("settings-save").click();
+  await expect(dlg.getByRole("alert")).toBeVisible();
+  await expect(dlg).toBeVisible();
+
+  await dlg.getByTestId("set-dir").fill(picked);
+  await dlg.getByTestId("set-categories").check();
+  await dlg.getByTestId("set-maxActive").fill("1");
+  await dlg.getByTestId("set-retries").fill("3");
+  await dlg.getByTestId("set-limit").fill("200K");
+  await dlg.getByTestId("set-proxy").fill("");
+  await dlg.getByTestId("set-autoStartExt").check();
+  await dlg.getByTestId("set-minExt").fill("5M");
+  await dlg.getByTestId("set-notify").uncheck();
+  await dlg.getByTestId("set-closeToTray").uncheck();
+  await dlg.getByTestId("settings-save").click();
+  await expect(dlg).toBeHidden();
+
+  // Saved in the engine…
+  const s = await rpc<Record<string, unknown>>(app, "getSettings");
+  expect(s).toMatchObject({
+    downloadDir: picked,
+    useCategories: true,
+    maxActive: 1,
+    maxRetries: 3,
+    globalLimit: 200 * 1024,
+    proxy: "",
+    autoStartExt: true,
+    minExtSize: 5 * MB,
+    notify: false,
+    closeToTray: false,
+  });
+  // …and shown again, in the same units, after a reload.
+  await app.reload();
+  await app.getByTestId("tb-settings").click();
+  await expect(dlg.getByTestId("set-dir")).toHaveValue(picked);
+  await expect(dlg.getByTestId("set-categories")).toBeChecked();
+  await expect(dlg.getByTestId("set-maxActive")).toHaveValue("1");
+  await expect(dlg.getByTestId("set-retries")).toHaveValue("3");
+  await expect(dlg.getByTestId("set-limit")).toHaveValue("200K");
+  await expect(dlg.getByTestId("set-autoStartExt")).toBeChecked();
+  await expect(dlg.getByTestId("set-minExt")).toHaveValue("5M");
+  await expect(dlg.getByTestId("set-notify")).not.toBeChecked();
+  await expect(dlg.getByTestId("set-closeToTray")).not.toBeChecked();
+  await dlg.getByRole("button", { name: "Cancel" }).first().click();
+
+  // Max active 1: the second download waits in the queue.
+  const a = "e2e-set-a.zip";
+  const b = "e2e-set-b.zip";
+  await rpc(app, "add", { url: `${info.files}/file?size=${3 * MB}&name=${a}`, filename: a });
+  await rpc(app, "add", { url: `${info.files}/file?size=${MB}&name=${b}`, filename: b });
+  await expect(row(app, a)).toHaveAttribute("data-status", "downloading");
+  await expect(row(app, b)).toHaveAttribute("data-status", "queued");
+
+  // Global limit 200 KB/s holds the speed down (the test server is unthrottled).
+  await app.waitForTimeout(4000);
+  const da = (await rpc<{ filename: string; speed: number; downloaded: number; dir: string }[]>(app, "list")).find((d) => d.filename === a)!;
+  expect(da.speed).toBeGreaterThan(0);
+  expect(da.speed).toBeLessThan(300 * 1024);
+  expect(da.downloaded).toBeLessThan(2 * MB);
+
+  // Download folder + categories: a .zip goes to <picked>/Compressed.
+  expect(da.dir).toBe(path.join(picked, "Compressed"));
+
+  // Start browser downloads without asking: a capture is queued directly, no dialog.
+  const c = "e2e-set-captured.zip";
+  const res = await rpc<{ queued: boolean }>(app, "capture", { url: `${info.files}/file/${c}?size=1000`, source: "extension" });
+  expect(res.queued).toBe(true);
+  await expect(app.getByTestId("add-dialog")).toBeHidden();
+  await expect(row(app, c)).toBeVisible();
+
+  // Put everything back for the other tests.
+  for (const d of await rpc<{ id: string }[]>(app, "list")) await rpc(app, "remove", { id: d.id, deleteFile: true });
+  await rpc(app, "updateSettings", {
+    ...s,
+    downloadDir: info.downloads,
+    useCategories: false,
+    maxActive: 3,
+    maxRetries: 10,
+    globalLimit: 0,
+    autoStartExt: false,
+    minExtSize: MB,
+    notify: true,
+    closeToTray: true,
+  });
+});
