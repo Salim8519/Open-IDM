@@ -9,7 +9,7 @@
     "ogTitle": "The Digital Peregrine: a free download manager that never starts over",
     "ogDescription": "A field guide entry for Peregrine: up to 32 connections per file, progress saved every second, browser extension, torrents and video. Free and open source."
   },
-  "nav": { "book": "A Field Guide to Free Software", "edition": "edition", "download": "Download", "skip": "Skip to content", "language": "Language" },
+  "nav": { "book": "Free download manager", "edition": "v", "download": "Download", "skip": "Skip to content", "language": "Language" },
   "entry": {
     "no": "Entry no. 32",
     "title": "The Digital Peregrine",

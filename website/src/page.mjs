@@ -267,7 +267,7 @@ footer nav a{display:inline-block;padding:6px 8px}
 <a class="skip" href="#main">${t.nav.skip}</a>
 <div class="w">
 <header class="top">
-  <span class="book"><a href="${t.path}">Peregrine</a> · ${t.nav.book}<span class="ed"> · ${t.nav.edition} <span class="v">${version}</span></span></span>
+  <span class="book"><a href="${t.path}">Peregrine</a> · ${t.nav.book}<span class="ed"> · ${t.nav.edition}${t.lang === "en" ? "" : " "}<span class="v">${version}</span></span></span>
   <nav aria-label="Main"><a class="dlnav" href="#find">${t.nav.download}</a><a href="${GH}">GitHub</a>${langSwitch}</nav>
 </header>
 
