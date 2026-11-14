@@ -4,6 +4,20 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Added
+- **BitTorrent:** magnet links, `.torrent` links and `.torrent` files from your computer
+  (double-click once Peregrine is the handler, or drag onto the window). Pause and resume
+  keep the metadata, so a magnet does not have to find peers for it again. Nothing is
+  seeded after a download finishes. Windows asks once to allow Peregrine through the
+  firewall when the first torrent starts.
+- **Video sites:** download the video from YouTube and other video pages (bundled yt-dlp
+  and ffmpeg). Right-click a page → "Download video with Peregrine", the popup's "Download
+  the video on this page" button, or tick "This is a video page" in Add download.
+- **Streams:** HLS (`.m3u8`, including live recording) and DASH (`.mpd`) download and
+  merge into one `.mp4`. The extension's media list can now download them.
+- **FTP and FTPS** links, with resume.
+- A small badge in the list shows the download type (Torrent, Video site, Stream, FTP).
+
 ## [0.2.1] - 2026-11-14
 
 ### Fixed

@@ -112,3 +112,10 @@ only if the `GOPPROF` environment variable asks for it.
   library gains build tags to leave them out.
 - Resuming a large torrent re-reads the data already on disk once.
 - The host app must call `Protocol.Close()` on shutdown.
+
+## Addendum (2026-11-14): local .torrent files
+`.torrent` files on disk are accepted as `file:///…/name.torrent` URLs (`torrent.FileURL`),
+read with the same 20 MB cap. File URLs with a host (network shares) are refused. The
+desktop app registers `.torrent` (wails.json `fileAssociations`) and turns a path argument,
+a macOS Finder open or a file dropped on the window into such a URL. Once the metadata is
+in the saved state, the original file is no longer needed.

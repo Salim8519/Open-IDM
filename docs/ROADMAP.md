@@ -63,10 +63,11 @@ v0.2.0 released 2026-11-14: scheduler, tray, notifications, start at sign-in, 16
 - [ ] **v1.0 release**
 
 ## Phase 4 — Video and torrent
-- [ ] HLS/DASH downloader + ffmpeg merge
-- [ ] yt-dlp sidecar integration
-- [ ] FTP/FTPS
-- [ ] BitTorrent + magnet
+- [x] HLS/DASH downloader + ffmpeg merge
+- [x] yt-dlp sidecar integration
+- [x] FTP/FTPS
+- [x] BitTorrent + magnet (also `.torrent` files opened from disk)
+- [ ] Choose files inside a torrent; optional seeding
 
 ## Phase 5 — More browsers and platforms
 - [ ] Firefox extension

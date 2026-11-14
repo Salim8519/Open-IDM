@@ -112,11 +112,21 @@ The extension is the only secure, reliable way to send clicked browser downloads
 - Minimal permissions; no remote code; no data leaves the machine.
 - If the app is not running/installed, fall back to the browser's own download.
 
-## 7. Video and torrent (Phase 4)
-- Native HLS/DASH segment downloader for unencrypted streams, merged with ffmpeg (sidecar).
-- Optional yt-dlp sidecar for site extraction, user-installed or auto-fetched with checksum
-  verification.
-- BitTorrent + magnet links via `anacrolix/torrent`: select files, seeding ratio limits.
+## 7. Video, streams, FTP and torrent (Phase 4)
+All are plug-ins behind `engine.Protocol` (kind per download), registered by
+`internal/protocols` for the app, the CLI and the test servers.
+- **FTP/FTPS** (`ftp://`, `ftps://`): own client, TLS when offered, resume with `REST`
+  (ADR 0011).
+- **HLS/DASH** (`.m3u8`, `.mpd`): native segment downloader for unencrypted streams, live
+  HLS recording, remuxed with ffmpeg; DRM is refused (ADR 0012).
+- **Video sites** (YouTube and other known hosts, or any page marked "This is a video
+  page"): bundled yt-dlp sidecar, with ffmpeg for merging. Both are pinned and checksum-
+  verified in the release build (ADR 0013).
+- **BitTorrent** via `anacrolix/torrent`: magnet links, `.torrent` URLs and local
+  `.torrent` files (double-click / file association, drag onto the window). Peregrine
+  registers as the handler for `magnet:` and `.torrent`. No seeding after completion;
+  upload while downloading is capped (ADR 0014). Later: choose files inside a torrent,
+  seeding ratio option.
 
 ## 8. Later platforms (Phase 5 and beyond)
 - Firefox extension: same code as the Chromium one with small manifest/API changes.
@@ -147,5 +157,5 @@ The extension is the only secure, reliable way to send clicked browser downloads
 
 ## 11. Open questions
 - Final product name.
-- Whether to ship ffmpeg/yt-dlp bundled or download on first use.
+- ~~Whether to ship ffmpeg/yt-dlp bundled or download on first use.~~ Bundled (ADR 0013).
 - HTTP/3 on by default or opt-in.

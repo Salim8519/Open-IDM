@@ -43,12 +43,17 @@ One method-based API (`internal/api.Service.Call`) used by every client:
 | `openExtensionsPage` | `{browser: "chrome"\|"edge"\|"brave"}` | `true` (desktop only) |
 | `showExtensionFolder` | – | `true`; opens the bundled extension folder (desktop only) |
 
-`Request`: `{url, dir?, filename?, connections?, headers?, checksum?, speedLimit?, paused?}` —
+`Request`: `{url, kind?, dir?, filename?, connections?, headers?, checksum?, speedLimit?, paused?}` —
 `headers` may carry `Cookie`, `Referer`, `User-Agent` from the browser. Headers are never
-returned to clients.
+returned to clients. `kind` forces a downloader (`http`, `ftp`, `hls`, `dash`, `video`,
+`torrent`); without it the URL decides (magnet / `.torrent` → torrent, `.m3u8` → hls,
+`.mpd` → dash, known video hosts → video, `ftp(s)://` → ftp, else http). Local `.torrent`
+files are `file:///…/x.torrent` URLs; the native host never forwards `file:` URLs.
 
 `Download`: see `engine/types.go` (`id, url, dir, filename, size, downloaded, status, error,
-resumable, connections, active, speed, eta, sha256, category, segments, createdAt, completedAt, order`).
+resumable, connections, active, speed, eta, sha256, category, segments, createdAt, completedAt, order,
+kind, isDir`). `isDir` is true when the result is a folder (multi-file torrents). A URL's
+password is never returned, nor a downloader's internal resume state.
 Status: `queued | downloading | paused | error | completed`.
 
 ## Events
