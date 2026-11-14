@@ -110,4 +110,12 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@$(cd desktop && go list -m -f '{{.Version}}' github.com/wailsapp/wails/v2)
       - name: Build
         working-directory: desktop
-        run: wails build
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            # Same as release: no cgo, or the exe needs MinGW DLLs (ADR 0014).
+            CGO_ENABLED=0 wails build -tags "nosqlite purego_utp"
+            bash ../scripts/check-no-mingw.sh build/bin/Peregrine.exe
+          else
+            wails build -tags "nosqlite purego_utp"
+          fi

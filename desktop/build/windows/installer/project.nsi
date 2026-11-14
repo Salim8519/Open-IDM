@@ -1,5 +1,11 @@
 Unicode true
 
+# Peregrine: LZMA, solid, with a dictionary big enough to span ffmpeg.exe so ffprobe.exe
+# (almost the same binary) compresses nearly for free. About half the size of the default
+# zlib installer (ADR 0015). Unpacking needs ~128 MB of RAM for a few seconds.
+SetCompressor /SOLID lzma
+SetCompressorDictSize 128
+
 ####
 ## Please note: Template replacements don't work in this file. They are provided with default defines like
 ## mentioned underneath.
@@ -83,8 +89,37 @@ OutFile "..\..\bin\${INFO_PROJECTNAME}-${ARCH}-installer.exe" # Name of the inst
 !endif # Default installing folder ($PROGRAMFILES is Program Files folder).
 ShowInstDetails show # This will always show the installation details.
 
+# Peregrine: close running copies before files are replaced or removed. On Windows the app
+# keeps running in the tray after its window closes, and Chrome keeps peregrine-host.exe
+# running while the extension is connected. Windows won't let setup overwrite a running exe,
+# so without this an update stops with "Error opening file for writing", or leaves the old
+# version running. Downloads in progress resume from their .part files on the next start.
+!macro peregrine.closeRunning
+    nsExec::Exec `"$SYSDIR\cmd.exe" /c ""$SYSDIR\tasklist.exe" /FI "IMAGENAME eq ${PRODUCT_EXECUTABLE}" /NH | "$SYSDIR\find.exe" /I "${PRODUCT_EXECUTABLE}""`
+    Pop $0
+    ${If} $0 == 0
+        ${IfNot} ${Silent}
+            MessageBox MB_OKCANCEL|MB_ICONINFORMATION "${INFO_PRODUCTNAME} is running and will be closed to continue.$\r$\n$\r$\nDownloads in progress continue when you start ${INFO_PRODUCTNAME} again." IDOK peregrine_close_ok
+            Abort
+            peregrine_close_ok:
+        ${EndIf}
+        # /T also ends the yt-dlp and ffmpeg processes the app started.
+        nsExec::Exec `"$SYSDIR\taskkill.exe" /F /T /IM "${PRODUCT_EXECUTABLE}"`
+        Pop $0
+        Sleep 1000
+    ${EndIf}
+    # The browser starts the host again the next time the extension needs it.
+    nsExec::Exec `"$SYSDIR\taskkill.exe" /F /IM "peregrine-host.exe"`
+    Pop $0
+!macroend
+
 Function .onInit
    !insertmacro wails.checkArchitecture
+   !insertmacro peregrine.closeRunning
+FunctionEnd
+
+Function un.onInit
+   !insertmacro peregrine.closeRunning
 FunctionEnd
 
 Section

@@ -82,8 +82,13 @@ anacrolix helpers (`dht/v2`, `log`, `missinggo`, `chansync`, `generics`, `go-utp
 disabled), `go.etcd.io/bbolt` (linked, unused), `RoaringBitmap`, `tidwall/btree`,
 `lukechampine.com/blake3`, `multiformats/go-multihash`, OpenTelemetry API packages (no
 exporter: nothing is sent anywhere), `coder/websocket`, and newer `golang.org/x/{net,crypto,
-text,exp}`. With cgo enabled the library would also compile `go-llsqlite` and `go-libutp`;
-our release builds don't. `pion/dtls` and `pion/stun` were raised to versions without known
+text,exp}`. With cgo enabled the library would also compile `go-llsqlite` and `go-libutp`.
+Correction (after 0.3.0): the desktop app was not cgo-free as this said. Wails forces cgo on
+for macOS, and on Windows Go turned it on because the CI runner has MinGW gcc. The 0.3.0
+Windows exe needed MinGW's `libstdc++-6.dll` and `libgcc_s_seh-1.dll` and would not start.
+Every desktop build now passes `-tags "nosqlite purego_utp"`, which keeps that C code out
+even with cgo on. The Windows build also sets `CGO_ENABLED=0`, and
+`scripts/check-no-mingw.sh` fails the release if an exe imports MinGW DLLs. `pion/dtls` and `pion/stun` were raised to versions without known
 vulnerabilities (govulncheck clean). `anacrolix/envpprof` starts a localhost pprof listener
 only if the `GOPPROF` environment variable asks for it.
 

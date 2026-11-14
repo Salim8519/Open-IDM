@@ -130,8 +130,13 @@ jobs:
           mkdir -p build/bin
           bash ../scripts/stage-extension.sh build/bin/extension
           CGO_ENABLED=0 go -C .. build -trimpath -ldflags "-s -w -X github.com/Salim8519/Peregrine/engine.Version=${V}" -o desktop/build/bin/peregrine-host.exe ./cmd/peregrine-host
-          wails build -platform windows/amd64 -nsis -webview2 download \
+          # CGO_ENABLED=0: the runner has MinGW gcc on PATH, and with cgo on, the torrent
+          # library compiles libutp (C++), so Peregrine.exe would need libstdc++-6.dll and
+          # libgcc_s_seh-1.dll at run time (ADR 0014 requires cgo-free Windows builds).
+          # The tags drop the torrent library's C code (C SQLite, C++ libutp) even if cgo is on.
+          CGO_ENABLED=0 wails build -platform windows/amd64 -nsis -webview2 download -tags "nosqlite purego_utp" \
             -ldflags "-X github.com/Salim8519/Peregrine/engine.Version=${V}"
+          bash ../scripts/check-no-mingw.sh build/bin/Peregrine.exe build/bin/peregrine-host.exe
       - name: Package
         shell: bash
         run: |
@@ -168,7 +173,8 @@ jobs:
         working-directory: desktop
         run: |
           V="${VERSION#v}"
-          wails build -clean -platform darwin/universal -ldflags "-X github.com/Salim8519/Peregrine/engine.Version=${V}"
+          # Wails forces cgo on for macOS; the tags keep the torrent library's C code out (ADR 0014).
+          wails build -clean -platform darwin/universal -tags "nosqlite purego_utp" -ldflags "-X github.com/Salim8519/Peregrine/engine.Version=${V}"
       - name: Add native messaging host + sign ad-hoc
         run: |
           V="${VERSION#v}"
