@@ -102,6 +102,13 @@ Section
     nsExec::Exec '"$INSTDIR\peregrine-host.exe" install'
     # Unpacked browser extension, offered by the app's "Connect your browser" prompt.
     File /r "..\..\bin\extension"
+    # Video-site downloads (ADR 0013): yt-dlp and ffmpeg, pinned and checksum-verified by
+    # the release workflow. /nonfatal keeps local installer builds without them working.
+    File /nonfatal "..\..\bin\yt-dlp.exe"
+    File /nonfatal "..\..\bin\ffmpeg.exe"
+    File /nonfatal "..\..\bin\ffprobe.exe"
+    File /nonfatal "..\..\bin\ffmpeg-LICENSE.txt"
+    File /nonfatal "..\..\bin\THIRD-PARTY-NOTICES.txt"
 
     CreateShortcut "$SMPROGRAMS\${INFO_PRODUCTNAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTABLE}"
     CreateShortCut "$DESKTOP\${INFO_PRODUCTNAME}.lnk" "$INSTDIR\${PRODUCT_EXECUTABLE}"
