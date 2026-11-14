@@ -102,8 +102,8 @@ func TestProtocolLifecycle(t *testing.T) {
 	if err := m.Pause(d.ID); err != nil {
 		t.Fatal(err)
 	}
-	paused, _ := m.Get(d.ID)
-	if paused.Status != StatusPaused || paused.Downloaded == 0 || len(paused.ProtoState) == 0 {
+	paused := m.snapshot(d.ID) // internal copy: resume state is not exposed to the UI
+	if paused == nil || paused.Status != StatusPaused || paused.Downloaded == 0 || len(paused.ProtoState) == 0 {
 		t.Fatalf("after pause: %+v", paused)
 	}
 	if err := m.Resume(d.ID); err != nil {

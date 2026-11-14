@@ -195,7 +195,9 @@ func (m *Manager) emitLocked(e Event) {
 // snapshotLocked returns a copy of d merged with live progress. m.mu must be held.
 func (m *Manager) snapshotLocked(d *Download) Download {
 	c := *d
-	c.Headers = nil // never send cookies/auth to the UI
+	c.Headers = nil             // never send cookies/auth to the UI
+	c.URL = hidePassword(c.URL) // nor a password inside the link (ftp://user:pass@host)
+	c.ProtoState = nil          // protocol internals (may hold tracker passkeys)
 	if t, ok := m.tasks[d.ID]; ok {
 		c.Downloaded = t.downloaded.Load()
 		c.Active = int(t.active.Load())
@@ -938,4 +940,17 @@ func redact(s string) string {
 		}
 	}
 	return strings.Join(fields, " ")
+}
+
+// hidePassword removes the password from a URL's userinfo, keeping the user name.
+func hidePassword(raw string) string {
+	u, err := url.Parse(raw)
+	if err != nil || u.User == nil {
+		return raw
+	}
+	if _, has := u.User.Password(); !has {
+		return raw
+	}
+	u.User = url.User(u.User.Username())
+	return u.String()
 }
