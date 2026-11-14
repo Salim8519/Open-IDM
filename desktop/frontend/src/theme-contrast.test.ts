@@ -84,6 +84,16 @@ for (const theme of ["field-day", "field-night"]) {
       expect(ratio(t["on-accent"], t["accent-strong"])).toBeGreaterThanOrEqual(TEXT);
       expect(ratio(t["on-accent"], t.accent)).toBeGreaterThanOrEqual(TEXT);
     });
+    it("ink on the sun highlight ≥ 4.5", () => {
+      expect(ratio(t["on-sun"], t.sun)).toBeGreaterThanOrEqual(TEXT);
+    });
+    for (const hue of ["clay", "plum", "sea", "ochre", "indigo", "moss"]) {
+      it(`category hue ${hue} ≥ 4.5 on sidebar, paper, raised, selected and hovered rows`, () => {
+        for (const s of ["side", "bg", "raised", "selected row", "hovered row"]) {
+          expect(ratio(t[`hue-${hue}`], surfaces[s])).toBeGreaterThanOrEqual(TEXT);
+        }
+      });
+    }
     it("danger button text ≥ 4.5", () => {
       expect(ratio(t["on-err"], t.err)).toBeGreaterThanOrEqual(TEXT);
     });
@@ -92,5 +102,45 @@ for (const theme of ["field-day", "field-night"]) {
         expect(ratio(fill, t.track)).toBeGreaterThanOrEqual(UI);
       }
     });
+  });
+}
+
+// Classic: dark is the bare :root block, light overrides it.
+function classic(theme: "dark" | "light"): Record<string, string> {
+  const head = ":root {";
+  const start = css.indexOf(head);
+  const block = css.slice(start + head.length, css.indexOf("}", start));
+  const base: Record<string, string> = {};
+  for (const [, k, v] of block.matchAll(/--([\w-]+):\s*([^;]+);/g)) base[k] = v.trim();
+  return theme === "dark" ? base : { ...base, ...tokens("light") };
+}
+
+const HUES = ["clay", "plum", "sea", "ochre", "indigo", "moss"];
+
+for (const theme of ["dark", "light"] as const) {
+  describe(`classic ${theme} icon colours`, () => {
+    const t = classic(theme);
+    const surfaces: Record<string, string> = {
+      bg: t.bg,
+      side: t.side,
+      raised: t.raised,
+      "selected row": over(t.sel, t.bg),
+      "selected sidebar item": over(t.sel, t.side),
+      "hovered row": over(t.hover, t.bg),
+    };
+    for (const hue of HUES) {
+      it(`category hue ${hue} ≥ 3 on every surface`, () => {
+        for (const s of Object.keys(surfaces)) {
+          expect(ratio(t[`hue-${hue}`], surfaces[s]), s).toBeGreaterThanOrEqual(UI);
+        }
+      });
+    }
+    for (const status of ["accent-text", "ok", "warn", "err"]) {
+      it(`sidebar status icon ${status} ≥ 3 on the sidebar`, () => {
+        for (const s of ["side", "selected sidebar item"]) {
+          expect(ratio(t[status], surfaces[s]), s).toBeGreaterThanOrEqual(UI);
+        }
+      });
+    }
   });
 }
