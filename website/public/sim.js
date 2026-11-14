@@ -19,7 +19,7 @@
     if (phone) { cta.href = "#download"; cta.innerHTML = data.cta.phone + arrow; return; }
     cta.href = "/download/" + os; cta.innerHTML = data.cta[os] + arrow;
     var row = document.querySelector('.dl a[data-os="' + os + '"]');
-    if (row) row.closest("tr").classList.add("you");
+    if (row) row.closest("li,tr").classList.add("you");
   })();
 
   // Close the language menu when clicking elsewhere or pressing Escape.

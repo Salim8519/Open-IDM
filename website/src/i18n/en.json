@@ -6,140 +6,121 @@
   "meta": {
     "title": "Peregrine: Free Open-Source Download Manager for Windows, macOS & Linux",
     "description": "Peregrine is a free, open-source download manager and IDM alternative. Up to 32 connections per file, resume that survives crashes, a browser extension, torrents and video. No ads, no tracking.",
-    "ogTitle": "Peregrine: downloads that don’t start over",
-    "ogDescription": "A free, open-source download manager. Up to 32 connections per file, crash-proof resume, browser extension, torrents and video. No ads, no tracking."
+    "ogTitle": "The Digital Peregrine: a free download manager that never starts over",
+    "ogDescription": "A field guide entry for Peregrine: up to 32 connections per file, progress saved every second, browser extension, torrents and video. Free and open source."
   },
-  "nav": { "how": "How it works", "tests": "Tests", "download": "Download", "compare": "Compare", "faq": "FAQ", "language": "Language", "skip": "Skip to content" },
-  "hero": {
-    "kicker": "Free download manager · Windows · macOS · Linux CLI",
-    "title": "Downloads that don’t start over.",
-    "lead": "Peregrine splits every file into up to 32 connections, keeps moving them onto the slowest part, and saves progress to disk every second. A dropped Wi-Fi, a crash or a power cut costs you seconds. Never the file.",
+  "nav": { "book": "A Field Guide to Free Software", "edition": "edition", "download": "Download", "skip": "Skip to content", "language": "Language" },
+  "entry": {
+    "no": "Entry no. 32",
+    "title": "The Digital Peregrine",
+    "lead": "The fastest download manager in its habitat. It splits its prey into up to 32 parts, chases them all at once, and never gives up its progress: not on a dropped Wi-Fi, a crash or a power cut.",
     "ctaWindows": "Download for Windows",
     "ctaMac": "Download for macOS",
     "ctaLinux": "Download for Linux",
     "ctaPhone": "Get it for your computer",
     "ctaGithub": "Source on GitHub",
-    "facts": "GPL-3.0 · no ads · no account · no telemetry"
+    "facts": "Free · open source (GPL-3.0) · no ads · no account · no tracking",
+    "plate": "Plate 1. In a stoop. The arrow points at your file.",
+    "labels": ["32 connections", "saves every second", "verifies before renaming", "your file"]
+  },
+  "notes": {
+    "title": "Field notes",
+    "items": [
+      ["Habitat", "Windows 10 and 11, macOS 12 and later. Seen on Linux at the command line.", "Also nests in Chrome, Edge, Brave, Opera and Vivaldi through an extension that hands over downloads with their cookies."],
+      ["Diet", "HTTP and HTTPS, FTP, torrents and magnet links, HLS and DASH streams, video sites.", "Does not eat your data. It makes no network requests except the downloads you start."],
+      ["Behaviour", "When one connection finishes its part, it stoops on half of the slowest part that is left.", "So no connection ever sits idle while one slow part drags the download out."],
+      ["Memory", "Writes its position to a crash-safe database every second.", "Bytes go to a .peregrine.part file and get the real name only after they are verified."]
+    ]
   },
   "sim": {
+    "title": "Plate 2. A dive, recorded",
+    "caption": "A live model of the engine. Watch a finished connection take half of a slow one, and connection #6 get cut by the server and resume without losing a byte.",
     "label": "Live simulation of the Peregrine engine",
     "file": "debian-12.8.0-amd64-DVD-1.iso",
     "connections": "connections",
-    "conn": "conn",
-    "reset": "reset by server",
+    "reset": "cut by the server",
     "resumed": "resumed · 0 bytes lost",
     "split": "took half of #",
     "idle": "done",
     "verifying": "verifying SHA-256…",
     "done": "verified · renamed from .peregrine.part",
     "left": "left",
-    "replay": "Replay"
+    "replay": "Watch again"
   },
-  "how": {
-    "label": "01 · Speed",
-    "title": "Every connection works until the last byte.",
-    "body": "Most download managers cut a file into fixed parts. The fast parts finish early and sit idle while one slow part drags the whole download out. Peregrine keeps cutting: when a connection finishes, it takes over half of the slowest part that is left. That is what you just watched above.",
-    "stats": [
-      ["32", "connections per file, re-balanced while it runs"],
-      ["1 s", "between progress saves to a crash-safe database"],
-      ["0", "bytes written to the real file name until it is verified"]
-    ],
-    "shotAlt": "The Peregrine main window: a download list with per-connection progress and the segment map of the selected file",
-    "shotCap": "The real app. The bar under the selected download is the same segment map as the simulation."
-  },
-  "tests": {
-    "label": "02 · Proof",
-    "title": "Tested against a server that lies.",
-    "body": "Every engine feature has to pass against our own deliberately broken test server before it ships. These are the things it does on purpose:",
-    "colServer": "The test server",
-    "colPeregrine": "Peregrine",
+  "lab": {
+    "title": "Observed in captivity",
+    "body": "Before every release, the engine is released into an enclosure with a test server built to misbehave. These behaviours were provoked on purpose, and this is how it reacted:",
+    "observed": "Observed",
     "rows": [
-      ["Cuts the connection halfway through", "Reconnects and continues from the last byte it wrote."],
-      ["Ignores Range requests", "Notices, falls back to a single connection, and does not corrupt the file."],
-      ["Sends no file size at all", "Downloads it as one stream."],
-      ["Swaps the file between requests", "Sees the changed ETag and starts clean instead of stitching two files together."],
-      ["Expires the link with a 403", "Pauses and lets you paste a fresh link. Everything already downloaded is kept."],
-      ["Answers 503 to the first tries", "Retries with back-off, then carries on."],
-      ["Throttles every response", "Keeps every connection busy, so the total is still as fast as the line allows."]
+      ["The server cuts the connection halfway through.", "Reconnects and continues from the last byte it wrote."],
+      ["The server ignores Range requests.", "Notices, falls back to one connection, and does not corrupt the file."],
+      ["The server sends no file size at all.", "Downloads it as one stream."],
+      ["The server swaps the file between requests.", "Sees the changed ETag and starts clean instead of stitching two files together."],
+      ["The link expires with a 403.", "Pauses and lets you paste a fresh link. Everything already downloaded is kept."],
+      ["The server answers 503 to the first tries.", "Retries with back-off, then carries on."],
+      ["Every response is throttled.", "Keeps every connection busy, so the total stays as fast as the line allows."]
     ],
-    "pass": "pass",
-    "note": "The test server is in the repository: internal/testsrv."
+    "note": "The enclosure is in the repository: internal/testsrv."
   },
-  "more": {
-    "label": "03 · Everything else",
-    "title": "Small app. Not a small feature list.",
-    "items": [
-      ["Browser extension", "Chrome, Edge, Brave, Opera and Vivaldi hand downloads over with their cookies, so files behind a login work. It also finds videos on the page."],
-      ["Torrents", "Magnet links and .torrent files. Nothing is seeded after you finish."],
-      ["Video and streams", "HLS and DASH streams saved as one file, plus video sites."],
-      ["FTP", "For the servers that never moved on."],
-      ["Queue and limits", "Active-download limit, global and per-file speed caps, categories, scheduler."],
-      ["16 languages", "Including real right-to-left layouts for Arabic, Persian and Urdu."]
-    ]
-  },
-  "download": {
-    "label": "04 · Download",
-    "title": "Get Peregrine",
-    "body": "These links always point to the newest release on GitHub. Current version:",
-    "colPlatform": "Platform",
-    "colFile": "File",
-    "rows": [
-      ["Windows 10 / 11", "64-bit installer, about 63 MB", "windows", "Installer", "windows-portable", "Portable .zip"],
-      ["macOS 12+", "Apple Silicon and Intel in one .dmg", "macos", "Download .dmg", "", ""],
-      ["Linux", "Command-line app, x64 and ARM64", "linux", "x64 .tar.gz", "linux-arm64", "ARM64"],
-      ["Browser extension", "For Chromium browsers; the app walks you through it", "extension", "Extension .zip", "", ""]
+  "species": {
+    "title": "Similar species",
+    "body": "How to tell it apart from its relatives in the wild. IDM has years of polish that Peregrine does not have yet; Peregrine is free, open and lives on more than Windows.",
+    "cards": [
+      ["The Digital Peregrine", "Peregrine", ["Free and open source", "Windows, macOS and a Linux CLI", "Torrents, video and a command line"]],
+      ["The Internet Downloader", "IDM", ["Paid after a trial", "Windows only", "Very mature"]],
+      ["The Browser Downloader", "built in", ["One connection per file", "Resume not guaranteed", "Found everywhere"]]
     ],
-    "unsigned": "Early preview: builds are not code-signed yet. Windows SmartScreen: <i>More info</i> → <i>Run anyway</i>. macOS: right-click the app → <i>Open</i>. Check any file against <a href=\"/download/checksums\">SHA256SUMS.txt</a>.",
-    "allFiles": "All files and older versions on GitHub"
-  },
-  "compare": {
-    "label": "05 · Compare",
-    "title": "Peregrine, IDM, FDM and your browser",
-    "body": "An honest table. IDM has years of polish that Peregrine does not have yet. Peregrine is free, open and runs on more than Windows.",
-    "browser": "Browser built-in",
+    "full": "Full comparison",
+    "browser": "Browser",
     "rows": [
       ["Price", "y:Free", "n:Paid after a trial", "y:Free", "y:Free"],
-      ["Source code you can read", "y:Yes, GPL-3.0", "n:No", "m:Older versions only", "m:Depends on browser"],
-      ["Windows", "y:Yes", "y:Yes", "y:Yes", "y:Yes"],
+      ["Source code you can read", "y:Yes, GPL-3.0", "n:No", "m:Older versions only", "m:Depends"],
       ["macOS", "y:Yes", "n:No", "y:Yes", "y:Yes"],
       ["Linux", "m:Command line", "n:No", "y:Yes", "y:Yes"],
-      ["Connections per file", "y:Up to 32, re-balanced live", "y:Many", "y:Many", "n:One"],
+      ["Connections per file", "y:Up to 32, re-balanced", "y:Many", "y:Many", "n:One"],
       ["Resume after a crash", "y:Yes, saved every second", "y:Yes", "y:Yes", "m:Sometimes"],
       ["Fresh link for an expired one", "y:Yes", "y:Yes", "m:Limited", "n:No"],
       ["BitTorrent", "y:Yes", "n:No", "y:Yes", "n:No"],
       ["Command-line tool", "y:Yes", "m:Basic switches", "n:No", "n:No"],
       ["Maturity", "m:Early preview", "y:Very mature", "y:Mature", "y:Mature"]
     ],
-    "fine": "Based on each product's public information, November 2026. Something wrong? <a href=\"https://github.com/Salim8519/Peregrine/issues\">Open an issue</a>."
+    "fine": "From each product's public information, November 2026. Something wrong? <a href=\"https://github.com/Salim8519/Peregrine/issues\">Tell us</a>."
   },
-  "cli": {
-    "label": "06 · Terminal",
-    "title": "Same engine, no window.",
-    "body": "For scripts and servers on Windows, macOS and Linux. Run the same command again and it resumes.",
+  "call": {
+    "title": "Its call",
+    "body": "Heard on servers and in scripts on Windows, macOS and Linux. Make the same call again and it resumes.",
     "c1": "# 16 connections, capped at 5 MB/s",
     "c2": "# hand a link to the desktop app"
   },
-  "privacy": {
-    "label": "07 · Privacy",
-    "title": "It only talks to the servers you download from.",
-    "body": "No analytics, no telemetry, no account, no ads, no bundled offers. Filenames from servers are cleaned against path tricks, finished files get your system's \"downloaded from the internet\" mark, and the local API listens only on 127.0.0.1 behind a secret token. This website has no trackers either. Read the <a href=\"https://github.com/Salim8519/Peregrine/blob/main/docs/SECURITY-MODEL.md\">threat model</a>."
-  },
   "faq": {
-    "label": "08 · Questions",
-    "title": "Questions",
+    "title": "Notes from observers",
     "items": [
       ["Is Peregrine really free?", "Yes. It is open source under GPL-3.0. There is no paid version, no trial, no ads and no bundled offers."],
       ["Is it a good alternative to IDM?", "It covers what most people use IDM for: many connections per file, resuming broken downloads and catching downloads from the browser. It is free and also runs on macOS. It is an early preview, so expect rough edges and please report them."],
       ["Why does Windows SmartScreen warn me?", "The builds are not code-signed yet. Click More info, then Run anyway. You can check the file against SHA256SUMS.txt and the signed build provenance on GitHub."],
       ["Does it work on Linux?", "On Linux, Peregrine is a command-line tool for x64 and ARM64. The desktop app is for Windows and macOS."],
-      ["Does it collect any data?", "No. No analytics and no telemetry. It only connects to the internet for the downloads you start."]
+      ["Does it collect any data?", "No. No analytics and no telemetry. It only connects to the internet for the downloads you start. This website has no trackers either."]
     ]
   },
+  "range": {
+    "title": "Where to find it",
+    "go": "Download",
+    "body": "These links always lead to the newest release. Current version:",
+    "rows": [
+      ["Windows 10 / 11", "64-bit installer, about 63 MB", "windows", "windows-portable", "portable .zip"],
+      ["macOS 12 and later", "One .dmg for Apple Silicon and Intel", "macos", "", ""],
+      ["Linux", "Command-line app, x64", "linux", "linux-arm64", "ARM64"],
+      ["Browser extension", "Chromium browsers; the app walks you through it", "extension", "", ""]
+    ],
+    "unsigned": "Early preview: builds are not code-signed yet. Windows SmartScreen: <i>More info</i> → <i>Run anyway</i>. macOS: right-click the app → <i>Open</i>. Check any file against <a href=\"/download/checksums\">SHA256SUMS.txt</a>.",
+    "all": "All files and older versions on GitHub"
+  },
   "footer": {
-    "tagline": "Peregrine is named after the peregrine falcon, the fastest animal on Earth.",
-    "license": "Free and open source, GPL-3.0",
+    "species": "A protected species under GPL-3.0. No ads or trackers in its natural habitat.",
+    "named": "Named after the peregrine falcon, the fastest animal on Earth.",
     "releases": "Releases",
     "changelog": "Changelog",
-    "security": "Security"
+    "security": "Security",
+    "model": "Threat model"
   }
 }
