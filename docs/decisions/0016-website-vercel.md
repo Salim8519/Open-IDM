@@ -22,7 +22,7 @@ at Cloudflare. All releases so far are GitHub pre-releases, so GitHub's
   root directory `website/`, so a push to `main` deploys it.
 - `/download/<platform>` is a small Vercel function (`website/api/dl.js`) that reads the
   newest non-draft release from the GitHub API and redirects to the matching asset.
-  Responses are CDN-cached for 10 minutes; if GitHub is unreachable it falls back to the
+  Responses are CDN-cached for 2 minutes (the page never shows an older version than the one it was built with); if GitHub is unreachable it falls back to the
   last known tag written in the file.
 - DNS stays at Cloudflare with records set to "DNS only" so Vercel issues the TLS
   certificate: `@` and `www` are CNAMEs to the project's `*.vercel-dns-017.com` host

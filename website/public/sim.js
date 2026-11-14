@@ -29,9 +29,21 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") langMenu.open = false; });
   }
 
-  // Newest version number (same origin, CDN cached).
+  // Newest version number (same origin, CDN cached). Only ever moves the number forward:
+  // a cached answer from before a release must not replace the newer built-in one.
+  function newer(a, b) {
+    var x = String(a).split("."), y = String(b).split(".");
+    for (var i = 0; i < 3; i++) {
+      var d = (parseInt(x[i], 10) || 0) - (parseInt(y[i], 10) || 0);
+      if (d) return d > 0;
+    }
+    return false;
+  }
   fetch("/api/dl?p=info").then(function (r) { return r.ok ? r.json() : null; }).then(function (j) {
-    if (j && j.version) document.querySelectorAll(".v").forEach(function (e) { e.textContent = j.version; });
+    if (!j || !/^\d+\.\d+\.\d+$/.test(j.version || "")) return;
+    document.querySelectorAll(".v").forEach(function (e) {
+      if (newer(j.version, e.textContent.trim())) e.textContent = j.version;
+    });
   }).catch(function () {});
 
   var root = document.querySelector(".sim");

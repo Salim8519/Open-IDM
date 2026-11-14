@@ -1,10 +1,10 @@
 // Redirects /download/<platform> to the matching file in the newest GitHub release
-// (pre-releases included, drafts skipped). The CDN caches each answer for 10 minutes,
+// (pre-releases included, drafts skipped). The CDN caches each answer for 2 minutes,
 // so GitHub's unauthenticated rate limit is never a problem. If GitHub cannot be
 // reached, it falls back to the last release known when this file was written.
 
 const REPO = "Salim8519/Peregrine";
-const FALLBACK_TAG = "v0.3.1";
+const FALLBACK_TAG = "v0.4.0";
 
 // platform -> function(version) => asset file name
 const ASSETS = {
@@ -20,7 +20,7 @@ const ASSETS = {
 let memo = { at: 0, release: null };
 
 async function newestRelease() {
-  if (memo.release && Date.now() - memo.at < 5 * 60 * 1000) return memo.release;
+  if (memo.release && Date.now() - memo.at < 60 * 1000) return memo.release;
   const res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=10`, {
     headers: { Accept: "application/vnd.github+json", "User-Agent": "peregrine-website" },
   });
@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   }
   const version = tag.replace(/^v/, "");
 
-  res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=86400");
+  res.setHeader("Cache-Control", "public, s-maxage=120, stale-while-revalidate=600");
 
   if (p === "info") {
     res.status(200).json({ version, tag, published });
