@@ -498,11 +498,20 @@ test("every setting is saved, shown again and takes effect", async ({ app, info 
   await expect(row(app, a)).toHaveAttribute("data-status", "downloading");
   await expect(row(app, b)).toHaveAttribute("data-status", "queued");
 
-  // Global limit 200 KB/s holds the speed down (the test server is unthrottled).
-  await app.waitForTimeout(4000);
-  const da = (await rpc<{ filename: string; speed: number; downloaded: number; dir: string }[]>(app, "list")).find((d) => d.filename === a)!;
+  // Global limit 200 KB/s holds the speed down (the test server is unthrottled). Measured as
+  // bytes over a 3 s window after the start: the first half second may burst above the
+  // limit (one buffer per connection), and a single speed reading then is not the limit.
+  type Item = { filename: string; speed: number; downloaded: number; dir: string };
+  const getA = async () => (await rpc<Item[]>(app, "list")).find((d) => d.filename === a)!;
+  await app.waitForTimeout(2000);
+  const t0 = Date.now();
+  const d0 = (await getA()).downloaded;
+  await app.waitForTimeout(3000);
+  const da = await getA();
+  const rate = (da.downloaded - d0) / ((Date.now() - t0) / 1000);
+  expect(rate).toBeGreaterThan(100 * 1024);
+  expect(rate).toBeLessThan(260 * 1024);
   expect(da.speed).toBeGreaterThan(0);
-  expect(da.speed).toBeLessThan(300 * 1024);
   expect(da.downloaded).toBeLessThan(2 * MB);
 
   // Download folder + categories: a .zip goes to <picked>/Compressed.
