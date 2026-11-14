@@ -4,6 +4,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ## Unreleased
 
+### Fixed
+- Time left now follows a lasting speed change within a few seconds. In 0.4.1, halving the
+  speed (a slower server, a speed limit, fewer peers) left the time far too low: it showed
+  2 s when about 6 s were left.
+
 ## [0.4.2] - 2026-11-14
 
 ### Added
@@ -14,11 +19,6 @@ Format: [Keep a Changelog](https://keepachangelog.com/). Newest first.
 
 ### Changed
 - Browser extension: sizes read like the app ("1 MB" instead of "1.0 MB").
-
-### Fixed
-- Time left now follows a lasting speed change within a few seconds. In 0.4.1, halving the
-  speed (a slower server, a speed limit, fewer peers) left the time far too low: it showed
-  2 s when about 6 s were left.
 
 ## [0.4.1] - 2026-11-14
 
