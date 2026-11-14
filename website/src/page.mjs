@@ -146,8 +146,9 @@ details.lang a{display:block;padding:6px 12px;text-decoration:none}
 .entry{text-align:center;padding-block:30px 8px}
 .no{font-size:15px;color:var(--rust);margin:0}
 h1{font-weight:700;font-size:clamp(42px,10vw,84px);line-height:1.15;margin:4px 0 2px}
+:lang(ar) h1{line-height:1.6;margin-bottom:10px}
 :lang(en) h1{font-weight:400;letter-spacing:-.01em}
-.sci{font:italic 20px Georgia,"Times New Roman",serif;color:var(--g);direction:ltr;margin:0}
+.sci{font:italic 20px/1.4 Georgia,"Times New Roman",serif;color:var(--g);direction:ltr;margin:0;position:relative}
 .plate{margin:20px auto 0;max-width:640px;border:1px solid var(--rule);background:var(--p2);padding:12px}
 .plate figcaption{font-size:15px;color:var(--g);font-style:italic;margin-top:6px}
 .falcon{display:block;width:100%;height:auto;stroke:var(--k);fill:none;stroke-linecap:round;stroke-linejoin:round}
@@ -167,6 +168,7 @@ h1{font-weight:700;font-size:clamp(42px,10vw,84px);line-height:1.15;margin:4px 0
 
 section{border-top:1px solid var(--rule);padding-block:34px}
 h2{font-weight:700;font-size:clamp(28px,6vw,40px);line-height:1.3;margin:0 0 10px}
+:lang(ar) h2{line-height:1.6}
 :lang(en) h2{font-weight:400}
 .body{color:var(--g);max-width:38em;margin:0 0 18px}
 
